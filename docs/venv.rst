@@ -12,7 +12,7 @@ Python 应用程序经常会使用一些不属于标准库的包和模块。应�
 
 这就意味着可能无法安装一个 Python 来满足每个应用程序的要求。如果应用程序 A 需要一个特定模块的 1.0 版本但是应用程序 B 需要该模块的 2.0 版本，这两个应用程序的要求是冲突的，安装版本 1.0 或者版本 2.0 将会导致其中一个应用程序不能运行。
 
-这个问题的解决方案就是创建一个 `虚拟环境 <https://docs.python.org/3/glossary.html#term-virtual-environment>`_ （通常简称为 “virtualenv”），包含一个特定版本的 Python，以及一些附加的包的独立的目录树。
+这个问题的解决方案就是创建一个 `虚拟环境 <https://docs.python.org/zh-cn/3/glossary.html#term-virtual-environment>`_ （通常简称为 “virtualenv”），包含一个特定版本的 Python，以及一些附加的包的独立的目录树。
 
 不同的应用程序可以使用不同的虚拟环境。为了解决前面例子中的冲突，应用程序 A 可以有自己的虚拟环境，其中安装了特定模块的 1.0 版本。而应用程序 B 拥有另外一个安装了特定模块 2.0 版本的虚拟环境。如果应用程序 B 需求一个库升级到 3.0 的话，这也不会影响到应用程序 A 的环境。
 
@@ -66,7 +66,7 @@ Python 应用程序经常会使用一些不属于标准库的包和模块。应�
   PyAstronomy            - A collection of astronomy related tools for Python.
   ...
 
-``pip`` 有许多子命令：“搜索”，“安装”，“卸载”，“freeze”（译者注：这个词语暂时没有合适的词语来翻译），等等。（请参考 `installing-index <https://docs.python.org/3/installing/index.html#installing-index>`_ 指南获取 ``pip`` 更多完整的文档。）
+``pip`` 有许多子命令：“搜索”，“安装”，“卸载”，“freeze”（译者注：这个词语暂时没有合适的词语来翻译），等等。（请参考 `installing-index <https://docs.python.org/zh-cn/3/installing/index.html#installing-index>`_ 指南获取 ``pip`` 更多完整的文档。）
 
 你可以安装一个包最新的版本，通过指定包的名称::
 
@@ -143,4 +143,4 @@ install --upgrade`` 来升级包到最新版本::
     Running setup.py install for novas
   Successfully installed novas-3.1.1.3 numpy-1.9.2 requests-2.7.0
 
-``pip`` 还有更多的选项。请参考 `installing-index <https://docs.python.org/3/installing/index.html#installing-index>`_ 指南获取关于 ``pip`` 完整的文档。当你编写一个包并且在 Python Package Index 中也出现的话，请参考 `distributing-index <https://docs.python.org/3/distributing/index.html#distributing-index>`_ 指南。
+``pip`` 还有更多的选项。请参考 `installing-index <https://docs.python.org/zh-cn/3/installing/index.html#installing-index>`_ 指南获取关于 ``pip`` 完整的文档。当你编写一个包并且在 Python Package Index 中也出现的话，请参考 `distributing-index <https://docs.python.org/zh-cn/3/distributing/index.html#distributing-index>`_ 指南。

@@ -571,20 +571,20 @@ Python 还包含了一个数据类型 —— *set* （集合）。集合是一�
 
 
 
-.. _collections.deque: https://docs.python.org/3/library/collections.html#collections.deque
-.. _if: https://docs.python.org/3/reference/compound_stmts.html#if
-.. _for: https://docs.python.org/3/reference/compound_stmts.html#for
-.. _zip(): https://docs.python.org/3/library/functions.html#zip
-.. _del: https://docs.python.org/3/reference/simple_stmts.html#del
-.. _Sequence Types — list, tuple, range: https://docs.python.org/3/library/stdtypes.html#typesseq
-.. _不可变的: https://docs.python.org/3/glossary.html#term-immutable
-.. _可变的: https://docs.python.org/3/glossary.html#term-mutable
-.. _namedtuples: https://docs.python.org/3/library/collections.html#collections.namedtuple
-.. _set(): https://docs.python.org/3/library/stdtypes.html#set
-.. _Mapping Types — dict: https://docs.python.org/3/library/stdtypes.html#typesmapping
-.. _in: https://docs.python.org/3/reference/expressions.html#in
-.. _dict(): https://docs.python.org/3/library/stdtypes.html#dict
-.. _enumerate(): https://docs.python.org/3/library/functions.html#enumerate
-.. _reversed(): https://docs.python.org/3/library/functions.html#reversed
-.. _sorted(): https://docs.python.org/3/library/functions.html#sorted
-.. _TypeError: https://docs.python.org/3/library/exceptions.html#TypeError
+.. _collections.deque: https://docs.python.org/zh-cn/3/library/collections.html#collections.deque
+.. _if: https://docs.python.org/zh-cn/3/reference/compound_stmts.html#if
+.. _for: https://docs.python.org/zh-cn/3/reference/compound_stmts.html#for
+.. _zip(): https://docs.python.org/zh-cn/3/library/functions.html#zip
+.. _del: https://docs.python.org/zh-cn/3/reference/simple_stmts.html#del
+.. _Sequence Types — list, tuple, range: https://docs.python.org/zh-cn/3/library/stdtypes.html#typesseq
+.. _不可变的: https://docs.python.org/zh-cn/3/glossary.html#term-immutable
+.. _可变的: https://docs.python.org/zh-cn/3/glossary.html#term-mutable
+.. _namedtuples: https://docs.python.org/zh-cn/3/library/collections.html#collections.namedtuple
+.. _set(): https://docs.python.org/zh-cn/3/library/stdtypes.html#set
+.. _Mapping Types — dict: https://docs.python.org/zh-cn/3/library/stdtypes.html#typesmapping
+.. _in: https://docs.python.org/zh-cn/3/reference/expressions.html#in
+.. _dict(): https://docs.python.org/zh-cn/3/library/stdtypes.html#dict
+.. _enumerate(): https://docs.python.org/zh-cn/3/library/functions.html#enumerate
+.. _reversed(): https://docs.python.org/zh-cn/3/library/functions.html#reversed
+.. _sorted(): https://docs.python.org/zh-cn/3/library/functions.html#sorted
+.. _TypeError: https://docs.python.org/zh-cn/3/library/exceptions.html#TypeError

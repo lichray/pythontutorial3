@@ -103,8 +103,8 @@ sys``，列表的长度大于等于1；没有给定脚本和参数时，它至�
 
 
 
-.. _-c: https://docs.python.org/3/using/cmdline.html#cmdoption-c
-.. _-i: https://docs.python.org/3/using/cmdline.html#cmdoption-i
-.. _-m: https://docs.python.org/3/using/cmdline.html#cmdoption-m
-.. _if: https://docs.python.org/3/reference/compound_stmts.html#if
-.. _codecs: https://docs.python.org/3/library/codecs.html#module-codecs
+.. _-c: https://docs.python.org/zh-cn/3/using/cmdline.html#cmdoption-c
+.. _-i: https://docs.python.org/zh-cn/3/using/cmdline.html#cmdoption-i
+.. _-m: https://docs.python.org/zh-cn/3/using/cmdline.html#cmdoption-m
+.. _if: https://docs.python.org/zh-cn/3/reference/compound_stmts.html#if
+.. _codecs: https://docs.python.org/zh-cn/3/library/codecs.html#module-codecs

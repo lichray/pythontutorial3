@@ -34,7 +34,7 @@ Python 作用域和命名空间
 
 属性可以是只读过或写的。后一种情况下，可以对属性赋值。你可以这样作： ``modname.the_answer = 42`` 。可写的属性也可以用 `del`_ 语句删除。例如： ``del modname.the_answer`` 会从 ``modname`` 对象中删除 :attr:`the_answer` 属性。 
 
-不同的命名空间在不同的时刻创建，有不同的生存期。包含内置命名的命名空间在 Python 解释器启动时创建，会一直保留，不被删除。模块的全局命名空间在模块定义被读入时创建，通常，模块命名空间也会一直保存到解释器退出。由解释器在最高层调用执行的语句，不管它是从脚本文件中读入还是来自交互式输入，都是 `__main__ <https://docs.python.org/3/library/__main__.html#module-__main__>`_ 模块的一部分，所以它们也拥有自己的命名空间（内置命名也同样被包含在一个模块中，它被称作 `builtins`_ ）。
+不同的命名空间在不同的时刻创建，有不同的生存期。包含内置命名的命名空间在 Python 解释器启动时创建，会一直保留，不被删除。模块的全局命名空间在模块定义被读入时创建，通常，模块命名空间也会一直保存到解释器退出。由解释器在最高层调用执行的语句，不管它是从脚本文件中读入还是来自交互式输入，都是 `__main__ <https://docs.python.org/zh-cn/3/library/__main__.html#module-__main__>`_ 模块的一部分，所以它们也拥有自己的命名空间（内置命名也同样被包含在一个模块中，它被称作 `builtins`_ ）。
 
 当调用函数时，就会为它创建一个局部命名空间，并且在函数返回或抛出一个并没有在函数内部处理的异常时被删除。（实际上，用遗忘来形容到底发生了什么更为贴切。）当然，每个递归调用都有自己的局部命名空间。
 
@@ -509,7 +509,7 @@ Python 同样有限的支持多继承形式。多继承的类定义形如下例:
    for line in open("myfile.txt"):
        print(line, end='')
 
-这种形式的访问清晰、简洁、方便。迭代器的用法在 Python 中普遍而且统一。在后台， `for`_ 语句在容器对象中调用 `iter()`_ 。该函数返回一个定义了 `__next__() <https://docs.python.org/3/library/stdtypes.html#iterator.__next__>`_ 方法的迭代器对象，它在容器中逐一访问元素。没有后续的元素时， `__next__() <https://docs.python.org/3/library/stdtypes.html#iterator.__next__>`_  抛出一个 `StopIteration`_ 异常通知 `for`_ 语句循环结束。你可以是用内建的 `next()`_ 函数调用 `__next__() <https://docs.python.org/3/library/stdtypes.html#iterator.__next__>`_ 方法；以下是其工作原理的示例::
+这种形式的访问清晰、简洁、方便。迭代器的用法在 Python 中普遍而且统一。在后台， `for`_ 语句在容器对象中调用 `iter()`_ 。该函数返回一个定义了 `__next__() <https://docs.python.org/zh-cn/3/library/stdtypes.html#iterator.__next__>`_ 方法的迭代器对象，它在容器中逐一访问元素。没有后续的元素时， `__next__() <https://docs.python.org/zh-cn/3/library/stdtypes.html#iterator.__next__>`_  抛出一个 `StopIteration`_ 异常通知 `for`_ 语句循环结束。你可以是用内建的 `next()`_ 函数调用 `__next__() <https://docs.python.org/zh-cn/3/library/stdtypes.html#iterator.__next__>`_ 方法；以下是其工作原理的示例::
 
    >>> s = 'abc'
    >>> it = iter(s)
@@ -527,7 +527,7 @@ Python 同样有限的支持多继承形式。多继承的类定义形如下例:
        next(it)
    StopIteration
 
-了解了迭代器协议的后台机制，就可以很容易的给自己的类添加迭代器行为。定义一个 `__iter__() <https://docs.python.org/3/reference/datamodel.html#object.__iter__>`_ 方法，使其返回一个带有 `__next__() <https://docs.python.org/3/library/stdtypes.html#iterator.__next__>`_ 方法的对象。如果这个类已经定义了 `__next__() <https://docs.python.org/3/library/stdtypes.html#iterator.__next__>`_ ，那么 `__iter__() <https://docs.python.org/3/reference/datamodel.html#object.__iter__>`_ 只需要返回 ``self``::
+了解了迭代器协议的后台机制，就可以很容易的给自己的类添加迭代器行为。定义一个 `__iter__() <https://docs.python.org/zh-cn/3/reference/datamodel.html#object.__iter__>`_ 方法，使其返回一个带有 `__next__() <https://docs.python.org/zh-cn/3/library/stdtypes.html#iterator.__next__>`_ 方法的对象。如果这个类已经定义了 `__next__() <https://docs.python.org/zh-cn/3/library/stdtypes.html#iterator.__next__>`_ ，那么 `__iter__() <https://docs.python.org/zh-cn/3/reference/datamodel.html#object.__iter__>`_ 只需要返回 ``self``::
 
    class Reverse:
        """Iterator for looping over a sequence backwards."""
@@ -577,7 +577,7 @@ Python 同样有限的支持多继承形式。多继承的类定义形如下例:
    o
    g
 
-前一节中描述了基于类的迭代器，它能作的每一件事生成器也能作到。因为自动创建了 `__iter__() <https://docs.python.org/3/reference/datamodel.html#object.__iter__>`_ 和 `__next__() <https://docs.python.org/3/reference/expressions.html#generator.__next__>`_ 方法，生成器显得如此简洁。 
+前一节中描述了基于类的迭代器，它能作的每一件事生成器也能作到。因为自动创建了 `__iter__() <https://docs.python.org/zh-cn/3/reference/datamodel.html#object.__iter__>`_ 和 `__next__() <https://docs.python.org/zh-cn/3/reference/expressions.html#generator.__next__>`_ 方法，生成器显得如此简洁。 
 
 另一个关键的功能在于两次执行之间，局部变量和执行状态都自动的保存下来。这使函数很容易写，而且比使用 ``self.index`` 和 ``self.data`` 之类的方式更清晰。 
 
@@ -621,30 +621,30 @@ Python 同样有限的支持多继承形式。多继承的类定义形如下例:
 
 
 
-.. _abs(): https://docs.python.org/3/library/functions.html#abs
-.. _del: https://docs.python.org/3/reference/simple_stmts.html#del
-.. _builtins: https://docs.python.org/3/library/builtins.html#module-builtins
-.. _nonlocal: https://docs.python.org/3/reference/simple_stmts.html#nonlocal
-.. _global: https://docs.python.org/3/reference/simple_stmts.html#global
-.. _import: https://docs.python.org/3/reference/simple_stmts.html#import
-.. _def: https://docs.python.org/3/reference/compound_stmts.html#def
-.. _if: https://docs.python.org/3/reference/compound_stmts.html#if
-.. _可变: https://docs.python.org/3/glossary.html#term-mutable
-.. _isinstance(): https://docs.python.org/3/library/functions.html#isinstance
-.. _int: https://docs.python.org/3/library/functions.html#int
-.. _bool: https://docs.python.org/3/library/functions.html#bool
-.. _float: https://docs.python.org/3/library/functions.html#float
-.. _issubclass(): https://docs.python.org/3/library/functions.html#issubclass
-.. _super(): https://docs.python.org/3/library/functions.html#super
-.. _object: https://docs.python.org/3/library/functions.html#object
-.. _raise: https://docs.python.org/3/reference/simple_stmts.html#raise
-.. _type: https://docs.python.org/3/library/functions.html#type
-.. _except: https://docs.python.org/3/reference/compound_stmts.html#except
-.. _str(): https://docs.python.org/3/library/stdtypes.html#str
-.. _for: https://docs.python.org/3/reference/compound_stmts.html#for
-.. _iter(): https://docs.python.org/3/library/functions.html#iter
-.. _StopIteration: https://docs.python.org/3/library/exceptions.html#StopIteration
-.. _next(): https://docs.python.org/3/library/functions.html#next
-.. _Generator: https://docs.python.org/3/glossary.html#term-generator
-.. _yield: https://docs.python.org/3/reference/simple_stmts.html#yield
-.. _StopIteration: https://docs.python.org/3/library/exceptions.html#StopIteration
+.. _abs(): https://docs.python.org/zh-cn/3/library/functions.html#abs
+.. _del: https://docs.python.org/zh-cn/3/reference/simple_stmts.html#del
+.. _builtins: https://docs.python.org/zh-cn/3/library/builtins.html#module-builtins
+.. _nonlocal: https://docs.python.org/zh-cn/3/reference/simple_stmts.html#nonlocal
+.. _global: https://docs.python.org/zh-cn/3/reference/simple_stmts.html#global
+.. _import: https://docs.python.org/zh-cn/3/reference/simple_stmts.html#import
+.. _def: https://docs.python.org/zh-cn/3/reference/compound_stmts.html#def
+.. _if: https://docs.python.org/zh-cn/3/reference/compound_stmts.html#if
+.. _可变: https://docs.python.org/zh-cn/3/glossary.html#term-mutable
+.. _isinstance(): https://docs.python.org/zh-cn/3/library/functions.html#isinstance
+.. _int: https://docs.python.org/zh-cn/3/library/functions.html#int
+.. _bool: https://docs.python.org/zh-cn/3/library/functions.html#bool
+.. _float: https://docs.python.org/zh-cn/3/library/functions.html#float
+.. _issubclass(): https://docs.python.org/zh-cn/3/library/functions.html#issubclass
+.. _super(): https://docs.python.org/zh-cn/3/library/functions.html#super
+.. _object: https://docs.python.org/zh-cn/3/library/functions.html#object
+.. _raise: https://docs.python.org/zh-cn/3/reference/simple_stmts.html#raise
+.. _type: https://docs.python.org/zh-cn/3/library/functions.html#type
+.. _except: https://docs.python.org/zh-cn/3/reference/compound_stmts.html#except
+.. _str(): https://docs.python.org/zh-cn/3/library/stdtypes.html#str
+.. _for: https://docs.python.org/zh-cn/3/reference/compound_stmts.html#for
+.. _iter(): https://docs.python.org/zh-cn/3/library/functions.html#iter
+.. _StopIteration: https://docs.python.org/zh-cn/3/library/exceptions.html#StopIteration
+.. _next(): https://docs.python.org/zh-cn/3/library/functions.html#next
+.. _Generator: https://docs.python.org/zh-cn/3/glossary.html#term-generator
+.. _yield: https://docs.python.org/zh-cn/3/reference/simple_stmts.html#yield
+.. _StopIteration: https://docs.python.org/zh-cn/3/library/exceptions.html#StopIteration

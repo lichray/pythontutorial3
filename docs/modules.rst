@@ -376,7 +376,7 @@ Python 带有一个标准模块库，并发布有独立的文档，名为 Python
 多重目录中的包
 --------------------------------
 
-包支持一个更为特殊的特性， `__path__ <https://docs.python.org/3/reference/import.html#__path__>`_。 在包的 :file:`__init__.py` 文件代码执行之前，该变量初始化一个目录名列表。该变量可以修改，它作用于包中的子包和模块的搜索功能。 
+包支持一个更为特殊的特性， `__path__ <https://docs.python.org/zh-cn/3/reference/import.html#__path__>`_。 在包的 :file:`__init__.py` 文件代码执行之前，该变量初始化一个目录名列表。该变量可以修改，它作用于包中的子包和模块的搜索功能。 
 
 这个功能可以用于扩展包中的模块集，不过它不常用。
 
@@ -387,15 +387,15 @@ Python 带有一个标准模块库，并发布有独立的文档，名为 Python
 
 
 
-.. _import: https://docs.python.org/3/reference/simple_stmts.html#import
-.. _imp.reload(): https://docs.python.org/3/library/imp.html#imp.reload
-.. _sys.path: https://docs.python.org/3/library/sys.html#sys.path
-.. _PYTHONPATH: https://docs.python.org/3/using/cmdline.html#envvar-PYTHONPATH
-.. _-O: https://docs.python.org/3/using/cmdline.html#cmdoption-O
-.. _-OO: https://docs.python.org/3/using/cmdline.html#cmdoption-OO
-.. _compileall: https://docs.python.org/3/library/compileall.html#module-compileall
-.. _winreg: https://docs.python.org/3/library/winreg.html#module-winreg
-.. _sys: https://docs.python.org/3/library/sys.html#module-sys
-.. _dir(): https://docs.python.org/3/library/functions.html#dir
-.. _builtins: https://docs.python.org/3/library/builtins.html#module-builtins
-.. _ImportError: https://docs.python.org/3/library/exceptions.html#ImportError
+.. _import: https://docs.python.org/zh-cn/3/reference/simple_stmts.html#import
+.. _imp.reload(): https://docs.python.org/zh-cn/3/library/imp.html#imp.reload
+.. _sys.path: https://docs.python.org/zh-cn/3/library/sys.html#sys.path
+.. _PYTHONPATH: https://docs.python.org/zh-cn/3/using/cmdline.html#envvar-PYTHONPATH
+.. _-O: https://docs.python.org/zh-cn/3/using/cmdline.html#cmdoption-O
+.. _-OO: https://docs.python.org/zh-cn/3/using/cmdline.html#cmdoption-OO
+.. _compileall: https://docs.python.org/zh-cn/3/library/compileall.html#module-compileall
+.. _winreg: https://docs.python.org/zh-cn/3/library/winreg.html#module-winreg
+.. _sys: https://docs.python.org/zh-cn/3/library/sys.html#module-sys
+.. _dir(): https://docs.python.org/zh-cn/3/library/functions.html#dir
+.. _builtins: https://docs.python.org/zh-cn/3/library/builtins.html#module-builtins
+.. _ImportError: https://docs.python.org/zh-cn/3/library/exceptions.html#ImportError

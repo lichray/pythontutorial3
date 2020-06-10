@@ -44,8 +44,8 @@ Python 是一门简单易学且功能强大的编程语言。它拥有高效的�
    appendix.rst
 
 
-.. _Python 参考文档: https://docs.python.org/3/library/index.html#library-index
-.. _Python 参考手册: https://docs.python.org/3/reference/index.html#reference-index
-.. _Python 解释器扩展和集成章节: https://docs.python.org/3/extending/index.html#extending-index
-.. _C API 参考手册: https://docs.python.org/3/c-api/index.html#c-api-index
-.. _词汇表: https://docs.python.org/3/glossary.html#glossary
+.. _Python 参考文档: https://docs.python.org/zh-cn/3/library/index.html#library-index
+.. _Python 参考手册: https://docs.python.org/zh-cn/3/reference/index.html#reference-index
+.. _Python 解释器扩展和集成章节: https://docs.python.org/zh-cn/3/extending/index.html#extending-index
+.. _C API 参考手册: https://docs.python.org/zh-cn/3/c-api/index.html#c-api-index
+.. _词汇表: https://docs.python.org/zh-cn/3/glossary.html#glossary

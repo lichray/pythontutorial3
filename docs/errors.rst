@@ -117,7 +117,7 @@
 
 发生异常时，可能会有一个附属值，作为异常的 *参数* 存在。这个参数是否存在、是什么类型，依赖于异常的类型。 
 
-在异常名（列表）之后，也可以为 except 子句指定一个变量。这个变量绑定于一个异常实例，它存储在 ``instance.args`` 的参数中。为了方便起见，异常实例定义了 `__str__() <https://docs.python.org/3/reference/datamodel.html#object.__str__>`_ ，这样就可以直接访问过打印参数而不必引用 ``.args``。这种做法不受鼓励。相反，更好的做法是给异常传递一个参数（如果要传递多个参数，可以传递一个元组），把它绑定到 message 属性。一旦异常发生，它会在抛出前绑定所有指定的属性。 ::
+在异常名（列表）之后，也可以为 except 子句指定一个变量。这个变量绑定于一个异常实例，它存储在 ``instance.args`` 的参数中。为了方便起见，异常实例定义了 `__str__() <https://docs.python.org/zh-cn/3/reference/datamodel.html#object.__str__>`_ ，这样就可以直接访问过打印参数而不必引用 ``.args``。这种做法不受鼓励。相反，更好的做法是给异常传递一个参数（如果要传递多个参数，可以传递一个元组），把它绑定到 message 属性。一旦异常发生，它会在抛出前绑定所有指定的属性。 ::
 
    >>> try:
    ...    raise Exception('spam', 'eggs')
@@ -203,7 +203,7 @@
      File "<stdin>", line 1, in ?
    __main__.MyError: 'oops!'
 
-在这个例子中，`Exception`_ 默认的 `__init__() <https://docs.python.org/3/reference/datamodel.html#object.__init__>`_ 被覆盖。新的方式简单的创建 *value* 属性。这就替换了原来创建 *args* 属性的方式。 
+在这个例子中，`Exception`_ 默认的 `__init__() <https://docs.python.org/zh-cn/3/reference/datamodel.html#object.__init__>`_ 被覆盖。新的方式简单的创建 *value* 属性。这就替换了原来创建 *args* 属性的方式。 
 
 异常类中可以定义任何其它类中可以定义的东西，但是通常为了保持简单，只在其中加入几个属性信息，以供异常处理句柄提取。如果一个新创建的模块中需要抛出几种不同的错误时，一个通常的作法是为该模块定义一个异常基类，然后针对不同的错误类型派生出对应的异常子类::
 
@@ -310,19 +310,19 @@
 
 
 
-.. _print(): https://docs.python.org/3/library/functions.html#print
-.. _ZeroDivisionError: https://docs.python.org/3/library/exceptions.html#ZeroDivisionError
-.. _NameError: https://docs.python.org/3/library/exceptions.html#NameError
-.. _TypeError: https://docs.python.org/3/library/exceptions.html#TypeError
-.. _内置的异常: https://docs.python.org/3/library/exceptions.html#bltin-exceptions
-.. _KeyboardInterrupt: https://docs.python.org/3/library/exceptions.html#KeyboardInterrupt
-.. _try: https://docs.python.org/3/reference/compound_stmts.html#try
-.. _except: https://docs.python.org/3/reference/compound_stmts.html#except
-.. _else: https://docs.python.org/3/reference/compound_stmts.html#else
-.. _raise: https://docs.python.org/3/reference/simple_stmts.html#raise
-.. _Exception: https://docs.python.org/3/library/exceptions.html#Exception
-.. _finally: https://docs.python.org/3/reference/compound_stmts.html#finally
-.. _break: https://docs.python.org/3/reference/simple_stmts.html#break
-.. _continue: https://docs.python.org/3/reference/simple_stmts.html#continue
-.. _return: https://docs.python.org/3/reference/simple_stmts.html#return
-.. _with: https://docs.python.org/3/reference/compound_stmts.html#with
+.. _print(): https://docs.python.org/zh-cn/3/library/functions.html#print
+.. _ZeroDivisionError: https://docs.python.org/zh-cn/3/library/exceptions.html#ZeroDivisionError
+.. _NameError: https://docs.python.org/zh-cn/3/library/exceptions.html#NameError
+.. _TypeError: https://docs.python.org/zh-cn/3/library/exceptions.html#TypeError
+.. _内置的异常: https://docs.python.org/zh-cn/3/library/exceptions.html#bltin-exceptions
+.. _KeyboardInterrupt: https://docs.python.org/zh-cn/3/library/exceptions.html#KeyboardInterrupt
+.. _try: https://docs.python.org/zh-cn/3/reference/compound_stmts.html#try
+.. _except: https://docs.python.org/zh-cn/3/reference/compound_stmts.html#except
+.. _else: https://docs.python.org/zh-cn/3/reference/compound_stmts.html#else
+.. _raise: https://docs.python.org/zh-cn/3/reference/simple_stmts.html#raise
+.. _Exception: https://docs.python.org/zh-cn/3/library/exceptions.html#Exception
+.. _finally: https://docs.python.org/zh-cn/3/reference/compound_stmts.html#finally
+.. _break: https://docs.python.org/zh-cn/3/reference/simple_stmts.html#break
+.. _continue: https://docs.python.org/zh-cn/3/reference/simple_stmts.html#continue
+.. _return: https://docs.python.org/zh-cn/3/reference/simple_stmts.html#return
+.. _with: https://docs.python.org/zh-cn/3/reference/compound_stmts.html#with

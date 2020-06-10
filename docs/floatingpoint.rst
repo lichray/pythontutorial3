@@ -53,7 +53,7 @@
 
 有趣地是，存在许多不同的十进制数共享着相同的近似二进制小数。例如，数字 ``0.1`` 和 ``0.10000000000000001`` 以及 ``0.1000000000000000055511151231257827021181583404541015625`` 都是 ``3602879701896397 / 2 ** 55`` 的近似值。因为所有这些十进制数共享相同的近似值，在保持恒等式 ``eval(repr(x)) == x`` 的同时，显示的可能是它们中的任何一个。
 
-历史上，Python 提示符和内置的 `repr() <https://docs.python.org/3/library/functions.html#repr>`_ 函数选择一个 17 位精度的数字，``0.10000000000000001``。从 Python 3.1 开始，Python（在大多数系统上）能够从这些数字当中选择最短的一个并简单地显示 ``0.1``。
+历史上，Python 提示符和内置的 `repr() <https://docs.python.org/zh-cn/3/library/functions.html#repr>`_ 函数选择一个 17 位精度的数字，``0.10000000000000001``。从 Python 3.1 开始，Python（在大多数系统上）能够从这些数字当中选择最短的一个并简单地显示 ``0.1``。
 
 注意，这是二进制浮点数的自然性质：它不是 Python 中的一个 bug，也不是你的代码中的 bug。你会看到所有支持硬件浮点数算法的语言都会有这个现象（尽管有些语言默认情况下或者在所有输出模式下可能不会 *显示* 出差异）。
 
@@ -75,12 +75,12 @@
    >>> .1 + .1 + .1 == .3
    False
 
-另外，既然 0.1 不能更接近 1/10 的精确值而且 0.3 不能更接近 3/10 的精确值，使用 `round() <https://docs.python.org/3/library/functions.html#round>`_ 函数提前舍入也没有帮助::
+另外，既然 0.1 不能更接近 1/10 的精确值而且 0.3 不能更接近 3/10 的精确值，使用 `round() <https://docs.python.org/zh-cn/3/library/functions.html#round>`_ 函数提前舍入也没有帮助::
 
    >>> round(.1, 1) + round(.1, 1) + round(.1, 1) == round(.3, 1)
    False
 
-虽然这些数字不可能再更接近它们想要的精确值，`round() <https://docs.python.org/3/library/functions.html#round>`_  函数可以用于在计算之后进行舍入，这样的话不精确的结果就可以和另外一个相比较了::
+虽然这些数字不可能再更接近它们想要的精确值，`round() <https://docs.python.org/zh-cn/3/library/functions.html#round>`_  函数可以用于在计算之后进行舍入，这样的话不精确的结果就可以和另外一个相比较了::
 
     >>> round(.1 + .1 + .1, 10) == round(.3, 10)
     True
@@ -89,15 +89,15 @@
 
 最后我要说，“没有简单的答案”。也不要过分小心浮点数！Python 浮点数计算中的误差源之于浮点数硬件，大多数机器上每次计算误差不超过 2\*\*53 分之一。对于大多数任务这已经足够了，但是你要在心中记住这不是十进制算法，每个浮点数计算可能会带来一个新的舍入错误。
 
-虽然确实有问题存在，对于大多数平常的浮点数运算，你只要简单地将最终显示的结果舍入到你期望的十进制位数，你就会得到你期望的最终结果。`str() <https://docs.python.org/3/library/stdtypes.html#str>`_ 通常已经足够用了，对于更好的控制可以参阅 `格式化字符串语法 <https://docs.python.org/3/library/string.html#formatstrings>`_ 中 `str.format() <https://docs.python.org/3/library/stdtypes.html#str.format>`_ 方法的格式说明符。
+虽然确实有问题存在，对于大多数平常的浮点数运算，你只要简单地将最终显示的结果舍入到你期望的十进制位数，你就会得到你期望的最终结果。`str() <https://docs.python.org/zh-cn/3/library/stdtypes.html#str>`_ 通常已经足够用了，对于更好的控制可以参阅 `格式化字符串语法 <https://docs.python.org/zh-cn/3/library/string.html#formatstrings>`_ 中 `str.format() <https://docs.python.org/zh-cn/3/library/stdtypes.html#str.format>`_ 方法的格式说明符。
 
-对于需要精确十进制表示的情况，可以尝试使用 `decimal <https://docs.python.org/3/library/decimal.html#module-decimal>`_ 模块，它实现的十进制运算适合会计方面的应用和高精度要求的应用。
+对于需要精确十进制表示的情况，可以尝试使用 `decimal <https://docs.python.org/zh-cn/3/library/decimal.html#module-decimal>`_ 模块，它实现的十进制运算适合会计方面的应用和高精度要求的应用。
 
-`fractions <https://docs.python.org/3/library/fractions.html#module-fractions>`_ 模块支持另外一种形式的运算，它实现的运算基于有理数（因此像1/3这样的数字可以精确地表示）。
+`fractions <https://docs.python.org/zh-cn/3/library/fractions.html#module-fractions>`_ 模块支持另外一种形式的运算，它实现的运算基于有理数（因此像1/3这样的数字可以精确地表示）。
 
 如果你是浮点数操作的重度使用者，你应该看一下由 SciPy 项目提供的 Numerical Python 包和其它用于数学和统计学的包。参看 <http://scipy.org>。
 
-当你真的 *真* 想要知道浮点数精确值的时候，Python 提供这样的工具可以帮助你。`float.as_integer_ratio() <https://docs.python.org/3/library/stdtypes.html#float.as_integer_ratio>`_ 方法以分数的形式表示一个浮点数的值::
+当你真的 *真* 想要知道浮点数精确值的时候，Python 提供这样的工具可以帮助你。`float.as_integer_ratio() <https://docs.python.org/zh-cn/3/library/stdtypes.html#float.as_integer_ratio>`_ 方法以分数的形式表示一个浮点数的值::
 
    >>> x = 3.14159
    >>> x.as_integer_ratio()
@@ -108,7 +108,7 @@
     >>> x == 3537115888337719 / 1125899906842624
     True
 
-`float.hex() <https://docs.python.org/3/library/stdtypes.html#float.hex>`_ 方法以十六进制表示浮点数，给出的同样是计算机存储的精确值::
+`float.hex() <https://docs.python.org/zh-cn/3/library/stdtypes.html#float.hex>`_ 方法以十六进制表示浮点数，给出的同样是计算机存储的精确值::
 
    >>> x.hex()
    '0x1.921f9f01b866ep+1'
@@ -120,7 +120,7 @@
 
 因为可以精确表示，所以可以用在不同版本的 Python（与平台相关）之间可靠地移植数据以及与支持同样格式的其它语言（例如 Java 和 C99）交换数据。
 
-另外一个有用的工具是 `math.fsum() <https://docs.python.org/3/library/math.html#math.fsum>`_ 函数，它帮助求和过程中减少精度的损失。当数值在不停地相加的时候，它会跟踪“丢弃的数字”。这可以给总体的准确度带来不同，以至于错误不会累积到影响最终结果的点::
+另外一个有用的工具是 `math.fsum() <https://docs.python.org/zh-cn/3/library/math.html#math.fsum>`_ 函数，它帮助求和过程中减少精度的损失。当数值在不停地相加的时候，它会跟踪“丢弃的数字”。这可以给总体的准确度带来不同，以至于错误不会累积到影响最终结果的点::
 
    >>> sum([0.1] * 10) == 1.0
    False
@@ -186,7 +186,7 @@
    >>> format(0.1, '.17f')
    '0.10000000000000001'
 
-`fractions <https://docs.python.org/3/library/fractions.html#module-fractions>`_ 和 `decimal <https://docs.python.org/3/library/decimal.html#module-decimal>`_ 模块使得这些计算很简单::
+`fractions <https://docs.python.org/zh-cn/3/library/fractions.html#module-fractions>`_ 和 `decimal <https://docs.python.org/zh-cn/3/library/decimal.html#module-decimal>`_ 模块使得这些计算很简单::
 
    >>> from decimal import Decimal
    >>> from fractions import Fraction

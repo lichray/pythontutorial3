@@ -32,6 +32,8 @@ release = '3.6.3'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinx.ext.intersphinx',
+    'sphinx.ext.doctest',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -46,6 +48,9 @@ master_doc = 'index'
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
 language = 'zh_CN'
+
+# Refer to the Chinese version of Python standard library.
+intersphinx_mapping = {'python': ('https://docs.python.org/zh-cn/3/', None)}
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.

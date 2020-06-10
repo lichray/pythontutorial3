@@ -596,26 +596,26 @@ annotations）是定义在参数名称的冒号后面，紧随着一个用来表
 
 
 
-.. _while: https://docs.python.org/3/reference/compound_stmts.html#while
-.. _if: https://docs.python.org/3/reference/compound_stmts.html#if
-.. _elif: https://docs.python.org/3/reference/compound_stmts.html#elif
-.. _else: https://docs.python.org/3/reference/compound_stmts.html#else
-.. _for: https://docs.python.org/3/reference/compound_stmts.html#for
-.. _range(): https://docs.python.org/3/library/stdtypes.html#range 
-.. _len(): https://docs.python.org/3/library/functions.html#len
-.. _enumerate(): https://docs.python.org/3/library/functions.html#enumerate
-.. _list(): https://docs.python.org/3/library/stdtypes.html#list
-.. _break: https://docs.python.org/3/reference/simple_stmts.html#break
-.. _continue: https://docs.python.org/3/reference/simple_stmts.html#continue
-.. _try: https://docs.python.org/3/reference/compound_stmts.html#try
-.. _pass: https://docs.python.org/3/reference/simple_stmts.html#pass
-.. _def: https://docs.python.org/3/reference/compound_stmts.html#def
-.. _global: https://docs.python.org/3/reference/simple_stmts.html#global
-.. _return: https://docs.python.org/3/reference/simple_stmts.html#return
-.. _print(): https://docs.python.org/3/library/functions.html#print
-.. _in: https://docs.python.org/3/reference/expressions.html#in
-.. _关键字参数 <keyword argument>: https://docs.python.org/3/glossary.html#term-keyword-argument
-.. _Mapping Types — dict: https://docs.python.org/3/library/stdtypes.html#typesmapping
-.. _lambda: https://docs.python.org/3/reference/expressions.html#lambda
+.. _while: https://docs.python.org/zh-cn/3/reference/compound_stmts.html#while
+.. _if: https://docs.python.org/zh-cn/3/reference/compound_stmts.html#if
+.. _elif: https://docs.python.org/zh-cn/3/reference/compound_stmts.html#elif
+.. _else: https://docs.python.org/zh-cn/3/reference/compound_stmts.html#else
+.. _for: https://docs.python.org/zh-cn/3/reference/compound_stmts.html#for
+.. _range(): https://docs.python.org/zh-cn/3/library/stdtypes.html#range 
+.. _len(): https://docs.python.org/zh-cn/3/library/functions.html#len
+.. _enumerate(): https://docs.python.org/zh-cn/3/library/functions.html#enumerate
+.. _list(): https://docs.python.org/zh-cn/3/library/stdtypes.html#list
+.. _break: https://docs.python.org/zh-cn/3/reference/simple_stmts.html#break
+.. _continue: https://docs.python.org/zh-cn/3/reference/simple_stmts.html#continue
+.. _try: https://docs.python.org/zh-cn/3/reference/compound_stmts.html#try
+.. _pass: https://docs.python.org/zh-cn/3/reference/simple_stmts.html#pass
+.. _def: https://docs.python.org/zh-cn/3/reference/compound_stmts.html#def
+.. _global: https://docs.python.org/zh-cn/3/reference/simple_stmts.html#global
+.. _return: https://docs.python.org/zh-cn/3/reference/simple_stmts.html#return
+.. _print(): https://docs.python.org/zh-cn/3/library/functions.html#print
+.. _in: https://docs.python.org/zh-cn/3/reference/expressions.html#in
+.. _关键字参数 <keyword argument>: https://docs.python.org/zh-cn/3/glossary.html#term-keyword-argument
+.. _Mapping Types — dict: https://docs.python.org/zh-cn/3/library/stdtypes.html#typesmapping
+.. _lambda: https://docs.python.org/zh-cn/3/reference/expressions.html#lambda
 .. _PEP 8: http://www.python.org/dev/peps/pep-0008
-.. _函数注解: https://docs.python.org/3/reference/compound_stmts.html#function
+.. _函数注解: https://docs.python.org/zh-cn/3/reference/compound_stmts.html#function

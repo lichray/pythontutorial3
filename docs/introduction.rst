@@ -439,22 +439,22 @@ Python 有几个 *复合* 数据类型，用于表示其它的值。最通用的
 .. [#] 与其它语言不同，特殊字符例如 ``\n`` 在单引号(``'...'``)和双引号(``"..."``)中具有相同的含义。两者唯一的区别是在单引号中，你不需要转义 ``"`` （但你必须转义 ``\'`` )，反之亦然。
 
 
-.. _int: https://docs.python.org/3/library/functions.html#int
-.. _float: https://docs.python.org/3/library/functions.html#float
-.. _floor 除法: https://docs.python.org/3/glossary.html#term-floor-division
-.. _Decimal: https://docs.python.org/3/library/decimal.html#decimal.Decimal
-.. _Fraction: https://docs.python.org/3/library/fractions.html#fractions.Fraction
-.. _复数: https://docs.python.org/3/library/stdtypes.html#typesnumeric
-.. _print(): https://docs.python.org/3/library/functions.html#print
-.. _不可变的: https://docs.python.org/3/glossary.html#term-immutable
-.. _len(): https://docs.python.org/3/library/functions.html#len
-.. _Text Sequence Type — str: https://docs.python.org/3/library/stdtypes.html#textseq
-.. _String Methods: https://docs.python.org/3/library/stdtypes.html#string-methods
-.. _String Formatting: https://docs.python.org/3/library/string.html#string-formatting
-.. _String Formatting Operations: https://docs.python.org/3/library/stdtypes.html#old-string-formatting
-.. _str.format(): https://docs.python.org/3/library/stdtypes.html#str.format
-.. _序列: https://docs.python.org/3/glossary.html#term-sequence
-.. _可变的: https://docs.python.org/3/glossary.html#term-mutable
-.. _while: https://docs.python.org/3/reference/compound_stmts.html#while
+.. _int: https://docs.python.org/zh-cn/3/library/functions.html#int
+.. _float: https://docs.python.org/zh-cn/3/library/functions.html#float
+.. _floor 除法: https://docs.python.org/zh-cn/3/glossary.html#term-floor-division
+.. _Decimal: https://docs.python.org/zh-cn/3/library/decimal.html#decimal.Decimal
+.. _Fraction: https://docs.python.org/zh-cn/3/library/fractions.html#fractions.Fraction
+.. _复数: https://docs.python.org/zh-cn/3/library/stdtypes.html#typesnumeric
+.. _print(): https://docs.python.org/zh-cn/3/library/functions.html#print
+.. _不可变的: https://docs.python.org/zh-cn/3/glossary.html#term-immutable
+.. _len(): https://docs.python.org/zh-cn/3/library/functions.html#len
+.. _Text Sequence Type — str: https://docs.python.org/zh-cn/3/library/stdtypes.html#textseq
+.. _String Methods: https://docs.python.org/zh-cn/3/library/stdtypes.html#string-methods
+.. _String Formatting: https://docs.python.org/zh-cn/3/library/string.html#string-formatting
+.. _String Formatting Operations: https://docs.python.org/zh-cn/3/library/stdtypes.html#old-string-formatting
+.. _str.format(): https://docs.python.org/zh-cn/3/library/stdtypes.html#str.format
+.. _序列: https://docs.python.org/zh-cn/3/glossary.html#term-sequence
+.. _可变的: https://docs.python.org/zh-cn/3/glossary.html#term-mutable
+.. _while: https://docs.python.org/zh-cn/3/reference/compound_stmts.html#while
 
 

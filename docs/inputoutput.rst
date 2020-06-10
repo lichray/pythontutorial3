@@ -312,30 +312,30 @@
    与 :ref:`JSON <tut-json>` 不同，*pickle* 是一个协议，它允许任意复杂的 Python 对象的序列化。因此，它只能用于 Python 而不能用来与其他语言编写的应用程序进行通信。默认情况下它也是不安全的：如果数据由熟练的攻击者精心设计， 反序列化来自一个不受信任源的 pickle 数据可以执行任意代码。
 
 
-.. _print(): https://docs.python.org/3/library/functions.html#print
-.. _str.format(): https://docs.python.org/3/library/stdtypes.html#str.format
-.. _string: https://docs.python.org/3/library/string.html#module-string
-.. _Template: https://docs.python.org/3/library/string.html#string.Template
-.. _repr(): https://docs.python.org/3/library/functions.html#repr
-.. _str(): https://docs.python.org/3/library/stdtypes.html#str
-.. _SyntaxError: https://docs.python.org/3/library/exceptions.html#SyntaxError
-.. _str.rjust(): https://docs.python.org/3/library/stdtypes.html#str.rjust
-.. _str.ljust(): https://docs.python.org/3/library/stdtypes.html#str.ljust
-.. _str.center(): https://docs.python.org/3/library/stdtypes.html#str.center
-.. _str.zfill(): https://docs.python.org/3/library/stdtypes.html#str.zfill
-.. _ascii(): https://docs.python.org/3/library/functions.html#ascii
-.. _vars(): https://docs.python.org/3/library/functions.html#vars
-.. _格式字符串语法: https://docs.python.org/3/library/string.html#formatstrings
-.. _printf-style String Formatting: https://docs.python.org/3/library/stdtypes.html#old-string-formatting
-.. _open(): https://docs.python.org/3/library/functions.html#open
-.. _文件对象: https://docs.python.org/3/glossary.html#term-file-object
-.. _with: https://docs.python.org/3/reference/compound_stmts.html#with
-.. _try: https://docs.python.org/3/reference/compound_stmts.html#try
-.. _finally: https://docs.python.org/3/reference/compound_stmts.html#finally
-.. _json: https://docs.python.org/3/library/json.html#module-json
-.. _int(): https://docs.python.org/3/library/functions.html#int
+.. _print(): https://docs.python.org/zh-cn/3/library/functions.html#print
+.. _str.format(): https://docs.python.org/zh-cn/3/library/stdtypes.html#str.format
+.. _string: https://docs.python.org/zh-cn/3/library/string.html#module-string
+.. _Template: https://docs.python.org/zh-cn/3/library/string.html#string.Template
+.. _repr(): https://docs.python.org/zh-cn/3/library/functions.html#repr
+.. _str(): https://docs.python.org/zh-cn/3/library/stdtypes.html#str
+.. _SyntaxError: https://docs.python.org/zh-cn/3/library/exceptions.html#SyntaxError
+.. _str.rjust(): https://docs.python.org/zh-cn/3/library/stdtypes.html#str.rjust
+.. _str.ljust(): https://docs.python.org/zh-cn/3/library/stdtypes.html#str.ljust
+.. _str.center(): https://docs.python.org/zh-cn/3/library/stdtypes.html#str.center
+.. _str.zfill(): https://docs.python.org/zh-cn/3/library/stdtypes.html#str.zfill
+.. _ascii(): https://docs.python.org/zh-cn/3/library/functions.html#ascii
+.. _vars(): https://docs.python.org/zh-cn/3/library/functions.html#vars
+.. _格式字符串语法: https://docs.python.org/zh-cn/3/library/string.html#formatstrings
+.. _printf-style String Formatting: https://docs.python.org/zh-cn/3/library/stdtypes.html#old-string-formatting
+.. _open(): https://docs.python.org/zh-cn/3/library/functions.html#open
+.. _文件对象: https://docs.python.org/zh-cn/3/glossary.html#term-file-object
+.. _with: https://docs.python.org/zh-cn/3/reference/compound_stmts.html#with
+.. _try: https://docs.python.org/zh-cn/3/reference/compound_stmts.html#try
+.. _finally: https://docs.python.org/zh-cn/3/reference/compound_stmts.html#finally
+.. _json: https://docs.python.org/zh-cn/3/library/json.html#module-json
+.. _int(): https://docs.python.org/zh-cn/3/library/functions.html#int
 .. _JSON（JavaScript Object Notation）: http://json.org/
-.. _dumps(): https://docs.python.org/3/library/json.html#json.dumps
-.. _dump(): https://docs.python.org/3/library/json.html#json.dump
-.. _pickle: https://docs.python.org/3/library/pickle.html#module-pickle
+.. _dumps(): https://docs.python.org/zh-cn/3/library/json.html#json.dumps
+.. _dump(): https://docs.python.org/zh-cn/3/library/json.html#json.dump
+.. _pickle: https://docs.python.org/zh-cn/3/library/pickle.html#module-pickle
 
