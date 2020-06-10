@@ -20,10 +20,10 @@
 project = 'Python tutorial'
 copyright = '2020, D.D'
 author = 'D.D'
-version = '3.6.3'
+version = '3.8.3'
 
 # The full version, including alpha/beta/rc tags
-release = '3.6.3'
+release = '3.8.3'
 
 
 # -- General configuration ---------------------------------------------------
@@ -33,6 +33,7 @@ release = '3.6.3'
 # ones.
 extensions = [
     'sphinx.ext.intersphinx',
+    'sphinx.ext.doctest',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
