@@ -1,45 +1,56 @@
 .. _tut-morecontrol:
 
 ***********************
-深入 Python 流程控制
+More Control Flow Tools
 ***********************
 
-除了前面介绍的 `while`_ 语句，Python 还从其它语言借鉴了一些流程控制功能，并有所改变。
+Besides the :keyword:`while` statement just introduced, Python uses the usual
+flow control statements known from other languages, with some twists.
 
 
 .. _tut-if:
 
-`if`_ 语句
-========================
+:keyword:`!if` Statements
+=========================
 
-也许最有名的是 `if`_ 语句。例如::
+Perhaps the most well-known statement type is the :keyword:`if` statement.  For
+example::
 
    >>> x = int(input("Please enter an integer: "))
    Please enter an integer: 42
    >>> if x < 0:
-   ...      x = 0
-   ...      print('Negative changed to zero')
+   ...     x = 0
+   ...     print('Negative changed to zero')
    ... elif x == 0:
-   ...      print('Zero')
+   ...     print('Zero')
    ... elif x == 1:
-   ...      print('Single')
+   ...     print('Single')
    ... else:
-   ...      print('More')
+   ...     print('More')
    ...
    More
 
-可能会有零到多个 `elif`_ 部分，`else`_ 是可选的。关键字 '`elif`_' 是 ’else if’ 的缩写，这个可以有效地避免过深的缩进。`if`_ ... `elif`_ ... `elif`_ ... 序列用于替代其它语言中的 ``switch`` 或 ``case`` 语句。
+There can be zero or more :keyword:`elif` parts, and the :keyword:`else` part is
+optional.  The keyword ':keyword:`!elif`' is short for 'else if', and is useful
+to avoid excessive indentation.  An  :keyword:`!if` ... :keyword:`!elif` ...
+:keyword:`!elif` ... sequence is a substitute for the ``switch`` or
+``case`` statements found in other languages.
 
 
 .. _tut-for:
 
-`for`_ 语句
-=========================
+:keyword:`!for` Statements
+==========================
 
 .. index::
    statement: for
 
-Python 中的 `for`_ 语句和 C 或 Pascal 中的略有不同。通常的循环可能会依据一个等差数值步进过程（如 Pascal），或由用户来定义迭代步骤和中止条件（如 C ），Python 的 `for`_  语句依据任意序列（链表或字符串）中的子项，按它们在序列中的顺序来进行迭代。例如（没有暗指）：
+The :keyword:`for` statement in Python differs a bit from what you may be used
+to in C or Pascal.  Rather than always iterating over an arithmetic progression
+of numbers (like in Pascal), or giving the user the ability to define both the
+iteration step and halting condition (as C), Python's :keyword:`!for` statement
+iterates over the items of any sequence (a list or a string), in the order that
+they appear in the sequence.  For example (no pun intended):
 
 .. One suggestion was to give a real C example here, but that may only serve to
    confuse non-C programmers.
@@ -55,23 +66,29 @@ Python 中的 `for`_ 语句和 C 或 Pascal 中的略有不同。通常的循环
    window 6
    defenestrate 12
 
-在迭代过程中修改迭代序列不安全（只有在使用链表这样的可变序列时才会有这样的情况）。如果你想要修改你迭代的序列（例如，复制选择项），你可以迭代它的复本。使用切割标识就可以很方便的做到这一点::
+Code that modifies a collection while iterating over that same collection can
+be tricky to get right.  Instead, it is usually more straight-forward to loop
+over a copy of the collection or to create a new collection::
 
-   >>> for w in words[:]:  # Loop over a slice copy of the entire list.
-   ...     if len(w) > 6:
-   ...         words.insert(0, w)
-   ...
-   >>> words
-   ['defenestrate', 'cat', 'window', 'defenestrate']
+    # Strategy:  Iterate over a copy
+    for user, status in users.copy().items():
+        if status == 'inactive':
+            del users[user]
 
+    # Strategy:  Create a new collection
+    active_users = {}
+    for user, status in users.items():
+        if status == 'active':
+            active_users[user] = status
 
 
 .. _tut-range:
 
-`range()`_ 函数
+The :func:`range` Function
 ==========================
 
-如果你需要一个数值序列，内置函数 `range()`_ 会很方便，它生成一个等差级数链表::
+If you do need to iterate over a sequence of numbers, the built-in function
+:func:`range` comes in handy.  It generates arithmetic progressions::
 
     >>> for i in range(5):
     ...     print(i)
@@ -82,10 +99,13 @@ Python 中的 `for`_ 语句和 C 或 Pascal 中的略有不同。通常的循环
     3
     4
 
-``range(10)`` 生成了一个包含 10 个值的链表，它用链表的索引值填充了这个长度为 10 的列表，所生成的链表中不包括范围中的结束值。也可以让 `range()`_ 操作从另一个数值开始，或者可以指定一个不同的步进值（甚至是负数，有时这也被称为 “步长”）::
+The given end point is never part of the generated sequence; ``range(10)`` generates
+10 values, the legal indices for items of a sequence of length 10.  It
+is possible to let the range start at another number, or to specify a different
+increment (even negative; sometimes this is called the 'step')::
 
     range(5, 10)
-       5 through 9
+       5, 6, 7, 8, 9
 
     range(0, 10, 3)
        0, 3, 6, 9
@@ -93,7 +113,8 @@ Python 中的 `for`_ 语句和 C 或 Pascal 中的略有不同。通常的循环
     range(-10, -100, -30)
       -10, -40, -70
 
-需要迭代链表索引的话，如下所示结合使 用 `range()`_ 和 `len()`_ ::
+To iterate over the indices of a sequence, you can combine :func:`range` and
+:func:`len` as follows::
 
    >>> a = ['Mary', 'had', 'a', 'little', 'lamb']
    >>> for i in range(len(a)):
@@ -105,33 +126,51 @@ Python 中的 `for`_ 语句和 C 或 Pascal 中的略有不同。通常的循环
    3 little
    4 lamb
 
-不过，这种场合可以方便的使用 `enumerate()`_，请参见 :ref:`tut-loopidioms`。
+In most such cases, however, it is convenient to use the :func:`enumerate`
+function, see :ref:`tut-loopidioms`.
 
-如果你只是打印一个序列的话会发生奇怪的事情::
+A strange thing happens if you just print a range::
 
    >>> print(range(10))
    range(0, 10)
 
-在不同方面 `range()`_ 函数返回的对象表现为它是一个列表，但事实上它并不是。当你迭代它时，它是一个能够像期望的序列返回连续项的对象；但为了节省空间，它并不真正构造列表。
+In many ways the object returned by :func:`range` behaves as if it is a list,
+but in fact it isn't. It is an object which returns the successive items of
+the desired sequence when you iterate over it, but it doesn't really make
+the list, thus saving space.
 
-我们称此类对象是 *可迭代的*，即适合作为那些期望从某些东西中获得连续项直到结束的函数或结构的一个目标（参数）。我们已经见过的 `for`_ 语句就是这样一个迭代器。`list()`_ 函数是另外一个（ *迭代器* ），它从可迭代（对象）中创建列表::
+We say such an object is :term:`iterable`, that is, suitable as a target for
+functions and constructs that expect something from which they can
+obtain successive items until the supply is exhausted.  We have seen that
+the :keyword:`for` statement is such a construct, while an example of a function
+that takes an iterable is :func:`sum`::
 
+    >>> sum(range(4))  # 0 + 1 + 2 + 3
+    6
 
-   >>> list(range(5))
-   [0, 1, 2, 3, 4]
+Later we will see more functions that return iterables and take iterables as
+arguments.  Lastly, maybe you are curious about how to get a list from a range.
+Here is the solution::
 
-稍后我们会看到更多返回可迭代（对象）和以可迭代（对象）作为参数的函数。
+   >>> list(range(4))
+   [0, 1, 2, 3]
 
+In chapter :ref:`tut-structures`, we will discuss in more detail about
+:func:`list`.
 
 .. _tut-break:
 
-`break`_ 和 `continue`_ 语句, 以及循环中的 `else`_ 子句
-=========================================================================================
+:keyword:`!break` and :keyword:`!continue` Statements, and :keyword:`!else` Clauses on Loops
+============================================================================================
 
-`break`_ 语句和 C 中的类似，用于跳出最近的一级 `for`_ 或 `while`_ 循环。 
+The :keyword:`break` statement, like in C, breaks out of the innermost enclosing
+:keyword:`for` or :keyword:`while` loop.
 
-
-循环可以有一个 ``else`` 子句；它在循环迭代完整个列表（对于 `for`_ ）或执行条件为 false （对于 `while`_ ）时执行，但循环被 `break`_ 中止的情况下不会执行。以下搜索素数的示例程序演示了这个子句::
+Loop statements may have an :keyword:`!else` clause; it is executed when the loop
+terminates through exhaustion of the iterable (with :keyword:`for`) or when the
+condition becomes false (with :keyword:`while`), but not when the loop is
+terminated by a :keyword:`break` statement.  This is exemplified by the
+following loop, which searches for prime numbers::
 
    >>> for n in range(2, 10):
    ...     for x in range(2, n):
@@ -151,11 +190,18 @@ Python 中的 `for`_ 语句和 C 或 Pascal 中的略有不同。通常的循环
    8 equals 2 * 4
    9 equals 3 * 3
 
-(Yes, 这是正确的代码。看仔细：``else`` 语句是属于 `for`_ 循环之中， **不是**  `if`_ 语句。)
+(Yes, this is the correct code.  Look closely: the ``else`` clause belongs to
+the :keyword:`for` loop, **not** the :keyword:`if` statement.)
 
-与循环一起使用时，``else`` 子句与 `try`_ 语句的 ``else`` 子句比与 `if`_ 语句的具有更多的共同点：`try`_ 语句的 ``else`` 子句在未出现异常时运行，循环的 ``else`` 子句在未出现 ``break`` 时运行。更多关于 `try`_ 语句和异常的内容，请参见 :ref:`tut-handling`。
+When used with a loop, the ``else`` clause has more in common with the
+``else`` clause of a :keyword:`try` statement than it does with that of
+:keyword:`if` statements: a :keyword:`try` statement's ``else`` clause runs
+when no exception occurs, and a loop's ``else`` clause runs when no ``break``
+occurs. For more on the :keyword:`!try` statement and exceptions, see
+:ref:`tut-handling`.
 
-`continue`_ 语句是从 C 中借鉴来的，它表示循环继续执行下一次迭代::
+The :keyword:`continue` statement, also borrowed from C, continues with the next
+iteration of the loop::
 
     >>> for num in range(2, 10):
     ...     if num % 2 == 0:
@@ -173,22 +219,25 @@ Python 中的 `for`_ 语句和 C 或 Pascal 中的略有不同。通常的循环
 
 .. _tut-pass:
 
-`pass`_ 语句
-==========================
+:keyword:`!pass` Statements
+===========================
 
-`pass`_ 语句什么也不做。它用于那些语法上必须要有什么语句，但程序什么也不做的场合，例如::
+The :keyword:`pass` statement does nothing. It can be used when a statement is
+required syntactically but the program requires no action. For example::
 
    >>> while True:
    ...     pass  # Busy-wait for keyboard interrupt (Ctrl+C)
    ...
 
-这通常用于创建最小结构的类::
+This is commonly used for creating minimal classes::
 
    >>> class MyEmptyClass:
    ...     pass
    ...
 
-另一方面，`pass`_ 可以在创建新代码时用来做函数或控制体的占位符。可以让你在更抽象的级别上思考。`pass`_ 可以默默的被忽视::
+Another place :keyword:`pass` can be used is as a place-holder for a function or
+conditional body when you are working on new code, allowing you to keep thinking
+at a more abstract level.  The :keyword:`!pass` is silently ignored::
 
    >>> def initlog(*args):
    ...     pass   # Remember to implement this!
@@ -196,10 +245,11 @@ Python 中的 `for`_ 语句和 C 或 Pascal 中的略有不同。通常的循环
 
 .. _tut-functions:
 
-定义函数
+Defining Functions
 ==================
 
-我们可以创建一个用来生成指定边界的斐波那契数列的函数::
+We can create a function that writes the Fibonacci series to an arbitrary
+boundary::
 
    >>> def fib(n):    # write Fibonacci series up to n
    ...     """Print a Fibonacci series up to n."""
@@ -218,17 +268,40 @@ Python 中的 `for`_ 语句和 C 或 Pascal 中的略有不同。通常的循环
    single: docstrings
    single: strings, documentation
 
-关键字 `def`_ 引入了一个函数 *定义*。在其后必须跟有函数名和包括形式参数的圆括号。函数体语句从下一行开始，必须是缩进的。 
+The keyword :keyword:`def` introduces a function *definition*.  It must be
+followed by the function name and the parenthesized list of formal parameters.
+The statements that form the body of the function start at the next line, and
+must be indented.
 
-函数体的第一行语句可以是可选的字符串文本，这个字符串是函数的文档字符串，或者称为 :dfn:`docstring`。（更多关于 docstrings 的信息请参考 :ref:`tut-docstrings`） 有些工具通过 docstrings 自动生成在线的或可打印的文档，或者让用户通过代码交互浏览；在你的代码中包含 docstrings 是一个好的实践，让它成为习惯吧。
+The first statement of the function body can optionally be a string literal;
+this string literal is the function's documentation string, or :dfn:`docstring`.
+(More about docstrings can be found in the section :ref:`tut-docstrings`.)
+There are tools which use docstrings to automatically produce online or printed
+documentation, or to let the user interactively browse through code; it's good
+practice to include docstrings in code that you write, so make a habit of it.
 
-函数 *调用* 会为函数局部变量生成一个新的符号表。确切的说，所有函数中的变量赋值都是将值存储在局部符号表。变量引用首先在局部符号表中查找，然后是包含函数的局部符号表，然后是全局符号表，最后是内置名字表。因此，全局变量不能在函数中直接赋值（除非用 `global`_ 语句命名），尽管他们可以被引用。 
+The *execution* of a function introduces a new symbol table used for the local
+variables of the function.  More precisely, all variable assignments in a
+function store the value in the local symbol table; whereas variable references
+first look in the local symbol table, then in the local symbol tables of
+enclosing functions, then in the global symbol table, and finally in the table
+of built-in names. Thus, global variables and variables of enclosing functions
+cannot be directly assigned a value within a function (unless, for global
+variables, named in a :keyword:`global` statement, or, for variables of enclosing
+functions, named in a :keyword:`nonlocal` statement), although they may be
+referenced.
 
-函数引用的实际参数在函数调用时引入局部符号表，因此，实参总是 *传值调用* （这里的 *值* 总是一个对象 引用 ，而不是该对象的值）。[#]_  一个函数被另一个函数调用时，一个新的局部符号表在调用过程中被创建。 
+The actual parameters (arguments) to a function call are introduced in the local
+symbol table of the called function when it is called; thus, arguments are
+passed using *call by value* (where the *value* is always an object *reference*,
+not the value of the object). [#]_ When a function calls another function, a new
+local symbol table is created for that call.
 
-
-一个函数定义会在当前符号表内引入函数名。函数名指代的值（即函数体）有一个被 Python 解释器认定为 *用户自定义函数* 的类型。 这个值可以赋予其他的名字（即变量名），然后它也可以被当做函数使用。这可以作为通用的重命名机制::
-
+A function definition introduces the function name in the current symbol table.
+The value of the function name has a type that is recognized by the interpreter
+as a user-defined function.  This value can be assigned to another name which
+can then also be used as a function.  This serves as a general renaming
+mechanism::
 
    >>> fib
    <function fib at 10042ed0>
@@ -236,15 +309,21 @@ Python 中的 `for`_ 语句和 C 或 Pascal 中的略有不同。通常的循环
    >>> f(100)
    0 1 1 2 3 5 8 13 21 34 55 89
 
-如果你使用过其他语言，你可能会反对说：``fib`` 不是一个函数，而是一个方法，因为它并不返回任何值。事实上，没有 `return`_ 语句的函数确实会返回一个值，虽然是一个相当令人厌烦的值（指 None ）。这个值被称为 ``None`` （这是一个内建名称）。如果 ``None`` 值是唯一被书写的值，那么在写的时候通常会被解释器忽略（即不输出任何内容）。如果你确实想看到这个值的输出内容，请使用 `print()`_ 函数::
+Coming from other languages, you might object that ``fib`` is not a function but
+a procedure since it doesn't return a value.  In fact, even functions without a
+:keyword:`return` statement do return a value, albeit a rather boring one.  This
+value is called ``None`` (it's a built-in name).  Writing the value ``None`` is
+normally suppressed by the interpreter if it would be the only value written.
+You can see it if you really want to using :func:`print`::
 
    >>> fib(0)
    >>> print(fib(0))
    None
 
-定义一个返回斐波那契数列数字列表的函数，而不是打印它，是很简单的::
+It is simple to write a function that returns a list of the numbers of the
+Fibonacci series, instead of printing it::
 
-   >>> def fib2(n): # return Fibonacci series up to n
+   >>> def fib2(n):  # return Fibonacci series up to n
    ...     """Return a list containing the Fibonacci series up to n."""
    ...     result = []
    ...     a, b = 0, 1
@@ -257,33 +336,43 @@ Python 中的 `for`_ 语句和 C 或 Pascal 中的略有不同。通常的循环
    >>> f100                # write the result
    [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
 
-和以前一样，这个例子演示了一些新的 Python 功能：
+This example, as usual, demonstrates some new Python features:
 
-* `return`_ 语句从函数中返回一个值，不带表达式的 `return`_ 返回 ``None``。
-  
-  过程结束后也会返回 ``None``。
+* The :keyword:`return` statement returns with a value from a function.
+  :keyword:`!return` without an expression argument returns ``None``. Falling off
+  the end of a function also returns ``None``.
 
-* 语句 ``result.append(b)`` 称为链表对象 ``result`` 的一个 *方法*。方法是一个“属于”某个对象的函数，它被命名为 ``obj.methodename``，这里的 ``obj`` 是某个对象（可能是一个表达式）， ``methodename`` 是某个在该对象类型定义中的方法的命名。
-  
-  不同的类型定义不同的方法。不同类型可能有同样名字的方法，但不会混淆。（当你定义自己的对象类型和方法时，可能会出现这种情况，*class* 的定义方法详见 :ref:`tut-classes` ）。示例中演示的 :meth:`append` 方法由链表对象定义，它向链表中加入一个新元素。在示例中它等同于 ``result = result + [a]``，不过效率更高。
+* The statement ``result.append(a)`` calls a *method* of the list object
+  ``result``.  A method is a function that 'belongs' to an object and is named
+  ``obj.methodname``, where ``obj`` is some object (this may be an expression),
+  and ``methodname`` is the name of a method that is defined by the object's type.
+  Different types define different methods.  Methods of different types may have
+  the same name without causing ambiguity.  (It is possible to define your own
+  object types and methods, using *classes*, see :ref:`tut-classes`)
+  The method :meth:`append` shown in the example is defined for list objects; it
+  adds a new element at the end of the list.  In this example it is equivalent to
+  ``result = result + [a]``, but more efficient.
 
 
 .. _tut-defining:
 
-深入 Python 函数定义 
+More on Defining Functions
 ==========================
 
-在 Python 中，你也可以定义包含若干参数的函数。这里有三种可用的形式，也可以混合使用。 
+It is also possible to define functions with a variable number of arguments.
+There are three forms, which can be combined.
 
 
 .. _tut-defaultargs:
 
-默认参数值 
+Default Argument Values
 -----------------------
 
-最常用的一种形式是为一个或多个参数指定默认值。这会创建一个可以使用比定义时允许的参数更少的参数调用的函数，例如::
+The most useful form is to specify a default value for one or more arguments.
+This creates a function that can be called with fewer arguments than it is
+defined to allow.  For example::
 
-   def ask_ok(prompt, retries=4, complaint='Yes or no, please!'):
+   def ask_ok(prompt, retries=4, reminder='Please try again!'):
        while True:
            ok = input(prompt)
            if ok in ('y', 'ye', 'yes'):
@@ -292,26 +381,23 @@ Python 中的 `for`_ 语句和 C 或 Pascal 中的略有不同。通常的循环
                return False
            retries = retries - 1
            if retries < 0:
-               raise OSError('uncooperative user')
-           print(complaint)
+               raise ValueError('invalid user response')
+           print(reminder)
 
-这个函数可以通过几种不同的方式调用:
+This function can be called in several ways:
 
-* 只给出必要的参数:
-  
+* giving only the mandatory argument:
   ``ask_ok('Do you really want to quit?')``
-
-* 给出一个可选的参数:
-  
+* giving one of the optional arguments:
   ``ask_ok('OK to overwrite the file?', 2)``
-
-* 或者给出所有的参数:
-  
+* or even giving all arguments:
   ``ask_ok('OK to overwrite the file?', 2, 'Come on, only yes or no!')``
 
-这个例子还介绍了 `in`_ 关键字。它测定序列中是否包含某个确定的值。 
+This example also introduces the :keyword:`in` keyword. This tests whether or
+not a sequence contains a certain value.
 
-默认值在函数 *定义* 作用域被解析，如下所示::
+The default values are evaluated at the point of function definition in the
+*defining* scope, so that ::
 
    i = 5
 
@@ -321,9 +407,12 @@ Python 中的 `for`_ 语句和 C 或 Pascal 中的略有不同。通常的循环
    i = 6
    f()
 
-将会输出 ``5``。
+will print ``5``.
 
-**重要警告:**  默认值只被赋值一次。这使得当默认值是可变对象时会有所不同，比如列表、字典或者大多数类的实例。例如，下面的函数在后续调用过程中会累积（前面）传给它的参数::
+**Important warning:**  The default value is evaluated only once. This makes a
+difference when the default is a mutable object such as a list, dictionary, or
+instances of most classes.  For example, the following function accumulates the
+arguments passed to it on subsequent calls::
 
    def f(a, L=[]):
        L.append(a)
@@ -333,13 +422,14 @@ Python 中的 `for`_ 语句和 C 或 Pascal 中的略有不同。通常的循环
    print(f(2))
    print(f(3))
 
-这将输出::
+This will print ::
 
    [1]
    [1, 2]
    [1, 2, 3]
 
-如果你不想让默认值在后续调用中累积，你可以像下面一样定义函数::
+If you don't want the default to be shared between subsequent calls, you can
+write the function like this instead::
 
    def f(a, L=None):
        if L is None:
@@ -350,10 +440,11 @@ Python 中的 `for`_ 语句和 C 或 Pascal 中的略有不同。通常的循环
 
 .. _tut-keywordargs:
 
-关键字参数 
+Keyword Arguments
 -----------------
 
-函数可以通过 `关键字参数 <keyword argument>`_ 的形式来调用，形如 ``keyword = value``。例如，以下的函数::
+Functions can also be called using :term:`keyword arguments <keyword argument>`
+of the form ``kwarg=value``.  For instance, the following function::
 
    def parrot(voltage, state='a stiff', action='voom', type='Norwegian Blue'):
        print("-- This parrot wouldn't", action, end=' ')
@@ -361,8 +452,9 @@ Python 中的 `for`_ 语句和 C 或 Pascal 中的略有不同。通常的循环
        print("-- Lovely plumage, the", type)
        print("-- It's", state, "!")
 
-接受一个必选参数 (``voltage``) 以及三个可选参数
-(``state``, ``action``, 和 ``type``)。可以用以下的任一方法调用::
+accepts one required argument (``voltage``) and three optional arguments
+(``state``, ``action``, and ``type``).  This function can be called in any
+of the following ways::
 
    parrot(1000)                                          # 1 positional argument
    parrot(voltage=1000)                                  # 1 keyword argument
@@ -371,24 +463,36 @@ Python 中的 `for`_ 语句和 C 或 Pascal 中的略有不同。通常的循环
    parrot('a million', 'bereft of life', 'jump')         # 3 positional arguments
    parrot('a thousand', state='pushing up the daisies')  # 1 positional, 1 keyword
 
-不过以下几种调用是无效的::
+but all the following calls would be invalid::
 
    parrot()                     # required argument missing
    parrot(voltage=5.0, 'dead')  # non-keyword argument after a keyword argument
    parrot(110, voltage=220)     # duplicate value for the same argument
    parrot(actor='John Cleese')  # unknown keyword argument
 
-在函数调用中，关键字的参数必须跟随在位置参数的后面。传递的所有关键字参数必须与函数接受的某个参数相匹配 （例如 ``actor`` 不是 ``parrot`` 函数的有效参数），它们的顺序并不重要。这也包括非可选参数（例如 ``parrot(voltage=1000)`` 也是有效的）。任何参数都不可以多次赋值。下面的示例由于这种限制将失败::
+In a function call, keyword arguments must follow positional arguments.
+All the keyword arguments passed must match one of the arguments
+accepted by the function (e.g. ``actor`` is not a valid argument for the
+``parrot`` function), and their order is not important.  This also includes
+non-optional arguments (e.g. ``parrot(voltage=1000)`` is valid too).
+No argument may receive a value more than once.
+Here's an example that fails due to this restriction::
 
    >>> def function(a):
    ...     pass
    ...
    >>> function(0, a=0)
    Traceback (most recent call last):
-     File "<stdin>", line 1, in ?
+     File "<stdin>", line 1, in <module>
    TypeError: function() got multiple values for keyword argument 'a'
 
-引入一个形如 ``**name`` 的参数时，它接收一个字典（参见 `Mapping Types — dict`_ ），该字典包含了所有未出现在形式参数列表中的关键字参数。这里可能还会组合使用一个形如 ``*name`` （下一小节详细介绍） 的形式参数，它接收一个元组（下一节中会详细介绍），包含了所有没有出现在形式参数列表中的参数值（ ``*name`` 必须在 ``**name`` 之前出现）。 例如，我们这样定义一个函数::
+When a final formal parameter of the form ``**name`` is present, it receives a
+dictionary (see :ref:`typesmapping`) containing all keyword arguments except for
+those corresponding to a formal parameter.  This may be combined with a formal
+parameter of the form ``*name`` (described in the next subsection) which
+receives a :ref:`tuple <tut-tuples>` containing the positional
+arguments beyond the formal parameter list.  (``*name`` must occur
+before ``**name``.) For example, if we define a function like this::
 
    def cheeseshop(kind, *arguments, **keywords):
        print("-- Do you have any", kind, "?")
@@ -396,11 +500,10 @@ Python 中的 `for`_ 语句和 C 或 Pascal 中的略有不同。通常的循环
        for arg in arguments:
            print(arg)
        print("-" * 40)
-       keys = sorted(keywords.keys())
-       for kw in keys:
+       for kw in keywords:
            print(kw, ":", keywords[kw])
 
-它可以像这样调用::
+It could be called like this::
 
    cheeseshop("Limburger", "It's very runny, sir.",
               "It's really very, VERY runny, sir.",
@@ -408,36 +511,218 @@ Python 中的 `for`_ 语句和 C 或 Pascal 中的略有不同。通常的循环
               client="John Cleese",
               sketch="Cheese Shop Sketch")
 
-当然它会按如下内容打印::
+and of course it would print:
+
+.. code-block:: none
 
    -- Do you have any Limburger ?
    -- I'm sorry, we're all out of Limburger
    It's very runny, sir.
    It's really very, VERY runny, sir.
    ----------------------------------------
-   client : John Cleese
    shopkeeper : Michael Palin
+   client : John Cleese
    sketch : Cheese Shop Sketch
 
-注意在打印关键字参数之前，通过对关键字字典 ``keys()`` 方法的结果进行排序，生成了关键字参数名的列表；如果不这样做，打印出来的参数的顺序是未定义的。
+Note that the order in which the keyword arguments are printed is guaranteed
+to match the order in which they were provided in the function call.
+
+Special parameters
+------------------
+
+By default, arguments may be passed to a Python function either by position
+or explicitly by keyword. For readability and performance, it makes sense to
+restrict the way arguments can be passed so that a developer need only look
+at the function definition to determine if items are passed by position, by
+position or keyword, or by keyword.
+
+A function definition may look like:
+
+.. code-block:: none
+
+   def f(pos1, pos2, /, pos_or_kwd, *, kwd1, kwd2):
+         -----------    ----------     ----------
+           |             |                  |
+           |        Positional or keyword   |
+           |                                - Keyword only
+            -- Positional only
+
+where ``/`` and ``*`` are optional. If used, these symbols indicate the kind of
+parameter by how the arguments may be passed to the function:
+positional-only, positional-or-keyword, and keyword-only. Keyword parameters
+are also referred to as named parameters.
+
+-------------------------------
+Positional-or-Keyword Arguments
+-------------------------------
+
+If ``/`` and ``*`` are not present in the function definition, arguments may
+be passed to a function by position or by keyword.
+
+--------------------------
+Positional-Only Parameters
+--------------------------
+
+Looking at this in a bit more detail, it is possible to mark certain parameters
+as *positional-only*. If *positional-only*, the parameters' order matters, and
+the parameters cannot be passed by keyword. Positional-only parameters are
+placed before a ``/`` (forward-slash). The ``/`` is used to logically
+separate the positional-only parameters from the rest of the parameters.
+If there is no ``/`` in the function definition, there are no positional-only
+parameters.
+
+Parameters following the ``/`` may be *positional-or-keyword* or *keyword-only*.
+
+----------------------
+Keyword-Only Arguments
+----------------------
+
+To mark parameters as *keyword-only*, indicating the parameters must be passed
+by keyword argument, place an ``*`` in the arguments list just before the first
+*keyword-only* parameter.
+
+-----------------
+Function Examples
+-----------------
+
+Consider the following example function definitions paying close attention to the
+markers ``/`` and ``*``::
+
+   >>> def standard_arg(arg):
+   ...     print(arg)
+   ...
+   >>> def pos_only_arg(arg, /):
+   ...     print(arg)
+   ...
+   >>> def kwd_only_arg(*, arg):
+   ...     print(arg)
+   ...
+   >>> def combined_example(pos_only, /, standard, *, kwd_only):
+   ...     print(pos_only, standard, kwd_only)
+
+
+The first function definition, ``standard_arg``, the most familiar form,
+places no restrictions on the calling convention and arguments may be
+passed by position or keyword::
+
+   >>> standard_arg(2)
+   2
+
+   >>> standard_arg(arg=2)
+   2
+
+The second function ``pos_only_arg`` is restricted to only use positional
+parameters as there is a ``/`` in the function definition::
+
+   >>> pos_only_arg(1)
+   1
+
+   >>> pos_only_arg(arg=1)
+   Traceback (most recent call last):
+     File "<stdin>", line 1, in <module>
+   TypeError: pos_only_arg() got an unexpected keyword argument 'arg'
+
+The third function ``kwd_only_args`` only allows keyword arguments as indicated
+by a ``*`` in the function definition::
+
+   >>> kwd_only_arg(3)
+   Traceback (most recent call last):
+     File "<stdin>", line 1, in <module>
+   TypeError: kwd_only_arg() takes 0 positional arguments but 1 was given
+
+   >>> kwd_only_arg(arg=3)
+   3
+
+And the last uses all three calling conventions in the same function
+definition::
+
+   >>> combined_example(1, 2, 3)
+   Traceback (most recent call last):
+     File "<stdin>", line 1, in <module>
+   TypeError: combined_example() takes 2 positional arguments but 3 were given
+
+   >>> combined_example(1, 2, kwd_only=3)
+   1 2 3
+
+   >>> combined_example(1, standard=2, kwd_only=3)
+   1 2 3
+
+   >>> combined_example(pos_only=1, standard=2, kwd_only=3)
+   Traceback (most recent call last):
+     File "<stdin>", line 1, in <module>
+   TypeError: combined_example() got an unexpected keyword argument 'pos_only'
+
+
+Finally, consider this function definition which has a potential collision between the positional argument ``name``  and ``**kwds`` which has ``name`` as a key::
+
+    def foo(name, **kwds):
+        return 'name' in kwds
+
+There is no possible call that will make it return ``True`` as the keyword ``'name'``
+will always to bind to the first parameter. For example::
+
+    >>> foo(1, **{'name': 2})
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+    TypeError: foo() got multiple values for argument 'name'
+    >>>
+
+But using ``/`` (positional only arguments), it is possible since it allows ``name`` as a positional argument and ``'name'`` as a key in the keyword arguments::
+
+    def foo(name, /, **kwds):
+        return 'name' in kwds
+    >>> foo(1, **{'name': 2})
+    True
+
+In other words, the names of positional-only parameters can be used in
+``**kwds`` without ambiguity.
+
+-----
+Recap
+-----
+
+The use case will determine which parameters to use in the function definition::
+
+   def f(pos1, pos2, /, pos_or_kwd, *, kwd1, kwd2):
+
+As guidance:
+
+* Use positional-only if you want the name of the parameters to not be
+  available to the user. This is useful when parameter names have no real
+  meaning, if you want to enforce the order of the arguments when the function
+  is called or if you need to take some positional parameters and arbitrary
+  keywords.
+* Use keyword-only when names have meaning and the function definition is
+  more understandable by being explicit with names or you want to prevent
+  users relying on the position of the argument being passed.
+* For an API, use positional-only to prevent breaking API changes
+  if the parameter's name is modified in the future.
 
 .. _tut-arbitraryargs:
 
-可变参数列表
+Arbitrary Argument Lists
 ------------------------
 
 .. index::
-  statement: *
+   single: * (asterisk); in function calls
 
-最后，一个最不常用的选择是可以让函数调用可变个数的参数。这些参数被包装进一个元组（参见 :ref:`tut-tuples` ）。在这些可变个数的参数之前，可以有零到多个普通的参数::
+Finally, the least frequently used option is to specify that a function can be
+called with an arbitrary number of arguments.  These arguments will be wrapped
+up in a tuple (see :ref:`tut-tuples`).  Before the variable number of arguments,
+zero or more normal arguments may occur. ::
 
    def write_multiple_items(file, separator, *args):
        file.write(separator.join(args))
 
-通常，这些 ``可变`` 参数是参数列表中的最后一个，因为它们将把所有的剩余输入参数传递给函数。任何出现在 ``*args`` 后的参数是关键字参数，这意味着，他们只能被用作关键字，而不是位置参数::
+
+Normally, these ``variadic`` arguments will be last in the list of formal
+parameters, because they scoop up all remaining input arguments that are
+passed to the function. Any formal parameters which occur after the ``*args``
+parameter are 'keyword-only' arguments, meaning that they can only be used as
+keywords rather than positional arguments. ::
 
    >>> def concat(*args, sep="/"):
-   ...    return sep.join(args)
+   ...     return sep.join(args)
    ...
    >>> concat("earth", "mars", "venus")
    'earth/mars/venus'
@@ -446,10 +731,15 @@ Python 中的 `for`_ 语句和 C 或 Pascal 中的略有不同。通常的循环
 
 .. _tut-unpacking-arguments:
 
-参数列表的分拆
+Unpacking Argument Lists
 ------------------------
 
-另有一种相反的情况: 当你要传递的参数已经是一个列表，但要调用的函数却接受分开一个个的参数值。这时候你要把已有的列表拆开来。例如内建函数 `range()`_ 需要要独立的 *start*，*stop* 参数。你可以在调用函数时加一个 ``*`` 操作符来自动把参数列表拆开::
+The reverse situation occurs when the arguments are already in a list or tuple
+but need to be unpacked for a function call requiring separate positional
+arguments.  For instance, the built-in :func:`range` function expects separate
+*start* and *stop* arguments.  If they are not available separately, write the
+function call with the  ``*``\ -operator to unpack the arguments out of a list
+or tuple::
 
    >>> list(range(3, 6))            # normal call with separate arguments
    [3, 4, 5]
@@ -458,9 +748,10 @@ Python 中的 `for`_ 语句和 C 或 Pascal 中的略有不同。通常的循环
    [3, 4, 5]
 
 .. index::
-  statement: **
+   single: **; in function calls
 
-以同样的方式，可以使用 ``**`` 操作符分拆关键字参数为字典::
+In the same fashion, dictionaries can deliver keyword arguments with the
+``**``\ -operator::
 
    >>> def parrot(voltage, state='a stiff', action='voom'):
    ...     print("-- This parrot wouldn't", action, end=' ')
@@ -474,10 +765,16 @@ Python 中的 `for`_ 语句和 C 或 Pascal 中的略有不同。通常的循环
 
 .. _tut-lambda:
 
-Lambda 形式
-------------
+Lambda Expressions
+------------------
 
-出于实际需要，有几种通常在函数式编程语言例如 Lisp 中出现的功能加入到了 Python。通过 `lambda`_  关键字，可以创建短小的匿名函数。这里有一个函数返回它的两个参数的和： ``lambda a, b: a+b``。 Lambda 形式可以用于任何需要的函数对象。出于语法限制，它们只能有一个单独的表达式。语义上讲，它们只是普通函数定义中的一个语法技巧。类似于嵌套函数定义，lambda 形式可以从外部作用域引用变量::
+Small anonymous functions can be created with the :keyword:`lambda` keyword.
+This function returns the sum of its two arguments: ``lambda a, b: a+b``.
+Lambda functions can be used wherever function objects are required.  They are
+syntactically restricted to a single expression.  Semantically, they are just
+syntactic sugar for a normal function definition.  Like nested function
+definitions, lambda functions can reference variables from the containing
+scope::
 
    >>> def make_incrementor(n):
    ...     return lambda x: x + n
@@ -488,7 +785,8 @@ Lambda 形式
    >>> f(1)
    43
 
-上面的示例使用 lambda 表达式返回一个函数。另一个用途是将一个小函数作为参数传递::
+The above example uses a lambda expression to return a function.  Another use
+is to pass a small function as an argument::
 
    >>> pairs = [(1, 'one'), (2, 'two'), (3, 'three'), (4, 'four')]
    >>> pairs.sort(key=lambda pair: pair[1])
@@ -498,7 +796,7 @@ Lambda 形式
 
 .. _tut-docstrings:
 
-文档字符串
+Documentation Strings
 ---------------------
 
 .. index::
@@ -506,15 +804,33 @@ Lambda 形式
    single: documentation strings
    single: strings, documentation
 
-这里介绍的文档字符串的概念和格式。 
+Here are some conventions about the content and formatting of documentation
+strings.
 
-第一行应该是关于对象用途的简介。简短起见，不用明确的陈述对象名或类型，因为它们可以从别的途径了解到（除非这个名字碰巧就是描述这个函数操作的动词）。这一行应该以大写字母开头，以句号结尾。 
+The first line should always be a short, concise summary of the object's
+purpose.  For brevity, it should not explicitly state the object's name or type,
+since these are available by other means (except if the name happens to be a
+verb describing a function's operation).  This line should begin with a capital
+letter and end with a period.
 
-如果文档字符串有多行，第二行应该空出来，与接下来的详细描述明确分隔。接下来的文档应该有一或多段描述对象的调用约定、边界效应等。 
+If there are more lines in the documentation string, the second line should be
+blank, visually separating the summary from the rest of the description.  The
+following lines should be one or more paragraphs describing the object's calling
+conventions, its side effects, etc.
 
-Python 的解释器不会从多行的文档字符串中去除缩进，所以必要的时候应当自己清除缩进。这符合通常的习惯。第一行之后的第一个非空行决定了整个文档的缩进格式。（我们不用第一行是因为它通常紧靠着起始的引号，缩进格式显示的不清楚。）留白“相当于”是字符串的起始缩进。每一行都不应该有缩进，如果有缩进的话，所有的留白都应该清除掉。留白的长度应当等于扩展制表符的宽度（通常是8个空格）。 
+The Python parser does not strip indentation from multi-line string literals in
+Python, so tools that process documentation have to strip indentation if
+desired.  This is done using the following convention. The first non-blank line
+*after* the first line of the string determines the amount of indentation for
+the entire documentation string.  (We can't use the first line since it is
+generally adjacent to the string's opening quotes so its indentation is not
+apparent in the string literal.)  Whitespace "equivalent" to this indentation is
+then stripped from the start of all lines of the string.  Lines that are
+indented less should not occur, but if they occur all their leading whitespace
+should be stripped.  Equivalence of whitespace should be tested after expansion
+of tabs (to 8 spaces, normally).
 
-以下是一个多行文档字符串的示例::
+Here is an example of a multi-line docstring::
 
    >>> def my_function():
    ...     """Do nothing, but document it.
@@ -531,91 +847,94 @@ Python 的解释器不会从多行的文档字符串中去除缩进，所以必�
 
 .. _tut-annotations:
 
-函数注解
+Function Annotations
 --------------------
 
 .. sectionauthor:: Zachary Ware <zachary.ware@gmail.com>
 .. index::
    pair: function; annotations
-   single: -> (return annotation assignment)
+   single: ->; function annotations
+   single: : (colon); function annotations
 
-`函数注解`_ 是关于用户自定义的函数的完全可选的、随意的元数据信息。无论 Python 本身或者标准库中都没有使用函数注解；本节只是描述了语法。第三方的项目是自由地为文档，类型检查，以及其它用途选择函数注解。
+:ref:`Function annotations <function>` are completely optional metadata
+information about the types used by user-defined functions (see :pep:`3107` and
+:pep:`484` for more information).
 
-注解是以字典形式存储在函数的 :attr:`__annotations__` 属性中，对函数的其它部分没有任何影响。参数注解（Parameter
-annotations）是定义在参数名称的冒号后面，紧随着一个用来表示注解的值得表达式。返回注释（Return annotations）是定义在一个 ``->`` 后面，紧随着一个表达式，在冒号与 ``->`` 之间。下面的示例包含一个位置参数，一个关键字参数，和没有意义的返回值注释::
+:term:`Annotations <function annotation>` are stored in the :attr:`__annotations__`
+attribute of the function as a dictionary and have no effect on any other part of the
+function.  Parameter annotations are defined by a colon after the parameter name, followed
+by an expression evaluating to the value of the annotation.  Return annotations are
+defined by a literal ``->``, followed by an expression, between the parameter
+list and the colon denoting the end of the :keyword:`def` statement.  The
+following example has a positional argument, a keyword argument, and the return
+value annotated::
 
-   >>> def f(ham: 42, eggs: int = 'spam') -> "Nothing to see here":
+   >>> def f(ham: str, eggs: str = 'eggs') -> str:
    ...     print("Annotations:", f.__annotations__)
    ...     print("Arguments:", ham, eggs)
+   ...     return ham + ' and ' + eggs
    ...
-   >>> f('wonderful')
-   Annotations: {'eggs': <class 'int'>, 'return': 'Nothing to see here', 'ham': 42}
-   Arguments: wonderful spam
-
+   >>> f('spam')
+   Annotations: {'ham': <class 'str'>, 'return': <class 'str'>, 'eggs': <class 'str'>}
+   Arguments: spam eggs
+   'spam and eggs'
 
 .. _tut-codingstyle:
 
-插曲：编码风格
+Intermezzo: Coding Style
 ========================
 
 .. sectionauthor:: Georg Brandl <georg@python.org>
 .. index:: pair: coding; style
 
-此时你已经可以写一些更长更复杂的 Python 程序，是时候讨论一下 *编码风格* 了。大多数语言可以写（或者更明白的说， *格式化* ）作几种不同的风格。有些比其它的更好读。让你的代码对别人更易读是个好想法，养成良好的编码风格对此很有帮助。 
+Now that you are about to write longer, more complex pieces of Python, it is a
+good time to talk about *coding style*.  Most languages can be written (or more
+concise, *formatted*) in different styles; some are more readable than others.
+Making it easy for others to read your code is always a good idea, and adopting
+a nice coding style helps tremendously for that.
 
-对于 Python，`PEP 8`_ 引入了大多数项目遵循的风格指导。它给出了一个高度可读，视觉友好的编码风格。每个 Python 开发者都应该读一下，大多数要点都会对你有帮助：
+For Python, :pep:`8` has emerged as the style guide that most projects adhere to;
+it promotes a very readable and eye-pleasing coding style.  Every Python
+developer should read it at some point; here are the most important points
+extracted for you:
 
-* 使用 4 空格缩进，而非 TAB
+* Use 4-space indentation, and no tabs.
 
-  在小缩进（可以嵌套更深）和大缩进（更易读）之间，4空格是一个很好的折中。TAB 引发了一些混乱，最好弃用
+  4 spaces are a good compromise between small indentation (allows greater
+  nesting depth) and large indentation (easier to read).  Tabs introduce
+  confusion, and are best left out.
 
-* 折行以确保其不会超过 79 个字符
+* Wrap lines so that they don't exceed 79 characters.
 
-  这有助于小显示器用户阅读，也可以让大显示器能并排显示几个代码文件
+  This helps users with small displays and makes it possible to have several
+  code files side-by-side on larger displays.
 
-* 使用空行分隔函数和类，以及函数中的大块代码
+* Use blank lines to separate functions and classes, and larger blocks of
+  code inside functions.
 
-* 可能的话，注释独占一行
+* When possible, put comments on a line of their own.
 
-* 使用文档字符串
+* Use docstrings.
 
-* 把空格放到操作符两边，以及逗号后面，但是括号里侧不加空格：``a = f(1, 2) + g(3, 4)`` 
+* Use spaces around operators and after commas, but not directly inside
+  bracketing constructs: ``a = f(1, 2) + g(3, 4)``.
 
-* 统一函数和类命名
+* Name your classes and functions consistently; the convention is to use
+  ``UpperCamelCase`` for classes and ``lowercase_with_underscores`` for functions
+  and methods.  Always use ``self`` as the name for the first method argument
+  (see :ref:`tut-firstclasses` for more on classes and methods).
 
-  推荐类名用 ``驼峰命名``， 函数和方法名用 ``小写_和_下划线``。总是用 ``self`` 作为方法的第一个参数（关于类和方法的知识详见 :ref:`tut-firstclasses` ）
+* Don't use fancy encodings if your code is meant to be used in international
+  environments.  Python's default, UTF-8, or even plain ASCII work best in any
+  case.
 
-* 不要使用花哨的编码，如果你的代码的目的是要在国际化环境。Python 的默认情况下，UTF-8，甚至普通的 ASCII 总是工作的最好
-
-* 同样，也不要使用非 ASCII 字符的标识符，除非是不同语种的会阅读或者维护代码。
+* Likewise, don't use non-ASCII characters in identifiers if there is only the
+  slightest chance people speaking a different language will read or maintain
+  the code.
 
 
 .. rubric:: Footnotes
 
-.. [#] 实际上， *引用对象调用* 描述的更为准确。如果传入一个可变对象，调用者会看到调用操作带来的任何变化（如子项插入到列表中）。
-
-
-
-.. _while: https://docs.python.org/3/reference/compound_stmts.html#while
-.. _if: https://docs.python.org/3/reference/compound_stmts.html#if
-.. _elif: https://docs.python.org/3/reference/compound_stmts.html#elif
-.. _else: https://docs.python.org/3/reference/compound_stmts.html#else
-.. _for: https://docs.python.org/3/reference/compound_stmts.html#for
-.. _range(): https://docs.python.org/3/library/stdtypes.html#range 
-.. _len(): https://docs.python.org/3/library/functions.html#len
-.. _enumerate(): https://docs.python.org/3/library/functions.html#enumerate
-.. _list(): https://docs.python.org/3/library/stdtypes.html#list
-.. _break: https://docs.python.org/3/reference/simple_stmts.html#break
-.. _continue: https://docs.python.org/3/reference/simple_stmts.html#continue
-.. _try: https://docs.python.org/3/reference/compound_stmts.html#try
-.. _pass: https://docs.python.org/3/reference/simple_stmts.html#pass
-.. _def: https://docs.python.org/3/reference/compound_stmts.html#def
-.. _global: https://docs.python.org/3/reference/simple_stmts.html#global
-.. _return: https://docs.python.org/3/reference/simple_stmts.html#return
-.. _print(): https://docs.python.org/3/library/functions.html#print
-.. _in: https://docs.python.org/3/reference/expressions.html#in
-.. _关键字参数 <keyword argument>: https://docs.python.org/3/glossary.html#term-keyword-argument
-.. _Mapping Types — dict: https://docs.python.org/3/library/stdtypes.html#typesmapping
-.. _lambda: https://docs.python.org/3/reference/expressions.html#lambda
-.. _PEP 8: http://www.python.org/dev/peps/pep-0008
-.. _函数注解: https://docs.python.org/3/reference/compound_stmts.html#function
+.. [#] Actually, *call by object reference* would be a better description,
+   since if a mutable object is passed, the caller will see any changes the
+   callee makes to it (items inserted into a list).

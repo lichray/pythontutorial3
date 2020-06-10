@@ -1,120 +1,150 @@
 .. _tut-structures:
 
 ***************
-数据结构
+Data Structures
 ***************
 
-本章详细讨论了你已经学过的一些知识，同样也添加了一些新内容。
+This chapter describes some things you've learned about already in more detail,
+and adds some new things as well.
 
 .. _tut-morelists:
 
-关于列表更多的内容
-===================
+More on Lists
+=============
 
-Python 的列表数据类型包含更多的方法。这里是所有的列表对象方法：
+The list data type has some more methods.  Here are all of the methods of list
+objects:
 
 
 .. method:: list.append(x)
    :noindex:
 
-   把一个元素添加到列表的结尾，相当于 ``a[len(a):] = [x]``。
+   Add an item to the end of the list.  Equivalent to ``a[len(a):] = [x]``.
 
 
-.. method:: list.extend(L)
+.. method:: list.extend(iterable)
    :noindex:
 
-   将一个给定列表中的所有元素都添加到另一个列表中，相当于 ``a[len(a):] = L``。
+   Extend the list by appending all the items from the iterable.  Equivalent to
+   ``a[len(a):] = iterable``.
 
 
 .. method:: list.insert(i, x)
    :noindex:
 
-   在指定位置插入一个元素。第一个参数是准备插入到其前面的那个元素的索引，例如 ``a.insert(0, x)`` 会插入到整个列表之前，而 ``a.insert(len(a), x)`` 相当于 ``a.append(x)``。
+   Insert an item at a given position.  The first argument is the index of the
+   element before which to insert, so ``a.insert(0, x)`` inserts at the front of
+   the list, and ``a.insert(len(a), x)`` is equivalent to ``a.append(x)``.
 
 
 .. method:: list.remove(x)
    :noindex:
 
-   删除列表中值为 *x* 的第一个元素。如果没有这样的元素，就会返回一个错误。
+   Remove the first item from the list whose value is equal to *x*.  It raises a
+   :exc:`ValueError` if there is no such item.
 
 
 .. method:: list.pop([i])
    :noindex:
 
-   从列表的指定位置删除元素，并将其返回。如果没有指定索引，``a.pop()`` 返回最后一个元素。元素随即从列表中被删除（方法中 *i* 两边的方括号表示这个参数是可选的，而不是要求你输入一对方括号，你会经常在Python 库参考手册中遇到这样的标记）。
+   Remove the item at the given position in the list, and return it.  If no index
+   is specified, ``a.pop()`` removes and returns the last item in the list.  (The
+   square brackets around the *i* in the method signature denote that the parameter
+   is optional, not that you should type square brackets at that position.  You
+   will see this notation frequently in the Python Library Reference.)
 
 
 .. method:: list.clear()
    :noindex:
 
-   从列表中删除所有元素。相当于 ``del a[:]``。
+   Remove all items from the list.  Equivalent to ``del a[:]``.
 
 
-.. method:: list.index(x)
+.. method:: list.index(x[, start[, end]])
    :noindex:
 
-   返回列表中第一个值为 *x* 的元素的索引。如果没有匹配的元素就会返回一个错误。
+   Return zero-based index in the list of the first item whose value is equal to *x*.
+   Raises a :exc:`ValueError` if there is no such item.
+
+   The optional arguments *start* and *end* are interpreted as in the slice
+   notation and are used to limit the search to a particular subsequence of
+   the list.  The returned index is computed relative to the beginning of the full
+   sequence rather than the *start* argument.
 
 
 .. method:: list.count(x)
    :noindex:
 
-   返回 *x* 在列表中出现的次数。
+   Return the number of times *x* appears in the list.
 
 
-.. method:: list.sort()
+.. method:: list.sort(key=None, reverse=False)
    :noindex:
 
-   对列表中的元素就地进行排序。
+   Sort the items of the list in place (the arguments can be used for sort
+   customization, see :func:`sorted` for their explanation).
 
 
 .. method:: list.reverse()
    :noindex:
 
-   就地倒排列表中的元素。
+   Reverse the elements of the list in place.
+
 
 .. method:: list.copy()
    :noindex:
 
-   返回列表的一个浅拷贝。等同于 ``a[:]``。
+   Return a shallow copy of the list.  Equivalent to ``a[:]``.
 
-下面这个示例演示了列表的大部分方法::
 
-   >>> a = [66.25, 333, 333, 1, 1234.5]
-   >>> print(a.count(333), a.count(66.25), a.count('x'))
-   2 1 0
-   >>> a.insert(2, -1)
-   >>> a.append(333)
-   >>> a
-   [66.25, 333, -1, 333, 1, 1234.5, 333]
-   >>> a.index(333)
-   1
-   >>> a.remove(333)
-   >>> a
-   [66.25, -1, 333, 1, 1234.5, 333]
-   >>> a.reverse()
-   >>> a
-   [333, 1234.5, 1, 333, -1, 66.25]
-   >>> a.sort()
-   >>> a
-   [-1, 1, 66.25, 333, 333, 1234.5]
-   >>> a.pop()
-   1234.5
-   >>> a
-   [-1, 1, 66.25, 333, 333]
+An example that uses most of the list methods::
 
-也许大家会发现像 ``insert``， ``remove`` 或者 ``sort`` 这些修改列表的方法没有打印返回值--它们返回 ``None``。 [1]_  在 python 中对所有可变的数据类型这是统一的设计原则。
+    >>> fruits = ['orange', 'apple', 'pear', 'banana', 'kiwi', 'apple', 'banana']
+    >>> fruits.count('apple')
+    2
+    >>> fruits.count('tangerine')
+    0
+    >>> fruits.index('banana')
+    3
+    >>> fruits.index('banana', 4)  # Find next banana starting a position 4
+    6
+    >>> fruits.reverse()
+    >>> fruits
+    ['banana', 'apple', 'kiwi', 'banana', 'pear', 'apple', 'orange']
+    >>> fruits.append('grape')
+    >>> fruits
+    ['banana', 'apple', 'kiwi', 'banana', 'pear', 'apple', 'orange', 'grape']
+    >>> fruits.sort()
+    >>> fruits
+    ['apple', 'apple', 'banana', 'banana', 'grape', 'kiwi', 'orange', 'pear']
+    >>> fruits.pop()
+    'pear'
+
+You might have noticed that methods like ``insert``, ``remove`` or ``sort`` that
+only modify the list have no return value printed -- they return the default
+``None``. [1]_  This is a design principle for all mutable data structures in
+Python.
+
+Another thing you might notice is that not all data can be sorted or
+compared.  For instance, ``[None, 'hello', 10]`` doesn't sort because
+integers can't be compared to strings and *None* can't be compared to
+other types.  Also, there are some types that don't have a defined
+ordering relation.  For example, ``3+4j < 5+7j`` isn't a valid
+comparison.
 
 
 .. _tut-lists-as-stacks:
 
-把列表当作堆栈使用
+Using Lists as Stacks
 ---------------------
 
 .. sectionauthor:: Ka-Ping Yee <ping@lfw.org>
 
 
-列表方法使得列表可以很方便的做为一个堆栈来使用，堆栈作为特定的数据结构，最先进入的元素最后一个被释放（后进先出）。用 :meth:`append` 方法可以把一个元素添加到堆栈顶。用不指定索引的 :meth:`pop` 方法可以把一个元素从堆栈顶释放出来。例如::
+The list methods make it very easy to use a list as a stack, where the last
+element added is the first element retrieved ("last-in, first-out").  To add an
+item to the top of the stack, use :meth:`append`.  To retrieve an item from the
+top of the stack, use :meth:`pop` without an explicit index.  For example::
 
    >>> stack = [3, 4, 5]
    >>> stack.append(6)
@@ -135,14 +165,19 @@ Python 的列表数据类型包含更多的方法。这里是所有的列表对�
 
 .. _tut-lists-as-queues:
 
-把列表当作队列使用
+Using Lists as Queues
 ---------------------
 
 .. sectionauthor:: Ka-Ping Yee <ping@lfw.org>
 
-你也可以把列表当做队列使用，队列作为特定的数据结构，最先进入的元素最先释放（先进先出）。不过，列表这样用效率不高。相对来说从列表末尾添加和弹出很快；在头部插入和弹出很慢（因为，为了一个元素，要移动整个列表中的所有元素）。 
+It is also possible to use a list as a queue, where the first element added is
+the first element retrieved ("first-in, first-out"); however, lists are not
+efficient for this purpose.  While appends and pops from the end of list are
+fast, doing inserts or pops from the beginning of a list is slow (because all
+of the other elements have to be shifted by one).
 
-要实现队列，使用 `collections.deque`_，它为在首尾两端快速插入和删除而设计。例如::
+To implement a queue, use :class:`collections.deque` which was designed to
+have fast appends and pops from both ends.  For example::
 
    >>> from collections import deque
    >>> queue = deque(["Eric", "John", "Michael"])
@@ -158,12 +193,15 @@ Python 的列表数据类型包含更多的方法。这里是所有的列表对�
 
 .. _tut-listcomps:
 
-列表推导式
+List Comprehensions
 -------------------
 
-列表推导式为从序列中创建列表提供了一个简单的方法。普通的应用程式通过将一些操作应用于序列的每个成员并通过返回的元素创建列表，或者通过满足特定条件的元素创建子序列。
+List comprehensions provide a concise way to create lists.
+Common applications are to make new lists where each element is the result of
+some operations applied to each member of another sequence or iterable, or to
+create a subsequence of those elements that satisfy a certain condition.
 
-例如, 假设我们创建一个 squares 列表, 可以像下面方式::
+For example, assume we want to create a list of squares, like::
 
    >>> squares = []
    >>> for x in range(10):
@@ -172,24 +210,29 @@ Python 的列表数据类型包含更多的方法。这里是所有的列表对�
    >>> squares
    [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
 
-注意这个 for 循环中的被创建(或被重写)的名为 ``x`` 的变量在循环完毕后依然存在。使用如下方法，我们可以计算squares的值而不会产生任何的副作用::
+Note that this creates (or overwrites) a variable named ``x`` that still exists
+after the loop completes.  We can calculate the list of squares without any
+side effects using::
 
    squares = list(map(lambda x: x**2, range(10)))
 
-或者，等价于::
+or, equivalently::
 
    squares = [x**2 for x in range(10)]
 
-上面这个方法更加简明且易读.
+which is more concise and readable.
 
-列表推导式由包含一个表达式的括号组成，表达式后面跟随一个 `for`_ 子句，之后可以有零或多个 `for`_ 或 `if`_ 子句。结果是一个列表，由表达式依据其后面的 `for`_ 和 `if`_ 子句上下文计算而来的结果构成。
-
-例如，如下的列表推导式结合两个列表的元素，如果元素之间不相等的话::
+A list comprehension consists of brackets containing an expression followed
+by a :keyword:`!for` clause, then zero or more :keyword:`!for` or :keyword:`!if`
+clauses.  The result will be a new list resulting from evaluating the expression
+in the context of the :keyword:`!for` and :keyword:`!if` clauses which follow it.
+For example, this listcomp combines the elements of two lists if they are not
+equal::
 
    >>> [(x, y) for x in [1,2,3] for y in [3,1,4] if x != y]
    [(1, 3), (1, 4), (2, 3), (2, 1), (2, 4), (3, 1), (3, 4)]
 
-等同于::
+and it's equivalent to::
 
    >>> combs = []
    >>> for x in [1,2,3]:
@@ -200,9 +243,11 @@ Python 的列表数据类型包含更多的方法。这里是所有的列表对�
    >>> combs
    [(1, 3), (1, 4), (2, 3), (2, 1), (2, 4), (3, 1), (3, 4)]
 
-值得注意的是在上面两个方法中的 `for`_ 和 `if`_ 语句的顺序。
+Note how the order of the :keyword:`for` and :keyword:`if` statements is the
+same in both these snippets.
 
-如果想要得到一个元组（例如，上面例子中的 ``(x, y)``），必须要加上括号::
+If the expression is a tuple (e.g. the ``(x, y)`` in the previous example),
+it must be parenthesized. ::
 
    >>> vec = [-4, -2, 0, 2, 4]
    >>> # create a new list with the values doubled
@@ -223,7 +268,7 @@ Python 的列表数据类型包含更多的方法。这里是所有的列表对�
    [(0, 0), (1, 1), (2, 4), (3, 9), (4, 16), (5, 25)]
    >>> # the tuple must be parenthesized, otherwise an error is raised
    >>> [x, x**2 for x in range(6)]
-     File "<stdin>", line 1, in ?
+     File "<stdin>", line 1, in <module>
        [x, x**2 for x in range(6)]
                   ^
    SyntaxError: invalid syntax
@@ -232,18 +277,20 @@ Python 的列表数据类型包含更多的方法。这里是所有的列表对�
    >>> [num for elem in vec for num in elem]
    [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-列表推导式可使用复杂的表达式和嵌套函数::
+List comprehensions can contain complex expressions and nested functions::
 
    >>> from math import pi
    >>> [str(round(pi, i)) for i in range(1, 6)]
    ['3.1', '3.14', '3.142', '3.1416', '3.14159']
 
-嵌套的列表推导式
+Nested List Comprehensions
 --------------------------
 
-列表解析中的第一个表达式可以是任何表达式，包括列表解析。
+The initial expression in a list comprehension can be any arbitrary expression,
+including another list comprehension.
 
-考虑下面由三个长度为 4 的列表组成的 3x4 矩阵::
+Consider the following example of a 3x4 matrix implemented as a list of
+3 lists of length 4::
 
    >>> matrix = [
    ...     [1, 2, 3, 4],
@@ -251,12 +298,14 @@ Python 的列表数据类型包含更多的方法。这里是所有的列表对�
    ...     [9, 10, 11, 12],
    ... ]
 
-现在，如果你想交换行和列，可以用嵌套的列表推导式::
+The following list comprehension will transpose rows and columns::
 
    >>> [[row[i] for row in matrix] for i in range(4)]
    [[1, 5, 9], [2, 6, 10], [3, 7, 11], [4, 8, 12]]
 
-像前面看到的，嵌套的列表推导式是对 `for`_ 后面的内容进行求值，所以上例就等价于::
+As we saw in the previous section, the nested listcomp is evaluated in
+the context of the :keyword:`for` that follows it, so this example is
+equivalent to::
 
    >>> transposed = []
    >>> for i in range(4):
@@ -265,7 +314,7 @@ Python 的列表数据类型包含更多的方法。这里是所有的列表对�
    >>> transposed
    [[1, 5, 9], [2, 6, 10], [3, 7, 11], [4, 8, 12]]
 
-反过来说，如下也是一样的::
+which, in turn, is the same as::
 
    >>> transposed = []
    >>> for i in range(4):
@@ -278,19 +327,24 @@ Python 的列表数据类型包含更多的方法。这里是所有的列表对�
    >>> transposed
    [[1, 5, 9], [2, 6, 10], [3, 7, 11], [4, 8, 12]]
 
-在实际中，你应该更喜欢使用内置函数组成复杂流程语句。对此种情况 `zip()`_ 函数将会做的更好::
+In the real world, you should prefer built-in functions to complex flow statements.
+The :func:`zip` function would do a great job for this use case::
 
    >>> list(zip(*matrix))
    [(1, 5, 9), (2, 6, 10), (3, 7, 11), (4, 8, 12)]
 
-更多关于本行中使用的星号的说明，参考 :ref:`tut-unpacking-arguments`。
+See :ref:`tut-unpacking-arguments` for details on the asterisk in this line.
 
 .. _tut-del:
 
-`del`_ 语句
-============================
+The :keyword:`!del` statement
+=============================
 
-有个方法可以从列表中按给定的索引而不是值来删除一个子项： `del`_ 语句。它不同于有返回值的 :meth:`pop` 方法。语句 `del`_  还可以从列表中删除切片或清空整个列表（我们以前介绍过一个方法是将空列表赋值给列表的切片）。例如::
+There is a way to remove an item from a list given its index instead of its
+value: the :keyword:`del` statement.  This differs from the :meth:`pop` method
+which returns a value.  The :keyword:`!del` statement can also be used to remove
+slices from a list or clear the entire list (which we did earlier by assignment
+of an empty list to the slice).  For example::
 
    >>> a = [-1, 1, 66.25, 333, 333, 1234.5]
    >>> del a[0]
@@ -303,21 +357,26 @@ Python 的列表数据类型包含更多的方法。这里是所有的列表对�
    >>> a
    []
 
-`del`_ 也可以删除整个变量::
+:keyword:`del` can also be used to delete entire variables::
 
    >>> del a
 
-此后再引用命名 ``a`` 会引发错误（直到另一个值赋给它为止）。我们在后面的内容中可以看到 `del`_ 的其它用法。
+Referencing the name ``a`` hereafter is an error (at least until another value
+is assigned to it).  We'll find other uses for :keyword:`del` later.
 
 
 .. _tut-tuples:
 
-元组和序列
+Tuples and Sequences
 ====================
 
-我们知道列表和字符串有很多通用的属性，例如索引和切割操作。它们是 *序列* 类型（参见 `Sequence Types — list, tuple, range`_ ）中的两种。因为 Python 是一个在不停进化的语言，也可能会加入其它的序列类型，这里介绍另一种标准序列类型： *元组* 。 
+We saw that lists and strings have many common properties, such as indexing and
+slicing operations.  They are two examples of *sequence* data types (see
+:ref:`typesseq`).  Since Python is an evolving language, other sequence data
+types may be added.  There is also another standard sequence data type: the
+*tuple*.
 
-一个元组由数个逗号分隔的值组成，例如::
+A tuple consists of a number of values separated by commas, for instance::
 
    >>> t = 12345, 54321, 'hello!'
    >>> t[0]
@@ -339,11 +398,26 @@ Python 的列表数据类型包含更多的方法。这里是所有的列表对�
    ([1, 2, 3], [3, 2, 1])
 
 
-如你所见，元组在输出时总是有括号的，以便于正确表达嵌套结构。在输入时可以有或没有括号，不过经常括号都是必须的（如果元组是一个更大的表达式的一部分）。不能给元组的一个独立的元素赋值（尽管你可以通过联接和切割来模拟）。还可以创建包含可变对象的元组，例如列表。
+As you see, on output tuples are always enclosed in parentheses, so that nested
+tuples are interpreted correctly; they may be input with or without surrounding
+parentheses, although often parentheses are necessary anyway (if the tuple is
+part of a larger expression).  It is not possible to assign to the individual
+items of a tuple, however it is possible to create tuples which contain mutable
+objects, such as lists.
 
-虽然元组和列表很类似，它们经常被用来在不同的情况和不同的用途。元组有很多用途。例如 (x, y) 坐标对，数据库中的员工记录等等。元组就像字符串， `不可变的`_。通常包含不同种类的元素并通过分拆（参阅本节后面的内容) 或索引访问（如果是 `namedtuples`_，甚至可以通过属性）。列表是 `可变的`_ ，它们的元素通常是相同类型的并通过迭代访问。
+Though tuples may seem similar to lists, they are often used in different
+situations and for different purposes.
+Tuples are :term:`immutable`, and usually contain a heterogeneous sequence of
+elements that are accessed via unpacking (see later in this section) or indexing
+(or even by attribute in the case of :func:`namedtuples <collections.namedtuple>`).
+Lists are :term:`mutable`, and their elements are usually homogeneous and are
+accessed by iterating over the list.
 
-一个特殊的问题是构造包含零个或一个元素的元组：为了适应这种情况，语法上有一些额外的改变。一对空的括号可以创建空元组；要创建一个单元素元组可以在值后面跟一个逗号（在括号中放入一个单值不够明确）。丑陋，但是有效。例如::
+A special problem is the construction of tuples containing 0 or 1 items: the
+syntax has some extra quirks to accommodate these.  Empty tuples are constructed
+by an empty pair of parentheses; a tuple with one item is constructed by
+following a value with a comma (it is not sufficient to enclose a single value
+in parentheses). Ugly, but effective.  For example::
 
    >>> empty = ()
    >>> singleton = 'hello',    # <-- note trailing comma
@@ -354,23 +428,34 @@ Python 的列表数据类型包含更多的方法。这里是所有的列表对�
    >>> singleton
    ('hello',)
 
-语句 ``t = 12345, 54321, 'hello!'`` 是 *元组封装* （tuple packing）的一个例子：值 ``12345`` ， ``54321`` 和 ``'hello!'`` 被封装进元组。其逆操作可能是这样::
+The statement ``t = 12345, 54321, 'hello!'`` is an example of *tuple packing*:
+the values ``12345``, ``54321`` and ``'hello!'`` are packed together in a tuple.
+The reverse operation is also possible::
 
    >>> x, y, z = t
 
-这个调用等号右边可以是任何线性序列，称之为 *序列拆封* 非常恰当。序列拆封要求左侧的变量数目与序列的元素个数相同。要注意的是可变参数（multiple assignment ）其实只是元组封装和序列拆封的一个结合。
+This is called, appropriately enough, *sequence unpacking* and works for any
+sequence on the right-hand side.  Sequence unpacking requires that there are as
+many variables on the left side of the equals sign as there are elements in the
+sequence.  Note that multiple assignment is really just a combination of tuple
+packing and sequence unpacking.
 
 
 .. _tut-sets:
 
-集合
+Sets
 ====
 
-Python 还包含了一个数据类型 —— *set* （集合）。集合是一个无序不重复元素的集。基本功能包括关系测试和消除重复元素。集合对象还支持 union（联合），intersection（交），difference（差）和 sysmmetric difference（对称差集）等数学运算。 
+Python also includes a data type for *sets*.  A set is an unordered collection
+with no duplicate elements.  Basic uses include membership testing and
+eliminating duplicate entries.  Set objects also support mathematical operations
+like union, intersection, difference, and symmetric difference.
 
-大括号或 `set()`_ 函数可以用来创建集合。注意：想要创建空集合，你必须使用 ``set()`` 而不是 ``{}``。后者用于创建空字典，我们在下一节中介绍的一种数据结构。
+Curly braces or the :func:`set` function can be used to create sets.  Note: to
+create an empty set you have to use ``set()``, not ``{}``; the latter creates an
+empty dictionary, a data structure that we discuss in the next section.
 
-以下是一个简单的演示::
+Here is a brief demonstration::
 
    >>> basket = {'apple', 'orange', 'apple', 'pear', 'orange', 'banana'}
    >>> print(basket)                      # show that duplicates have been removed
@@ -388,77 +473,101 @@ Python 还包含了一个数据类型 —— *set* （集合）。集合是一�
    {'a', 'r', 'b', 'c', 'd'}
    >>> a - b                              # letters in a but not in b
    {'r', 'd', 'b'}
-   >>> a | b                              # letters in either a or b
+   >>> a | b                              # letters in a or b or both
    {'a', 'c', 'r', 'd', 'b', 'm', 'z', 'l'}
    >>> a & b                              # letters in both a and b
    {'a', 'c'}
    >>> a ^ b                              # letters in a or b but not both
    {'r', 'd', 'b', 'm', 'z', 'l'}
 
-类似 :ref:`列表推导式 <tut-listcomps>`，这里有一种集合推导式语法::
+Similarly to :ref:`list comprehensions <tut-listcomps>`, set comprehensions
+are also supported::
 
    >>> a = {x for x in 'abracadabra' if x not in 'abc'}
    >>> a
    {'r', 'd'}
 
 
-
 .. _tut-dictionaries:
 
-字典
+Dictionaries
 ============
 
-另一个非常有用的 Python 内建数据类型是 *字典* （参见 `Mapping Types — dict`_ ）。字典在某些语言中可能称为 联合内存 （ associative memories ）或 联合数组 （ associative arrays ）。序列是以连续的整数为索引，与此不同的是，字典以 *关键字* 为索引，关键字可以是任意不可变类型，通常用字符串或数值。如果元组中只包含字符串和数字，它可以做为关键字，如果它直接或间接的包含了可变对象，就不能当做关键字。不能用列表做关键字，因为列表可以用索引、切割或者 :meth:`append` 和 :meth:`extend` 等方法改变。 
+Another useful data type built into Python is the *dictionary* (see
+:ref:`typesmapping`). Dictionaries are sometimes found in other languages as
+"associative memories" or "associative arrays".  Unlike sequences, which are
+indexed by a range of numbers, dictionaries are indexed by *keys*, which can be
+any immutable type; strings and numbers can always be keys.  Tuples can be used
+as keys if they contain only strings, numbers, or tuples; if a tuple contains
+any mutable object either directly or indirectly, it cannot be used as a key.
+You can't use lists as keys, since lists can be modified in place using index
+assignments, slice assignments, or methods like :meth:`append` and
+:meth:`extend`.
 
-理解字典的最佳方式是把它看做无序的键： *值对* （key:value 对）集合，键必须是互不相同的（在同一个字典之内）。一对大括号创建一个空的字典： ``{}`` 。初始化列表时，在大括号内放置一组逗号分隔的键：值对，这也是字典输出的方式。 
+It is best to think of a dictionary as a set of *key: value* pairs,
+with the requirement that the keys are unique (within one dictionary). A pair of
+braces creates an empty dictionary: ``{}``. Placing a comma-separated list of
+key:value pairs within the braces adds initial key:value pairs to the
+dictionary; this is also the way dictionaries are written on output.
 
-字典的主要操作是依据键来存储和析取值。也可以用 ``del`` 来删除键：值对（key:value）。如果你用一个已经存在的关键字存储值，以前为该关键字分配的值就会被遗忘。试图从一个不存在的键中取值会导致错误。
+The main operations on a dictionary are storing a value with some key and
+extracting the value given the key.  It is also possible to delete a key:value
+pair with ``del``. If you store using a key that is already in use, the old
+value associated with that key is forgotten.  It is an error to extract a value
+using a non-existent key.
 
-对一个字典执行 ``list(d.keys())`` 将返回一个字典中所有关键字组成的无序列表（如果你想要排序，只需使用 ``sorted(d.keys()) ）``。[2]_ 使用 `in`_ 关键字（指Python语法）可以检查字典中是否存在某个关键字（指字典）。
+Performing ``list(d)`` on a dictionary returns a list of all the keys
+used in the dictionary, in insertion order (if you want it sorted, just use
+``sorted(d)`` instead). To check whether a single key is in the
+dictionary, use the :keyword:`in` keyword.
 
-这里是使用字典的一个小示例::
+Here is a small example using a dictionary::
 
    >>> tel = {'jack': 4098, 'sape': 4139}
    >>> tel['guido'] = 4127
    >>> tel
-   {'sape': 4139, 'guido': 4127, 'jack': 4098}
+   {'jack': 4098, 'sape': 4139, 'guido': 4127}
    >>> tel['jack']
    4098
    >>> del tel['sape']
    >>> tel['irv'] = 4127
    >>> tel
-   {'guido': 4127, 'irv': 4127, 'jack': 4098}
-   >>> list(tel.keys())
-   ['irv', 'guido', 'jack']
-   >>> sorted(tel.keys())
+   {'jack': 4098, 'guido': 4127, 'irv': 4127}
+   >>> list(tel)
+   ['jack', 'guido', 'irv']
+   >>> sorted(tel)
    ['guido', 'irv', 'jack']
    >>> 'guido' in tel
    True
    >>> 'jack' not in tel
    False
 
-`dict()`_ 构造函数可以直接从 key-value 对中创建字典::
+The :func:`dict` constructor builds dictionaries directly from sequences of
+key-value pairs::
 
    >>> dict([('sape', 4139), ('guido', 4127), ('jack', 4098)])
-   {'sape': 4139, 'jack': 4098, 'guido': 4127}
+   {'sape': 4139, 'guido': 4127, 'jack': 4098}
 
-此外，字典推导式可以从任意的键值表达式中创建字典::
+In addition, dict comprehensions can be used to create dictionaries from
+arbitrary key and value expressions::
 
    >>> {x: x**2 for x in (2, 4, 6)}
    {2: 4, 4: 16, 6: 36}
 
-如果关键字都是简单的字符串，有时通过关键字参数指定 key-value 对更为方便::
+When the keys are simple strings, it is sometimes easier to specify pairs using
+keyword arguments::
 
    >>> dict(sape=4139, guido=4127, jack=4098)
-   {'sape': 4139, 'jack': 4098, 'guido': 4127}
+   {'sape': 4139, 'guido': 4127, 'jack': 4098}
 
 
 .. _tut-loopidioms:
 
-循环技巧
+Looping Techniques
 ==================
 
-在字典中循环时，关键字和对应的值可以使用 :meth:`items` 方法同时解读出来::
+When looping through dictionaries, the key and corresponding value can be
+retrieved at the same time using the :meth:`items` method. ::
 
    >>> knights = {'gallahad': 'the pure', 'robin': 'the brave'}
    >>> for k, v in knights.items():
@@ -467,7 +576,8 @@ Python 还包含了一个数据类型 —— *set* （集合）。集合是一�
    gallahad the pure
    robin the brave
 
-在序列中循环时，索引位置和对应值可以使用 `enumerate()`_ 函数同时得到::
+When looping through a sequence, the position index and corresponding value can
+be retrieved at the same time using the :func:`enumerate` function. ::
 
    >>> for i, v in enumerate(['tic', 'tac', 'toe']):
    ...     print(i, v)
@@ -476,7 +586,8 @@ Python 还包含了一个数据类型 —— *set* （集合）。集合是一�
    1 tac
    2 toe
 
-同时循环两个或更多的序列，可以使用 `zip()`_ 整体打包::
+To loop over two or more sequences at the same time, the entries can be paired
+with the :func:`zip` function. ::
 
    >>> questions = ['name', 'quest', 'favorite color']
    >>> answers = ['lancelot', 'the holy grail', 'blue']
@@ -487,7 +598,8 @@ Python 还包含了一个数据类型 —— *set* （集合）。集合是一�
    What is your quest?  It is the holy grail.
    What is your favorite color?  It is blue.
 
-需要逆向循环序列的话，先正向定位序列，然后调用 `reversed()`_ 函数::
+To loop over a sequence in reverse, first specify the sequence in a forward
+direction and then call the :func:`reversed` function. ::
 
    >>> for i in reversed(range(1, 10, 2)):
    ...     print(i)
@@ -498,7 +610,8 @@ Python 还包含了一个数据类型 —— *set* （集合）。集合是一�
    3
    1
 
-要按排序后的顺序循环序列的话，使用 `sorted()`_ 函数，它不改动原序列，而是生成一个新的已排序的序列::
+To loop over a sequence in sorted order, use the :func:`sorted` function which
+returns a new sorted list while leaving the source unaltered. ::
 
    >>> basket = ['apple', 'orange', 'apple', 'pear', 'orange', 'banana']
    >>> for f in sorted(set(basket)):
@@ -509,48 +622,81 @@ Python 还包含了一个数据类型 —— *set* （集合）。集合是一�
    orange
    pear
 
-若要在循环内部修改正在遍历的序列（例如复制某些元素），建议您首先制作副本。在序列上循环不会隐式地创建副本。切片表示法使这尤其方便::
+It is sometimes tempting to change a list while you are looping over it;
+however, it is often simpler and safer to create a new list instead. ::
 
-   >>> words = ['cat', 'window', 'defenestrate']
-   >>> for w in words[:]:  # Loop over a slice copy of the entire list.
-   ...     if len(w) > 6:
-   ...         words.insert(0, w)
+   >>> import math
+   >>> raw_data = [56.2, float('NaN'), 51.7, 55.3, 52.5, float('NaN'), 47.8]
+   >>> filtered_data = []
+   >>> for value in raw_data:
+   ...     if not math.isnan(value):
+   ...         filtered_data.append(value)
    ...
-   >>> words
-   ['defenestrate', 'cat', 'window', 'defenestrate']
+   >>> filtered_data
+   [56.2, 51.7, 55.3, 52.5, 47.8]
 
 
 .. _tut-conditions:
 
-深入条件控制
+More on Conditions
 ==================
 
-``while`` 和 ``if`` 语句中使用的条件不仅可以使用比较，而且可以包含任意的操作。 
+The conditions used in ``while`` and ``if`` statements can contain any
+operators, not just comparisons.
 
-比较操作符 ``in`` 和 ``not in`` 审核值是否在一个区间之内。操作符 ``is`` 和 ``is not`` 比较两个对象是否相同；这只和诸如列表这样的可变对象有关。所有的比较操作符具有相同的优先级，低于所有的数值操作。 
+The comparison operators ``in`` and ``not in`` check whether a value occurs
+(does not occur) in a sequence.  The operators ``is`` and ``is not`` compare
+whether two objects are really the same object; this only matters for mutable
+objects like lists.  All comparison operators have the same priority, which is
+lower than that of all numerical operators.
 
-比较操作可以传递。例如 ``a < b == c`` 审核是否 ``a`` 小于 ``b`` 并且 ``b`` 等于 ``c``。 
+Comparisons can be chained.  For example, ``a < b == c`` tests whether ``a`` is
+less than ``b`` and moreover ``b`` equals ``c``.
 
-比较操作可以通过逻辑操作符 ``and`` 和 ``or`` 组合，比较的结果可以用 ``not`` 来取反义。这些操作符的优先级又低于比较操作符，在它们之中，``not`` 具有最高的优先级， ``or`` 优先级最低，所以 ``A and not B or C`` 等于 ``(A and (notB)) or C``。当然，括号也可以用于比较表达式。 
+Comparisons may be combined using the Boolean operators ``and`` and ``or``, and
+the outcome of a comparison (or of any other Boolean expression) may be negated
+with ``not``.  These have lower priorities than comparison operators; between
+them, ``not`` has the highest priority and ``or`` the lowest, so that ``A and
+not B or C`` is equivalent to ``(A and (not B)) or C``. As always, parentheses
+can be used to express the desired composition.
 
-逻辑操作符 ``and`` 和 ``or`` 也称作短路操作符：它们的参数从左向右解析，一旦结果可以确定就停止。例如，如果 ``A`` 和 ``C`` 为真而 ``B`` 为假， ``A and B and C`` 不会解析 ``C``。作用于一个普通的非逻辑值时，短路操作符的返回值通常是最后一个变量。 
+The Boolean operators ``and`` and ``or`` are so-called *short-circuit*
+operators: their arguments are evaluated from left to right, and evaluation
+stops as soon as the outcome is determined.  For example, if ``A`` and ``C`` are
+true but ``B`` is false, ``A and B and C`` does not evaluate the expression
+``C``.  When used as a general value and not as a Boolean, the return value of a
+short-circuit operator is the last evaluated argument.
 
-可以把比较或其它逻辑表达式的返回值赋给一个变量，例如::
+It is possible to assign the result of a comparison or other Boolean expression
+to a variable.  For example, ::
 
    >>> string1, string2, string3 = '', 'Trondheim', 'Hammer Dance'
    >>> non_null = string1 or string2 or string3
    >>> non_null
    'Trondheim'
 
-需要注意的是 Python 与 C 不同，在表达式内部不能赋值。C 程序员经常对此抱怨，不过它避免了一类在 C 程序中司空见惯的错误：想要在解析式中使 ``==`` 时误用了 ``=`` 操作符。
+Note that in Python, unlike C, assignment inside expressions must be done
+explicitly with the
+:ref:`walrus operator <why-can-t-i-use-an-assignment-in-an-expression>` ``:=``.
+This avoids a common class of problems encountered in C programs: typing ``=``
+in an expression when ``==`` was intended.
 
 
 .. _tut-comparing:
 
-比较序列和其它类型
+Comparing Sequences and Other Types
 ===================================
-
-序列对象可以与相同类型的其它对象比较。比较操作按 *字典序* 进行：首先比较前两个元素，如果不同，就决定了比较的结果；如果相同，就比较后两个元素，依此类推，直到所有序列都完成比较。如果两个元素本身就是同样类 型的序列，就递归字典序比较。如果两个序列的所有子项都相等，就认为序列相等。如果一个序列是另一个序列的初始子序列，较短的一个序列就小于另一个。字符 串的字典序按照单字符的 ASCII 顺序。下面是同类型序列之间比较的一些例子::
+Sequence objects typically may be compared to other objects with the same sequence
+type. The comparison uses *lexicographical* ordering: first the first two
+items are compared, and if they differ this determines the outcome of the
+comparison; if they are equal, the next two items are compared, and so on, until
+either sequence is exhausted. If two items to be compared are themselves
+sequences of the same type, the lexicographical comparison is carried out
+recursively.  If all items of two sequences compare equal, the sequences are
+considered equal. If one sequence is an initial sub-sequence of the other, the
+shorter sequence is the smaller (lesser) one.  Lexicographical ordering for
+strings uses the Unicode code point number to order individual characters.
+Some examples of comparisons between sequences of the same type::
 
    (1, 2, 3)              < (1, 2, 4)
    [1, 2, 3]              < [1, 2, 4]
@@ -560,31 +706,14 @@ Python 还包含了一个数据类型 —— *set* （集合）。集合是一�
    (1, 2, 3)             == (1.0, 2.0, 3.0)
    (1, 2, ('aa', 'ab'))   < (1, 2, ('abc', 'a'), 4)
 
-需要注意的是如果通过 ``<`` 或者 ``>`` 比较的对象只要具有合适的比较方法就是合法的。比如，混合数值类型是通过它们的数值进行比较的，所以 0 是等于 0.0 。否则解释器将会触发一个 `TypeError`_ 异常，而不是提供一个随意的结果。
+Note that comparing objects of different types with ``<`` or ``>`` is legal
+provided that the objects have appropriate comparison methods.  For example,
+mixed numeric types are compared according to their numeric value, so 0 equals
+0.0, etc.  Otherwise, rather than providing an arbitrary ordering, the
+interpreter will raise a :exc:`TypeError` exception.
 
 
 .. rubric:: Footnotes
 
-.. [1] 别的语言可能会返回一个变化的对象，允许方法连续执行，像 ``d->insert("a")->remove("b")->sort();``。
-
-.. [2] 调用 ``d.keys()`` 将会返回一个 :dfn:`dictionary view` 对象。它支持支持成员测试以及迭代等操作，但是它的内容不是独立的原始字典 -- 它只是一个 *视图*。
-
-
-
-.. _collections.deque: https://docs.python.org/3/library/collections.html#collections.deque
-.. _if: https://docs.python.org/3/reference/compound_stmts.html#if
-.. _for: https://docs.python.org/3/reference/compound_stmts.html#for
-.. _zip(): https://docs.python.org/3/library/functions.html#zip
-.. _del: https://docs.python.org/3/reference/simple_stmts.html#del
-.. _Sequence Types — list, tuple, range: https://docs.python.org/3/library/stdtypes.html#typesseq
-.. _不可变的: https://docs.python.org/3/glossary.html#term-immutable
-.. _可变的: https://docs.python.org/3/glossary.html#term-mutable
-.. _namedtuples: https://docs.python.org/3/library/collections.html#collections.namedtuple
-.. _set(): https://docs.python.org/3/library/stdtypes.html#set
-.. _Mapping Types — dict: https://docs.python.org/3/library/stdtypes.html#typesmapping
-.. _in: https://docs.python.org/3/reference/expressions.html#in
-.. _dict(): https://docs.python.org/3/library/stdtypes.html#dict
-.. _enumerate(): https://docs.python.org/3/library/functions.html#enumerate
-.. _reversed(): https://docs.python.org/3/library/functions.html#reversed
-.. _sorted(): https://docs.python.org/3/library/functions.html#sorted
-.. _TypeError: https://docs.python.org/3/library/exceptions.html#TypeError
+.. [1] Other languages may return the mutated object, which allows method
+       chaining, such as ``d->insert("a")->remove("b")->sort();``.

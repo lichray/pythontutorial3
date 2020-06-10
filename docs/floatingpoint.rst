@@ -1,63 +1,102 @@
+.. testsetup::
+
+    import math
+
 .. _tut-fp-issues:
 
 **************************************************
-浮点数算法：争议和限制
+Floating Point Arithmetic:  Issues and Limitations
 **************************************************
 
 .. sectionauthor:: Tim Peters <tim_one@users.sourceforge.net>
 
 
-浮点数在计算机中表达为二进制（binary）小数。例如：十进制小数::
+Floating-point numbers are represented in computer hardware as base 2 (binary)
+fractions.  For example, the decimal fraction ::
 
    0.125
 
-是 1/10 + 2/100 + 5/1000 的值，同样二进制小数::
+has value 1/10 + 2/100 + 5/1000, and in the same way the binary fraction ::
 
    0.001
 
-是 0/2 + 0/4 + 1/8。这两个数值相同。唯一的实质区别是第一个写为十进制小数记法，第二个是二进制。 
+has value 0/2 + 0/4 + 1/8.  These two fractions have identical values, the only
+real difference being that the first is written in base 10 fractional notation,
+and the second in base 2.
 
-不幸的是，大多数十进制小数不能完全用二进制小数表示。结果是，一般情况下，你输入的十进制浮点数仅由实际存储在计算机中的近似的二进制浮点数表示。
+Unfortunately, most decimal fractions cannot be represented exactly as binary
+fractions.  A consequence is that, in general, the decimal floating-point
+numbers you enter are only approximated by the binary floating-point numbers
+actually stored in the machine.
 
-这个问题更早的时候首先在十进制中发现。考虑小数形式的 1/3 ，你可以来个十进制的近似值。 ::
+The problem is easier to understand at first in base 10.  Consider the fraction
+1/3.  You can approximate that as a base 10 fraction::
 
    0.3
 
-或者更进一步的, ::
+or, better, ::
 
    0.33
 
-或者更进一步的, ::
+or, better, ::
 
    0.333
 
-诸如此类。如果你写多少位，这个结果永远不是精确的 1/3 ，但是可以无限接近 1/3 。 
+and so on.  No matter how many digits you're willing to write down, the result
+will never be exactly 1/3, but will be an increasingly better approximation of
+1/3.
 
-同样，无论在二进制中写多少位，十进制数 0.1 都不能精确表达为二进制小数。二进制来表达 1/10 是一个无限循环小数::
+In the same way, no matter how many base 2 digits you're willing to use, the
+decimal value 0.1 cannot be represented exactly as a base 2 fraction.  In base
+2, 1/10 is the infinitely repeating fraction ::
 
    0.0001100110011001100110011001100110011001100110011...
 
-在任何有限数量的位停下来，你得到的都是近似值。今天在大多数机器上，浮点数的近似使用的小数以最高的 53 位为分子，2 的幂为分母。至于 1/10 这种情况，其二进制小数是  ``3602879701896397 / 2 ** 55``，它非常接近但不完全等于1/10真实的值。
+Stop at any finite number of bits, and you get an approximation.  On most
+machines today, floats are approximated using a binary fraction with
+the numerator using the first 53 bits starting with the most significant bit and
+with the denominator as a power of two.  In the case of 1/10, the binary fraction
+is ``3602879701896397 / 2 ** 55`` which is close to but not exactly
+equal to the true value of 1/10.
 
-由于显示方式的原因，许多使用者意识不到是近似值。Python 只打印机器中存储的二进制值的十进制近似值。在大多数机器上，如果 Python 要打印 0.1 存储的二进制的真正近似值，将会显示::
+Many users are not aware of the approximation because of the way values are
+displayed.  Python only prints a decimal approximation to the true decimal
+value of the binary approximation stored by the machine.  On most machines, if
+Python were to print the true decimal value of the binary approximation stored
+for 0.1, it would have to display ::
 
    >>> 0.1
    0.1000000000000000055511151231257827021181583404541015625
 
-这么多位的数字对大多数人是没有用的，所以 Python 显示一个舍入的值 ::
+That is more digits than most people find useful, so Python keeps the number
+of digits manageable by displaying a rounded value instead ::
 
    >>> 1 / 10
    0.1
 
-只要记住即使打印的结果看上去是精确的 1/10，真正存储的值是最近似的二进制小数。
+Just remember, even though the printed result looks like the exact value
+of 1/10, the actual stored value is the nearest representable binary fraction.
 
-有趣地是，存在许多不同的十进制数共享着相同的近似二进制小数。例如，数字 ``0.1`` 和 ``0.10000000000000001`` 以及 ``0.1000000000000000055511151231257827021181583404541015625`` 都是 ``3602879701896397 / 2 ** 55`` 的近似值。因为所有这些十进制数共享相同的近似值，在保持恒等式 ``eval(repr(x)) == x`` 的同时，显示的可能是它们中的任何一个。
+Interestingly, there are many different decimal numbers that share the same
+nearest approximate binary fraction.  For example, the numbers ``0.1`` and
+``0.10000000000000001`` and
+``0.1000000000000000055511151231257827021181583404541015625`` are all
+approximated by ``3602879701896397 / 2 ** 55``.  Since all of these decimal
+values share the same approximation, any one of them could be displayed
+while still preserving the invariant ``eval(repr(x)) == x``.
 
-历史上，Python 提示符和内置的 `repr() <https://docs.python.org/3/library/functions.html#repr>`_ 函数选择一个 17 位精度的数字，``0.10000000000000001``。从 Python 3.1 开始，Python（在大多数系统上）能够从这些数字当中选择最短的一个并简单地显示 ``0.1``。
+Historically, the Python prompt and built-in :func:`repr` function would choose
+the one with 17 significant digits, ``0.10000000000000001``.   Starting with
+Python 3.1, Python (on most systems) is now able to choose the shortest of
+these and simply display ``0.1``.
 
-注意，这是二进制浮点数的自然性质：它不是 Python 中的一个 bug，也不是你的代码中的 bug。你会看到所有支持硬件浮点数算法的语言都会有这个现象（尽管有些语言默认情况下或者在所有输出模式下可能不会 *显示* 出差异）。
+Note that this is in the very nature of binary floating-point: this is not a bug
+in Python, and it is not a bug in your code either.  You'll see the same kind of
+thing in all languages that support your hardware's floating-point arithmetic
+(although some languages may not *display* the difference by default, or in all
+output modes).
 
-为了输出更好看，你可能想用字符串格式化来生成固定位数的有效数字::
+For more pleasant output, you may wish to use string formatting to produce a limited number of significant digits::
 
    >>> format(math.pi, '.12g')  # give 12 significant digits
    '3.14159265359'
@@ -68,125 +107,182 @@
    >>> repr(math.pi)
    '3.141592653589793'
 
-认识到这，在真正意义上，是一种错觉是很重要的：你在简单地舍入真实机器值的 *显示*。
 
-例如，既然 0.1 不是精确的 1/10，3 个 0.1 的值相加可能也不会得到精确的 0.3::
+It's important to realize that this is, in a real sense, an illusion: you're
+simply rounding the *display* of the true machine value.
+
+One illusion may beget another.  For example, since 0.1 is not exactly 1/10,
+summing three values of 0.1 may not yield exactly 0.3, either::
 
    >>> .1 + .1 + .1 == .3
    False
 
-另外，既然 0.1 不能更接近 1/10 的精确值而且 0.3 不能更接近 3/10 的精确值，使用 `round() <https://docs.python.org/3/library/functions.html#round>`_ 函数提前舍入也没有帮助::
+Also, since the 0.1 cannot get any closer to the exact value of 1/10 and
+0.3 cannot get any closer to the exact value of 3/10, then pre-rounding with
+:func:`round` function cannot help::
 
    >>> round(.1, 1) + round(.1, 1) + round(.1, 1) == round(.3, 1)
    False
 
-虽然这些数字不可能再更接近它们想要的精确值，`round() <https://docs.python.org/3/library/functions.html#round>`_  函数可以用于在计算之后进行舍入，这样的话不精确的结果就可以和另外一个相比较了::
+Though the numbers cannot be made closer to their intended exact values,
+the :func:`round` function can be useful for post-rounding so that results
+with inexact values become comparable to one another::
 
     >>> round(.1 + .1 + .1, 10) == round(.3, 10)
     True
 
-二进制浮点数计算有很多这样意想不到的结果。“0.1”的问题在下面"误差的表示"一节中有准确详细的解释。更完整的常见怪异现象请参见 `浮点数的危险 <http://www.lahey.com/float.htm>`_。
+Binary floating-point arithmetic holds many surprises like this.  The problem
+with "0.1" is explained in precise detail below, in the "Representation Error"
+section.  See `The Perils of Floating Point <http://www.lahey.com/float.htm>`_
+for a more complete account of other common surprises.
 
-最后我要说，“没有简单的答案”。也不要过分小心浮点数！Python 浮点数计算中的误差源之于浮点数硬件，大多数机器上每次计算误差不超过 2\*\*53 分之一。对于大多数任务这已经足够了，但是你要在心中记住这不是十进制算法，每个浮点数计算可能会带来一个新的舍入错误。
+As that says near the end, "there are no easy answers."  Still, don't be unduly
+wary of floating-point!  The errors in Python float operations are inherited
+from the floating-point hardware, and on most machines are on the order of no
+more than 1 part in 2\*\*53 per operation.  That's more than adequate for most
+tasks, but you do need to keep in mind that it's not decimal arithmetic and
+that every float operation can suffer a new rounding error.
 
-虽然确实有问题存在，对于大多数平常的浮点数运算，你只要简单地将最终显示的结果舍入到你期望的十进制位数，你就会得到你期望的最终结果。`str() <https://docs.python.org/3/library/stdtypes.html#str>`_ 通常已经足够用了，对于更好的控制可以参阅 `格式化字符串语法 <https://docs.python.org/3/library/string.html#formatstrings>`_ 中 `str.format() <https://docs.python.org/3/library/stdtypes.html#str.format>`_ 方法的格式说明符。
+While pathological cases do exist, for most casual use of floating-point
+arithmetic you'll see the result you expect in the end if you simply round the
+display of your final results to the number of decimal digits you expect.
+:func:`str` usually suffices, and for finer control see the :meth:`str.format`
+method's format specifiers in :ref:`formatstrings`.
 
-对于需要精确十进制表示的情况，可以尝试使用 `decimal <https://docs.python.org/3/library/decimal.html#module-decimal>`_ 模块，它实现的十进制运算适合会计方面的应用和高精度要求的应用。
+For use cases which require exact decimal representation, try using the
+:mod:`decimal` module which implements decimal arithmetic suitable for
+accounting applications and high-precision applications.
 
-`fractions <https://docs.python.org/3/library/fractions.html#module-fractions>`_ 模块支持另外一种形式的运算，它实现的运算基于有理数（因此像1/3这样的数字可以精确地表示）。
+Another form of exact arithmetic is supported by the :mod:`fractions` module
+which implements arithmetic based on rational numbers (so the numbers like
+1/3 can be represented exactly).
 
-如果你是浮点数操作的重度使用者，你应该看一下由 SciPy 项目提供的 Numerical Python 包和其它用于数学和统计学的包。参看 <http://scipy.org>。
+If you are a heavy user of floating point operations you should take a look
+at the Numerical Python package and many other packages for mathematical and
+statistical operations supplied by the SciPy project. See <https://scipy.org>.
 
-当你真的 *真* 想要知道浮点数精确值的时候，Python 提供这样的工具可以帮助你。`float.as_integer_ratio() <https://docs.python.org/3/library/stdtypes.html#float.as_integer_ratio>`_ 方法以分数的形式表示一个浮点数的值::
+Python provides tools that may help on those rare occasions when you really
+*do* want to know the exact value of a float.  The
+:meth:`float.as_integer_ratio` method expresses the value of a float as a
+fraction::
 
    >>> x = 3.14159
    >>> x.as_integer_ratio()
    (3537115888337719, 1125899906842624)
 
-因为比值是精确的，它可以用来无损地重新生成初始值::
+Since the ratio is exact, it can be used to losslessly recreate the
+original value::
 
     >>> x == 3537115888337719 / 1125899906842624
     True
 
-`float.hex() <https://docs.python.org/3/library/stdtypes.html#float.hex>`_ 方法以十六进制表示浮点数，给出的同样是计算机存储的精确值::
+The :meth:`float.hex` method expresses a float in hexadecimal (base
+16), again giving the exact value stored by your computer::
 
    >>> x.hex()
    '0x1.921f9f01b866ep+1'
 
-精确的十六进制表示可以用来准确地重新构建浮点数::
+This precise hexadecimal representation can be used to reconstruct
+the float value exactly::
 
     >>> x == float.fromhex('0x1.921f9f01b866ep+1')
     True
 
-因为可以精确表示，所以可以用在不同版本的 Python（与平台相关）之间可靠地移植数据以及与支持同样格式的其它语言（例如 Java 和 C99）交换数据。
+Since the representation is exact, it is useful for reliably porting values
+across different versions of Python (platform independence) and exchanging
+data with other languages that support the same format (such as Java and C99).
 
-另外一个有用的工具是 `math.fsum() <https://docs.python.org/3/library/math.html#math.fsum>`_ 函数，它帮助求和过程中减少精度的损失。当数值在不停地相加的时候，它会跟踪“丢弃的数字”。这可以给总体的准确度带来不同，以至于错误不会累积到影响最终结果的点::
+Another helpful tool is the :func:`math.fsum` function which helps mitigate
+loss-of-precision during summation.  It tracks "lost digits" as values are
+added onto a running total.  That can make a difference in overall accuracy
+so that the errors do not accumulate to the point where they affect the
+final total:
 
    >>> sum([0.1] * 10) == 1.0
    False
    >>> math.fsum([0.1] * 10) == 1.0
    True
 
-
 .. _tut-fp-error:
 
-表达错误
+Representation Error
 ====================
 
-这一节详细说明 “0.1” 示例，教你怎样自己去精确的分析此类案例。假设这里你已经对浮点数表示有基本的了解。 
+This section explains the "0.1" example in detail, and shows how you can perform
+an exact analysis of cases like this yourself.  Basic familiarity with binary
+floating-point representation is assumed.
 
-:dfn:`Representation error` 提及事实上有些（实际是大多数）十进制小数不能精确的表示为二进制小数。这是 Python （或 Perl，C，C++，Java，Fortran 以及其它很多）语言往往不能按你期待的样子显示十进制数值的根本原因。
+:dfn:`Representation error` refers to the fact that some (most, actually)
+decimal fractions cannot be represented exactly as binary (base 2) fractions.
+This is the chief reason why Python (or Perl, C, C++, Java, Fortran, and many
+others) often won't display the exact decimal number you expect.
 
-这是为什么？ 1/10 不能精确的表示为二进制小数。大多数今天的机器（2000年十一月）使用 IEEE-754 浮点数算法，大多数平台上 Python 将浮点数映射为 IEEE-754 “双精度浮点数”。754 双精度包含 53 位精度，所以计算机努力将输入的 0.1 转为 *J*/2**\ *N* 最接近的二进制小数。*J* 是一个 53 位的整数。改写::
+Why is that?  1/10 is not exactly representable as a binary fraction. Almost all
+machines today (November 2000) use IEEE-754 floating point arithmetic, and
+almost all platforms map Python floats to IEEE-754 "double precision".  754
+doubles contain 53 bits of precision, so on input the computer strives to
+convert 0.1 to the closest fraction it can of the form *J*/2**\ *N* where *J* is
+an integer containing exactly 53 bits.  Rewriting ::
 
    1 / 10 ~= J / (2**N)
 
-为::
+as ::
 
    J ~= 2**N / 10
 
-*J* 重现时正是 53 位（是 ``>= 2**52`` 而非 ``< 2**53`` ）， *N* 的最佳值是 56::
+and recalling that *J* has exactly 53 bits (is ``>= 2**52`` but ``< 2**53``),
+the best value for *N* is 56::
 
     >>> 2**52 <=  2**56 // 10  < 2**53
     True
 
-因此，56 是保持 *J* 精度的唯一 *N* 值。*J* 最好的近似值是整除的商::
+That is, 56 is the only value for *N* that leaves *J* with exactly 53 bits.  The
+best possible value for *J* is then that quotient rounded::
 
    >>> q, r = divmod(2**56, 10)
    >>> r
    6
 
-因为余数大于 10 的一半，最好的近似是取上界::
+Since the remainder is more than half of 10, the best approximation is obtained
+by rounding up::
 
    >>> q+1
    7205759403792794
 
-因此在 754 双精度中 1/10 最好的近似值是是 2**56，或::
+Therefore the best possible approximation to 1/10 in 754 double precision is::
 
    7205759403792794 / 2 ** 56
 
-分子和分母都除以2将小数缩小到::
+Dividing both the numerator and denominator by two reduces the fraction to::
 
    3602879701896397 / 2 ** 55
 
-要注意因为我们向上舍入，它其实比 1/10 稍大一点点。如果我们没有向上舍入，它会比 1/10 稍小一点。但是没办法让它 *恰好* 是 1/10！ 
+Note that since we rounded up, this is actually a little bit larger than 1/10;
+if we had not rounded up, the quotient would have been a little bit smaller than
+1/10.  But in no case can it be *exactly* 1/10!
 
-所以计算机永远也不 “知道” 1/10：它遇到上面这个小数，给出它所能得到的最佳的 754 双精度实数::
+So the computer never "sees" 1/10:  what it sees is the exact fraction given
+above, the best 754 double approximation it can get::
 
-   >>> .1 * 2**55
-   7205759403792794.0
+   >>> 0.1 * 2 ** 55
+   3602879701896397.0
 
-如果我们把这小数乘以 10\*\*55，我们可以看到其55位十进制数的值::
+If we multiply that fraction by 10\*\*55, we can see the value out to
+55 decimal digits::
 
    >>> 3602879701896397 * 10 ** 55 // 2 ** 55
    1000000000000000055511151231257827021181583404541015625
 
-这表示存储在计算机中的实际值近似等于十进制值 0.1000000000000000055511151231257827021181583404541015625。许多语言（包括旧版本的Python）会把结果舍入到 17 位有效数字，而不是显示全部的十进制值::
+meaning that the exact number stored in the computer is equal to
+the decimal value 0.1000000000000000055511151231257827021181583404541015625.
+Instead of displaying the full decimal value, many languages (including
+older versions of Python), round the result to 17 significant digits::
 
    >>> format(0.1, '.17f')
    '0.10000000000000001'
 
-`fractions <https://docs.python.org/3/library/fractions.html#module-fractions>`_ 和 `decimal <https://docs.python.org/3/library/decimal.html#module-decimal>`_ 模块使得这些计算很简单::
+The :mod:`fractions` and :mod:`decimal` modules make these calculations
+easy::
 
    >>> from decimal import Decimal
    >>> from fractions import Fraction

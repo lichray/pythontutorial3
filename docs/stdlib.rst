@@ -1,29 +1,33 @@
 .. _tut-brieftour:
 
 **********************************
-Python 标准库概览
+Brief Tour of the Standard Library
 **********************************
 
 
 .. _tut-os-interface:
 
-操作系统接口
+Operating System Interface
 ==========================
 
-`os`_ 模块提供了很多与操作系统交互的函数::
+The :mod:`os` module provides dozens of functions for interacting with the
+operating system::
 
    >>> import os
    >>> os.getcwd()      # Return the current working directory
-   'C:\\Python35'
+   'C:\\Python38'
    >>> os.chdir('/server/accesslogs')   # Change current working directory
    >>> os.system('mkdir today')   # Run the command mkdir in the system shell
    0
 
-应该用 ``import os`` 风格而非 ``from os import *``。这样可以保证随操作系统不同而有所变化的 `os.open()`_ 不会覆盖内置函数 `open()`_。
+Be sure to use the ``import os`` style instead of ``from os import *``.  This
+will keep :func:`os.open` from shadowing the built-in :func:`open` function which
+operates much differently.
 
 .. index:: builtin: help
 
-在使用一些像 `os`_ 这样的大型模块时内置的 `dir()`_ 和 `help()`_ 函数非常有用::
+The built-in :func:`dir` and :func:`help` functions are useful as interactive
+aids for working with large modules like :mod:`os`::
 
    >>> import os
    >>> dir(os)
@@ -31,7 +35,8 @@ Python 标准库概览
    >>> help(os)
    <returns an extensive manual page created from the module's docstrings>
 
-针对日常的文件和目录管理任务，`shutil`_ 模块提供了一个易于使用的高级接口::
+For daily file and directory management tasks, the :mod:`shutil` module provides
+a higher level interface that is easier to use::
 
    >>> import shutil
    >>> shutil.copyfile('data.db', 'archive.db')
@@ -42,10 +47,11 @@ Python 标准库概览
 
 .. _tut-file-wildcards:
 
-文件通配符
+File Wildcards
 ==============
 
-`glob`_ 模块提供了一个函数用于从目录通配符搜索中生成文件列表::
+The :mod:`glob` module provides a function for making file lists from directory
+wildcard searches::
 
    >>> import glob
    >>> glob.glob('*.py')
@@ -54,37 +60,59 @@ Python 标准库概览
 
 .. _tut-command-line-arguments:
 
-命令行参数
+Command Line Arguments
 ======================
 
-通用工具脚本经常调用命令行参数。这些命令行参数以链表形式存储于 `sys`_ 模块的 *argv* 变量。例如在命令行中执行 ``python demo.py one two three`` 后可以得到以下输出结果::
+Common utility scripts often need to process command line arguments. These
+arguments are stored in the :mod:`sys` module's *argv* attribute as a list.  For
+instance the following output results from running ``python demo.py one two
+three`` at the command line::
 
    >>> import sys
    >>> print(sys.argv)
    ['demo.py', 'one', 'two', 'three']
 
-`getopt`_ 模块使用 Unix `getopt()`_ 函数处理 *sys.argv*。更多的复杂命令行处理由 `argparse`_ 模块提供。
+The :mod:`argparse` module provides a more sophisticated mechanism to process
+command line arguments.  The following script extracts one or more filenames
+and an optional number of lines to be displayed::
+
+    import argparse
+
+    parser = argparse.ArgumentParser(prog = 'top',
+        description = 'Show top lines from each file')
+    parser.add_argument('filenames', nargs='+')
+    parser.add_argument('-l', '--lines', type=int, default=10)
+    args = parser.parse_args()
+    print(args)
+
+When run at the command line with ``python top.py --lines=5 alpha.txt
+beta.txt``, the script sets ``args.lines`` to ``5`` and ``args.filenames``
+to ``['alpha.txt', 'beta.txt']``.
 
 
 .. _tut-stderr:
 
-错误输出重定向和程序终止
+Error Output Redirection and Program Termination
 ================================================
 
-`sys`_ 还有 *stdin*， *stdout* 和 *stderr* 属性，即使在 *stdout* 被重定向时，后者也可以用于显示警告和错误信息::
+The :mod:`sys` module also has attributes for *stdin*, *stdout*, and *stderr*.
+The latter is useful for emitting warnings and error messages to make them
+visible even when *stdout* has been redirected::
 
    >>> sys.stderr.write('Warning, log file not found starting a new one\n')
    Warning, log file not found starting a new one
 
-大多脚本的直接终止都使用 ``sys.exit()``。
+The most direct way to terminate a script is to use ``sys.exit()``.
 
 
 .. _tut-string-pattern-matching:
 
-字符串正则匹配
+String Pattern Matching
 =======================
 
-`re`_ 模块为高级字符串处理提供了正则表达式工具。对于复杂的匹配和处理，正则表达式提供了简洁、优化的解决方案::
+The :mod:`re` module provides regular expression tools for advanced string
+processing. For complex matching and manipulation, regular expressions offer
+succinct, optimized solutions::
 
    >>> import re
    >>> re.findall(r'\bf[a-z]*', 'which foot or hand fell fastest')
@@ -92,7 +120,8 @@ Python 标准库概览
    >>> re.sub(r'(\b[a-z]+) \1', r'\1', 'cat in the the hat')
    'cat in the hat'
 
-只需简单的操作时，字符串方法最好用，因为它们易读，又容易调试::
+When only simple capabilities are needed, string methods are preferred because
+they are easier to read and debug::
 
    >>> 'tea for too'.replace('too', 'two')
    'tea for two'
@@ -100,18 +129,19 @@ Python 标准库概览
 
 .. _tut-mathematics:
 
-数学
+Mathematics
 ===========
 
-`math`_ 模块为浮点运算提供了对底层C函数库的访问::
+The :mod:`math` module gives access to the underlying C library functions for
+floating point math::
 
    >>> import math
-   >>> math.cos(math.pi / 4.0)
+   >>> math.cos(math.pi / 4)
    0.70710678118654757
    >>> math.log(1024, 2)
    10.0
 
-`random`_ 提供了生成随机数的工具::
+The :mod:`random` module provides tools for making random selections::
 
    >>> import random
    >>> random.choice(['apple', 'pear', 'banana'])
@@ -123,21 +153,36 @@ Python 标准库概览
    >>> random.randrange(6)    # random integer chosen from range(6)
    4
 
-SciPy <http://scipy.org> 项目提供了许多数值计算的模块。
+The :mod:`statistics` module calculates basic statistical properties
+(the mean, median, variance, etc.) of numeric data::
 
+    >>> import statistics
+    >>> data = [2.75, 1.75, 1.25, 0.25, 0.5, 1.25, 3.5]
+    >>> statistics.mean(data)
+    1.6071428571428572
+    >>> statistics.median(data)
+    1.25
+    >>> statistics.variance(data)
+    1.3720238095238095
+
+The SciPy project <https://scipy.org> has many other modules for numerical
+computations.
 
 .. _tut-internet-access:
 
-互联网访问
+Internet Access
 ===============
 
-有几个模块用于访问互联网以及处理网络通信协议。其中最简单的两个是用于处理从 urls 接收的数据的 `urllib.request`_ 以及用于发送电子邮件的 `smtplib`_::
+There are a number of modules for accessing the internet and processing internet
+protocols. Two of the simplest are :mod:`urllib.request` for retrieving data
+from URLs and :mod:`smtplib` for sending mail::
 
    >>> from urllib.request import urlopen
-   >>> for line in urlopen('http://tycho.usno.navy.mil/cgi-bin/timer.pl'):
-   ...     line = line.decode('utf-8')  # Decoding the binary data to text.
-   ...     if 'EST' in line or 'EDT' in line:  # look for Eastern Time
-   ...         print(line)
+   >>> with urlopen('http://tycho.usno.navy.mil/cgi-bin/timer.pl') as response:
+   ...     for line in response:
+   ...         line = line.decode('utf-8')  # Decoding the binary data to text.
+   ...         if 'EST' in line or 'EDT' in line:  # look for Eastern Time
+   ...             print(line)
 
    <BR>Nov. 25, 09:43:32 PM EST
 
@@ -151,15 +196,19 @@ SciPy <http://scipy.org> 项目提供了许多数值计算的模块。
    ... """)
    >>> server.quit()
 
-(注意第二个例子需要在 localhost 运行一个邮件服务器。)
+(Note that the second example needs a mailserver running on localhost.)
 
 
 .. _tut-dates-and-times:
 
-日期和时间
+Dates and Times
 ===============
 
-`datetime`_ 模块为日期和时间处理同时提供了简单和复杂的方法。支持日期和时间算法的同时，实现的重点放在更有效的处理和格式化输出。该模块还支持时区处理。 ::
+The :mod:`datetime` module supplies classes for manipulating dates and times in
+both simple and complex ways. While date and time arithmetic is supported, the
+focus of the implementation is on efficient member extraction for output
+formatting and manipulation.  The module also supports objects that are timezone
+aware. ::
 
    >>> # dates are easily constructed and formatted
    >>> from datetime import date
@@ -176,14 +225,14 @@ SciPy <http://scipy.org> 项目提供了许多数值计算的模块。
    14368
 
 
-
 .. _tut-data-compression:
 
-数据压缩
+Data Compression
 ================
 
-以下模块直接支持通用的数据打包和压缩格式：`zlib`_， `gzip`_， `bz2`_， `lzma`_， `zipfile`_ 以及 
-`tarfile`_。 ::
+Common data archiving and compression formats are directly supported by modules
+including: :mod:`zlib`, :mod:`gzip`, :mod:`bz2`, :mod:`lzma`, :mod:`zipfile` and
+:mod:`tarfile`. ::
 
    >>> import zlib
    >>> s = b'witch which has which witches wrist watch'
@@ -200,12 +249,16 @@ SciPy <http://scipy.org> 项目提供了许多数值计算的模块。
 
 .. _tut-performance-measurement:
 
-性能度量
+Performance Measurement
 =======================
 
-有些用户对了解解决同一问题的不同方法之间的性能差异很感兴趣。Python 提供了一个度量工具，为这些问题提供了直接答案。
+Some Python users develop a deep interest in knowing the relative performance of
+different approaches to the same problem. Python provides a measurement tool
+that answers those questions immediately.
 
-例如，使用元组封装和拆封来交换元素看起来要比使用传统的方法要诱人的多。`timeit`_ 证明了后者更快一些::
+For example, it may be tempting to use the tuple packing and unpacking feature
+instead of the traditional approach to swapping arguments. The :mod:`timeit`
+module quickly demonstrates a modest performance advantage::
 
    >>> from timeit import Timer
    >>> Timer('t=a; a=b; b=t', 'a=1; b=2').timeit()
@@ -213,17 +266,26 @@ SciPy <http://scipy.org> 项目提供了许多数值计算的模块。
    >>> Timer('a,b = b,a', 'a=1; b=2').timeit()
    0.54962537085770791
 
-相对于 `timeit`_ 的细粒度，`profile`_ 和 `pstats`_ 模块提供了针对更大代码块的时间度量工具。
+In contrast to :mod:`timeit`'s fine level of granularity, the :mod:`profile` and
+:mod:`pstats` modules provide tools for identifying time critical sections in
+larger blocks of code.
 
 
 .. _tut-quality-control:
 
-质量控制
+Quality Control
 ===============
 
-开发高质量软件的方法之一是为每一个函数开发测试代码，并且在开发过程中经常进行测试。 
+One approach for developing high quality software is to write tests for each
+function as it is developed and to run those tests frequently during the
+development process.
 
-`doctest`_ 模块提供了一个工具，扫描模块并根据程序中内嵌的文档字符串执行测试。测试构造如同简单的将它的输出结果剪切并粘贴到文档字符串中。通过用户提供的例子，它发展了文档，允许 doctest 模块确认代码的结果是否与文档一致::
+The :mod:`doctest` module provides a tool for scanning a module and validating
+tests embedded in a program's docstrings.  Test construction is as simple as
+cutting-and-pasting a typical call along with its results into the docstring.
+This improves the documentation by providing the user with an example and it
+allows the doctest module to make sure the code remains true to the
+documentation::
 
    def average(values):
        """Computes the arithmetic mean of a list of numbers.
@@ -236,8 +298,9 @@ SciPy <http://scipy.org> 项目提供了许多数值计算的模块。
    import doctest
    doctest.testmod()   # automatically validate the embedded tests
 
-
-`unittest`_ 模块不像 `doctest`_ 模块那么容易使用，不过它可以在一个独立的文件里提供一个更全面的测试集::
+The :mod:`unittest` module is not as effortless as the :mod:`doctest` module,
+but it allows a more comprehensive set of tests to be maintained in a separate
+file::
 
    import unittest
 
@@ -251,65 +314,40 @@ SciPy <http://scipy.org> 项目提供了许多数值计算的模块。
            with self.assertRaises(TypeError):
                average(20, 30, 70)
 
-   unittest.main() # Calling from the command line invokes all tests
+   unittest.main()  # Calling from the command line invokes all tests
 
 
 .. _tut-batteries-included:
 
-“瑞士军刀”
+Batteries Included
 ==================
 
-Python 展现了“瑞士军刀”的哲学。这可以通过它更大的包的高级和健壮的功能来得到最好的展现。列如:
+Python has a "batteries included" philosophy.  This is best seen through the
+sophisticated and robust capabilities of its larger packages. For example:
 
-* `xmlrpc.client`_ 和 `xmlrpc.server`_ 模块让远程过程调用变得轻而易举。尽管模块有这样的名字，用户无需拥有 XML 的知识或处理 XML。
+* The :mod:`xmlrpc.client` and :mod:`xmlrpc.server` modules make implementing
+  remote procedure calls into an almost trivial task.  Despite the modules
+  names, no direct knowledge or handling of XML is needed.
 
-* `email`_ 包是一个管理邮件信息的库，包括MIME和其它基于 RFC2822 的信息文档。
-  
-  不同于实际发送和接收信息的 `smtplib`_ 和 `poplib`_ 模块，email 包包含一个构造或解析复杂消息结构（包括附件）及实现互联网编码和头协议的完整工具集。
+* The :mod:`email` package is a library for managing email messages, including
+  MIME and other :rfc:`2822`-based message documents. Unlike :mod:`smtplib` and
+  :mod:`poplib` which actually send and receive messages, the email package has
+  a complete toolset for building or decoding complex message structures
+  (including attachments) and for implementing internet encoding and header
+  protocols.
 
-* `xml.dom`_ 和 `xml.sax`_ 包为流行的信息交换格式提供了强大的支持。同样， `csv`_  模块支持在通用数据库格式中直接读写。
-  
-  综合起来，这些模块和包大大简化了 Python 应用程序和其它工具之间的数据交换。
+* The :mod:`json` package provides robust support for parsing this
+  popular data interchange format.  The :mod:`csv` module supports
+  direct reading and writing of files in Comma-Separated Value format,
+  commonly supported by databases and spreadsheets.  XML processing is
+  supported by the :mod:`xml.etree.ElementTree`, :mod:`xml.dom` and
+  :mod:`xml.sax` packages. Together, these modules and packages
+  greatly simplify data interchange between Python applications and
+  other tools.
 
-* 国际化由 `gettext`_， `locale`_ 和 `codecs`_ 包支持。
+* The :mod:`sqlite3` module is a wrapper for the SQLite database
+  library, providing a persistent database that can be updated and
+  accessed using slightly nonstandard SQL syntax.
 
-
-
-.. _os: https://docs.python.org/3/library/os.html#module-os
-.. _os.open(): https://docs.python.org/3/library/os.html#os.open
-.. _open(): https://docs.python.org/3/library/functions.html#open
-.. _dir(): https://docs.python.org/3/library/functions.html#dir
-.. _help(): https://docs.python.org/3/library/functions.html#help
-.. _shutil: https://docs.python.org/3/library/shutil.html#module-shutil
-.. _glob: https://docs.python.org/3/library/glob.html#module-glob
-.. _sys: https://docs.python.org/3/library/sys.html#module-sys
-.. _getopt: https://docs.python.org/3/library/getopt.html#module-getopt
-.. _getopt(): https://docs.python.org/3/library/getopt.html#module-getopt
-.. _argparse: https://docs.python.org/3/library/argparse.html#module-argparse
-.. _re: https://docs.python.org/3/library/re.html#module-re
-.. _math: https://docs.python.org/3/library/math.html#module-math
-.. _random: https://docs.python.org/3/library/random.html#module-random
-.. _urllib.request: https://docs.python.org/3/library/urllib.request.html#module-urllib.request
-.. _smtplib: https://docs.python.org/3/library/smtplib.html#module-smtplib
-.. _datetime: https://docs.python.org/3/library/datetime.html#module-datetime
-.. _zlib: https://docs.python.org/3/library/zlib.html#module-zlib
-.. _gzip: https://docs.python.org/3/library/gzip.html#module-gzip
-.. _bz2: https://docs.python.org/3/library/bz2.html#module-bz2
-.. _lzma: https://docs.python.org/3/library/lzma.html#module-lzma
-.. _zipfile: https://docs.python.org/3/library/zipfile.html#module-zipfile
-.. _tarfile: https://docs.python.org/3/library/tarfile.html#module-tarfile
-.. _timeit: https://docs.python.org/3/library/timeit.html#module-timeit
-.. _profile: https://docs.python.org/3/library/profile.html#module-profile
-.. _pstats: https://docs.python.org/3/library/profile.html#module-pstats
-.. _doctest: https://docs.python.org/3/library/doctest.html#module-doctest
-.. _unittest: https://docs.python.org/3/library/unittest.html#module-unittest
-.. _xmlrpc.client: https://docs.python.org/3/library/xmlrpc.client.html#module-xmlrpc.client
-.. _xmlrpc.server: https://docs.python.org/3/library/xmlrpc.server.html#module-xmlrpc.server
-.. _email: https://docs.python.org/3/library/email.html#module-email
-.. _poplib: https://docs.python.org/3/library/poplib.html#module-poplib
-.. _xml.dom: https://docs.python.org/3/library/xml.dom.html#module-xml.dom
-.. _xml.sax: https://docs.python.org/3/library/xml.sax.html#module-xml.sax
-.. _csv: https://docs.python.org/3/library/csv.html#module-csv
-.. _gettext: https://docs.python.org/3/library/gettext.html#module-gettext
-.. _locale: https://docs.python.org/3/library/locale.html#module-locale
-.. _codecs: https://docs.python.org/3/library/codecs.html#module-codecs
+* Internationalization is supported by a number of modules including
+  :mod:`gettext`, :mod:`locale`, and the :mod:`codecs` package.

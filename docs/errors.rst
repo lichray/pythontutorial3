@@ -1,63 +1,89 @@
 .. _tut-errors:
 
 *********************
-错误和异常
+Errors and Exceptions
 *********************
 
-至今为止还没有进一步的谈论过错误信息，不过在你已经试验过的那些例子中，可能已经遇到过一些。Python 中（至少）有两种错误：语法错误和异常（ *syntax errors* 和 *exceptions* ）。
+Until now error messages haven't been more than mentioned, but if you have tried
+out the examples you have probably seen some.  There are (at least) two
+distinguishable kinds of errors: *syntax errors* and *exceptions*.
 
 
 .. _tut-syntaxerrors:
 
-语法错误
+Syntax Errors
 =============
 
-语法错误，也被称作解析错误，也许是你学习 Python 过程中最常见抱怨::
+Syntax errors, also known as parsing errors, are perhaps the most common kind of
+complaint you get while you are still learning Python::
 
    >>> while True print('Hello world')
-     File "<stdin>", line 1, in ?
+     File "<stdin>", line 1
        while True print('Hello world')
                       ^
    SyntaxError: invalid syntax
 
-语法分析器指出错误行，并且在检测到错误的位置前面显示一个小“箭头”。 错误是由箭头 *前面* 的标记引起的（或者至少是这么检测的）： 这个例子中，函数 `print()`_ 被发现存在错误，因为它前面少了一个冒号（ ``':'`` ）。 错误会输出文件名和行号，所以如果是从脚本输入的你就知道去哪里检查错误了。
+The parser repeats the offending line and displays a little 'arrow' pointing at
+the earliest point in the line where the error was detected.  The error is
+caused by (or at least detected at) the token *preceding* the arrow: in the
+example, the error is detected at the function :func:`print`, since a colon
+(``':'``) is missing before it.  File name and line number are printed so you
+know where to look in case the input came from a script.
 
 
 .. _tut-exceptions:
 
-异常
+Exceptions
 ==========
 
-即使一条语句或表达式在语法上是正确的，当试图执行它时也可能会引发错误。运行期检测到的错误称为 *异常*，并且程序不会无条件的崩溃：很快，你将学到如何在 Python 程序中处理它们。然而，大多数异常都不会被程序处理，像这里展示的一样最终会产生一个错误信息::
+Even if a statement or expression is syntactically correct, it may cause an
+error when an attempt is made to execute it. Errors detected during execution
+are called *exceptions* and are not unconditionally fatal: you will soon learn
+how to handle them in Python programs.  Most exceptions are not handled by
+programs, however, and result in error messages as shown here::
 
    >>> 10 * (1/0)
    Traceback (most recent call last):
-     File "<stdin>", line 1, in ?
-   ZeroDivisionError: int division or modulo by zero
+     File "<stdin>", line 1, in <module>
+   ZeroDivisionError: division by zero
    >>> 4 + spam*3
    Traceback (most recent call last):
-     File "<stdin>", line 1, in ?
+     File "<stdin>", line 1, in <module>
    NameError: name 'spam' is not defined
    >>> '2' + 2
    Traceback (most recent call last):
-     File "<stdin>", line 1, in ?
+     File "<stdin>", line 1, in <module>
    TypeError: Can't convert 'int' object to str implicitly
 
-错误信息的最后一行指出发生了什么错误。异常也有不同的类型，异常类型做为错误信息的一部分显示出来：示例中的异常分别为 零除错误（ `ZeroDivisionError`_ ） ，命名错误（ `NameError`_） 和 类型错误（ `TypeError`_ ）。打印错误信息时，异常的类型作为异常的内置名显示。对于所有的内置异常都是如此，不过用户自定义异常就不一定了（尽管这是一个很有用的约定）。标准异常名是内置的标识（没有保留关键字）。 
+The last line of the error message indicates what happened. Exceptions come in
+different types, and the type is printed as part of the message: the types in
+the example are :exc:`ZeroDivisionError`, :exc:`NameError` and :exc:`TypeError`.
+The string printed as the exception type is the name of the built-in exception
+that occurred.  This is true for all built-in exceptions, but need not be true
+for user-defined exceptions (although it is a useful convention). Standard
+exception names are built-in identifiers (not reserved keywords).
 
-这一行后一部分是关于该异常类型的详细说明，这意味着它的内容依赖于异常类型。
+The rest of the line provides detail based on the type of exception and what
+caused it.
 
-错误信息的前半部分以堆栈的形式列出异常发生的位置。通常在堆栈中列出了源代码行，然而，来自标准输入的源码不会显示出来。 
+The preceding part of the error message shows the context where the exception
+happened, in the form of a stack traceback. In general it contains a stack
+traceback listing source lines; however, it will not display lines read from
+standard input.
 
-`内置的异常`_ 列出了内置异常和它们的含义。
+:ref:`bltin-exceptions` lists the built-in exceptions and their meanings.
 
 
 .. _tut-handling:
 
-异常处理
+Handling Exceptions
 ===================
 
-通过编程处理选择的异常是可行的。看一下下面的例子：它会一直要求用户输入，直到输入一个合法的整数为止，但允许用户中断这个程序（使用 :kbd:`Control-C` 或系统支持的任何方法）。注意：用户产生的中断会引发一个 `KeyboardInterrupt`_ 异常。 ::
+It is possible to write programs that handle selected exceptions. Look at the
+following example, which asks the user for input until a valid integer has been
+entered, but allows the user to interrupt the program (using :kbd:`Control-C` or
+whatever the operating system supports); note that a user-generated interruption
+is signalled by raising the :exc:`KeyboardInterrupt` exception. ::
 
    >>> while True:
    ...     try:
@@ -67,26 +93,64 @@
    ...         print("Oops!  That was no valid number.  Try again...")
    ...
 
-`try`_ 语句按如下方式工作。
+The :keyword:`try` statement works as follows.
 
-* 首先，执行 *try* 子句 （在 `try`_ 和 `except`_ 关键字之间的部分）。
+* First, the *try clause* (the statement(s) between the :keyword:`try` and
+  :keyword:`except` keywords) is executed.
 
-* 如果没有异常发生， *except* 子句 在 `try`_ 语句执行完毕后就被忽略了。
+* If no exception occurs, the *except clause* is skipped and execution of the
+  :keyword:`try` statement is finished.
 
-* 如果在 try 子句执行过程中发生了异常，那么该子句其余的部分就会被忽略。
-  
-  如果异常匹配于 `except`_ 关键字后面指定的异常类型，就执行对应的except子句。然后继续执行 `try`_ 语句之后的代码。
+* If an exception occurs during execution of the try clause, the rest of the
+  clause is skipped.  Then if its type matches the exception named after the
+  :keyword:`except` keyword, the except clause is executed, and then execution
+  continues after the :keyword:`try` statement.
 
-* 如果发生了一个异常，在 `except`_ 子句中没有与之匹配的分支，它就会传递到上一级 `try`_  语句中。
-  
-  如果最终仍找不到对应的处理语句，它就成为一个 *未处理异常*，终止程序运行，显示提示信息。
+* If an exception occurs which does not match the exception named in the except
+  clause, it is passed on to outer :keyword:`try` statements; if no handler is
+  found, it is an *unhandled exception* and execution stops with a message as
+  shown above.
 
-一个 `try`_ 语句可能包含多个 except 子句，分别指定处理不同的异常。至多只会有一个分支被执行。异常处理程序只会处理对应的 try 子句中发生的异常，在同一个 `try`_ 语句中，其他子句中发生的异常则不作处理。一个 except 子句可以在括号中列出多个异常的名字，例如::
+A :keyword:`try` statement may have more than one except clause, to specify
+handlers for different exceptions.  At most one handler will be executed.
+Handlers only handle exceptions that occur in the corresponding try clause, not
+in other handlers of the same :keyword:`!try` statement.  An except clause may
+name multiple exceptions as a parenthesized tuple, for example::
 
    ... except (RuntimeError, TypeError, NameError):
    ...     pass
 
-最后一个 except 子句可以省略异常名称，以作为通配符使用。你需要慎用此法，因为它会轻易隐藏一个实际的程序错误！可以使用这种方法打印一条错误信息，然后重新抛出异常（允许调用者处理这个异常)::
+A class in an :keyword:`except` clause is compatible with an exception if it is
+the same class or a base class thereof (but not the other way around --- an
+except clause listing a derived class is not compatible with a base class).  For
+example, the following code will print B, C, D in that order::
+
+   class B(Exception):
+       pass
+
+   class C(B):
+       pass
+
+   class D(C):
+       pass
+
+   for cls in [B, C, D]:
+       try:
+           raise cls()
+       except D:
+           print("D")
+       except C:
+           print("C")
+       except B:
+           print("B")
+
+Note that if the except clauses were reversed (with ``except B`` first), it
+would have printed B, B, B --- the first matching except clause is triggered.
+
+The last except clause may omit the exception name(s), to serve as a wildcard.
+Use this with extreme caution, since it is easy to mask a real programming error
+in this way!  It can also be used to print an error message and then re-raise
+the exception (allowing a caller to handle the exception as well)::
 
    import sys
 
@@ -102,33 +166,46 @@
        print("Unexpected error:", sys.exc_info()[0])
        raise
 
-`try`_ ... `except`_ 语句可以带有一个 *else子句*，该子句只能出现在所有 except 子句之后。当 try 语句没有抛出异常时，需要执行一些代码，可以使用这个子句。例如::
+The :keyword:`try` ... :keyword:`except` statement has an optional *else
+clause*, which, when present, must follow all except clauses.  It is useful for
+code that must be executed if the try clause does not raise an exception.  For
+example::
 
    for arg in sys.argv[1:]:
        try:
            f = open(arg, 'r')
-       except IOError:
+       except OSError:
            print('cannot open', arg)
        else:
            print(arg, 'has', len(f.readlines()), 'lines')
            f.close()
 
-使用 `else`_ 子句比在 `try`_ 子句中附加代码要好，因为这样可以避免 `try`_ ... `except`_ 意外的截获本来不属于它们保护的那些代码抛出的异常。 
+The use of the :keyword:`!else` clause is better than adding additional code to
+the :keyword:`try` clause because it avoids accidentally catching an exception
+that wasn't raised by the code being protected by the :keyword:`!try` ...
+:keyword:`!except` statement.
 
-发生异常时，可能会有一个附属值，作为异常的 *参数* 存在。这个参数是否存在、是什么类型，依赖于异常的类型。 
+When an exception occurs, it may have an associated value, also known as the
+exception's *argument*. The presence and type of the argument depend on the
+exception type.
 
-在异常名（列表）之后，也可以为 except 子句指定一个变量。这个变量绑定于一个异常实例，它存储在 ``instance.args`` 的参数中。为了方便起见，异常实例定义了 `__str__() <https://docs.python.org/3/reference/datamodel.html#object.__str__>`_ ，这样就可以直接访问过打印参数而不必引用 ``.args``。这种做法不受鼓励。相反，更好的做法是给异常传递一个参数（如果要传递多个参数，可以传递一个元组），把它绑定到 message 属性。一旦异常发生，它会在抛出前绑定所有指定的属性。 ::
+The except clause may specify a variable after the exception name.  The
+variable is bound to an exception instance with the arguments stored in
+``instance.args``.  For convenience, the exception instance defines
+:meth:`__str__` so the arguments can be printed directly without having to
+reference ``.args``.  One may also instantiate an exception first before
+raising it and add any attributes to it as desired. ::
 
    >>> try:
-   ...    raise Exception('spam', 'eggs')
+   ...     raise Exception('spam', 'eggs')
    ... except Exception as inst:
-   ...    print(type(inst))    # the exception instance
-   ...    print(inst.args)     # arguments stored in .args
-   ...    print(inst)          # __str__ allows args to be printed directly,
-   ...                         # but may be overridden in exception subclasses
-   ...    x, y = inst.args     # unpack args
-   ...    print('x =', x)
-   ...    print('y =', y)
+   ...     print(type(inst))    # the exception instance
+   ...     print(inst.args)     # arguments stored in .args
+   ...     print(inst)          # __str__ allows args to be printed directly,
+   ...                          # but may be overridden in exception subclasses
+   ...     x, y = inst.args     # unpack args
+   ...     print('x =', x)
+   ...     print('y =', y)
    ...
    <class 'Exception'>
    ('spam', 'eggs')
@@ -136,9 +213,12 @@
    x = spam
    y = eggs
 
-对于那些未处理的异常，如果一个它们带有参数，那么就会被作为异常信息的最后部分（“详情”）打印出来。
+If an exception has arguments, they are printed as the last part ('detail') of
+the message for unhandled exceptions.
 
-异常处理器不仅仅处理那些在 try 子句中立刻发生的异常，也会处理那些 try 子句中调用的函数内部发生的异常。例如::
+Exception handlers don't just handle exceptions if they occur immediately in the
+try clause, but also if they occur inside functions that are called (even
+indirectly) in the try clause. For example::
 
    >>> def this_fails():
    ...     x = 1/0
@@ -148,24 +228,32 @@
    ... except ZeroDivisionError as err:
    ...     print('Handling run-time error:', err)
    ...
-   Handling run-time error: int division or modulo by zero
+   Handling run-time error: division by zero
 
 
 .. _tut-raising:
 
-抛出异常
+Raising Exceptions
 ==================
 
-`raise`_ 语句允许程序员强制抛出一个指定的异常。例如::
+The :keyword:`raise` statement allows the programmer to force a specified
+exception to occur. For example::
 
    >>> raise NameError('HiThere')
    Traceback (most recent call last):
-     File "<stdin>", line 1, in ?
+     File "<stdin>", line 1, in <module>
    NameError: HiThere
 
-要抛出的异常由 `raise`_ 的唯一参数标识。它必需是一个异常实例或异常类（继承自 `Exception`_ 的类）。
+The sole argument to :keyword:`raise` indicates the exception to be raised.
+This must be either an exception instance or an exception class (a class that
+derives from :class:`Exception`).  If an exception class is passed, it will
+be implicitly instantiated by calling its constructor with no arguments::
 
-如果你需要明确一个异常是否抛出，但不想处理它，`raise`_ 语句可以让你很简单的重新抛出该异常::
+   raise ValueError  # shorthand for 'raise ValueError()'
+
+If you need to determine whether an exception was raised but don't intend to
+handle it, a simpler form of the :keyword:`raise` statement allows you to
+re-raise the exception::
 
    >>> try:
    ...     raise NameError('HiThere')
@@ -175,37 +263,25 @@
    ...
    An exception flew by!
    Traceback (most recent call last):
-     File "<stdin>", line 2, in ?
+     File "<stdin>", line 2, in <module>
    NameError: HiThere
 
 
 .. _tut-userexceptions:
 
-用户自定义异常
+User-defined Exceptions
 =======================
 
-在程序中可以通过创建新的异常类型来命名自己的异常（Python 类的内容请参见 :ref:`tut-classes` ）。异常类通常应该直接或间接的从 `Exception`_ 类派生，例如::
+Programs may name their own exceptions by creating a new exception class (see
+:ref:`tut-classes` for more about Python classes).  Exceptions should typically
+be derived from the :exc:`Exception` class, either directly or indirectly.
 
-   >>> class MyError(Exception):
-   ...     def __init__(self, value):
-   ...         self.value = value
-   ...     def __str__(self):
-   ...         return repr(self.value)
-   ...
-   >>> try:
-   ...     raise MyError(2*2)
-   ... except MyError as e:
-   ...     print('My exception occurred, value:', e.value)
-   ...
-   My exception occurred, value: 4
-   >>> raise MyError('oops!')
-   Traceback (most recent call last):
-     File "<stdin>", line 1, in ?
-   __main__.MyError: 'oops!'
-
-在这个例子中，`Exception`_ 默认的 `__init__() <https://docs.python.org/3/reference/datamodel.html#object.__init__>`_ 被覆盖。新的方式简单的创建 *value* 属性。这就替换了原来创建 *args* 属性的方式。 
-
-异常类中可以定义任何其它类中可以定义的东西，但是通常为了保持简单，只在其中加入几个属性信息，以供异常处理句柄提取。如果一个新创建的模块中需要抛出几种不同的错误时，一个通常的作法是为该模块定义一个异常基类，然后针对不同的错误类型派生出对应的异常子类::
+Exception classes can be defined which do anything any other class can do, but
+are usually kept simple, often only offering a number of attributes that allow
+information about the error to be extracted by handlers for the exception.  When
+creating a module that can raise several distinct errors, a common practice is
+to create a base class for exceptions defined by that module, and subclass that
+to create specific exception classes for different error conditions::
 
    class Error(Exception):
        """Base class for exceptions in this module."""
@@ -238,17 +314,22 @@
            self.next = next
            self.message = message
 
-与标准异常相似，大多数异常的命名都以 “Error” 结尾。
+Most exceptions are defined with names that end in "Error", similar to the
+naming of the standard exceptions.
 
-很多标准模块中都定义了自己的异常，用以报告在他们所定义的函数中可能发生的错误。关于类的进一步信息请参见 :ref:`tut-classes` 一章。
+Many standard modules define their own exceptions to report errors that may
+occur in functions they define.  More information on classes is presented in
+chapter :ref:`tut-classes`.
 
 
 .. _tut-cleanup:
 
-定义清理行为
+Defining Clean-up Actions
 =========================
 
-`try`_ 语句还有另一个可选的子句，目的在于定义在任何情况下都一定要执行的功能。例如::
+The :keyword:`try` statement has another optional clause which is intended to
+define clean-up actions that must be executed under all circumstances.  For
+example::
 
    >>> try:
    ...     raise KeyboardInterrupt
@@ -257,10 +338,49 @@
    ...
    Goodbye, world!
    Traceback (most recent call last):
-     File "<stdin>", line 2, in ?
+     File "<stdin>", line 2, in <module>
    KeyboardInterrupt
 
-不管有没有发生异常，*finally子句* 在程序离开 `try`_ 后都一定会被执行。当 `try`_ 语句中发生了未被 `except`_ 捕获的异常（或者它发生在 `except`_ 或 `else`_ 子句中），在 `finally`_ 子句执行完后它会被重新抛出。 `try`_ 语句经由 `break`_ ，`continue`_ 或 `return`_ 语句退 出也一样会执行 `finally`_ 子句。以下是一个更复杂些的例子::
+If a :keyword:`finally` clause is present, the :keyword:`!finally`
+clause will execute as the last task before the :keyword:`try`
+statement completes. The :keyword:`!finally` clause runs whether or
+not the :keyword:`!try` statement produces an exception. The following
+points discuss more complex cases when an exception occurs:
+
+* If an exception occurs during execution of the :keyword:`!try`
+  clause, the exception may be handled by an :keyword:`except`
+  clause. If the exception is not handled by an :keyword:`!except`
+  clause, the exception is re-raised after the :keyword:`!finally`
+  clause has been executed.
+
+* An exception could occur during execution of an :keyword:`!except`
+  or :keyword:`!else` clause. Again, the exception is re-raised after
+  the :keyword:`!finally` clause has been executed.
+
+* If the :keyword:`!try` statement reaches a :keyword:`break`,
+  :keyword:`continue` or :keyword:`return` statement, the
+  :keyword:`!finally` clause will execute just prior to the
+  :keyword:`!break`, :keyword:`!continue` or :keyword:`!return`
+  statement's execution.
+
+* If a :keyword:`!finally` clause includes a :keyword:`!return`
+  statement, the returned value will be the one from the
+  :keyword:`!finally` clause's :keyword:`!return` statement, not the
+  value from the :keyword:`!try` clause's :keyword:`!return`
+  statement.
+
+For example::
+
+   >>> def bool_return():
+   ...     try:
+   ...         return True
+   ...     finally:
+   ...         return False
+   ...
+   >>> bool_return()
+   False
+
+A more complicated example::
 
    >>> def divide(x, y):
    ...     try:
@@ -273,7 +393,7 @@
    ...         print("executing finally clause")
    ...
    >>> divide(2, 1)
-   result is 2
+   result is 2.0
    executing finally clause
    >>> divide(2, 0)
    division by zero!
@@ -281,48 +401,45 @@
    >>> divide("2", "1")
    executing finally clause
    Traceback (most recent call last):
-     File "<stdin>", line 1, in ?
+     File "<stdin>", line 1, in <module>
      File "<stdin>", line 3, in divide
    TypeError: unsupported operand type(s) for /: 'str' and 'str'
 
-如你所见， `finally`_ 子句在任何情况下都会执行。`TypeError`_ 在两个字符串相除的时候抛出，未被 except 子句捕获，因此在 `finally`_ 子句执行完毕后重新抛出。 
+As you can see, the :keyword:`finally` clause is executed in any event.  The
+:exc:`TypeError` raised by dividing two strings is not handled by the
+:keyword:`except` clause and therefore re-raised after the :keyword:`!finally`
+clause has been executed.
 
-在真实场景的应用程序中，`finally`_ 子句用于释放外部资源（文件 或网络连接之类的），无论它们的使用过程中是否出错。
+In real world applications, the :keyword:`finally` clause is useful for
+releasing external resources (such as files or network connections), regardless
+of whether the use of the resource was successful.
 
 
 .. _tut-cleanup-with:
 
-预定义清理行为
+Predefined Clean-up Actions
 ===========================
 
-有些对象定义了标准的清理行为，无论对象操作是否成功，不再需要该对象的时候就会起作用。以下示例尝试打开文件并把内容打印到屏幕上。 ::
+Some objects define standard clean-up actions to be undertaken when the object
+is no longer needed, regardless of whether or not the operation using the object
+succeeded or failed. Look at the following example, which tries to open a file
+and print its contents to the screen. ::
 
    for line in open("myfile.txt"):
-       print(line)
+       print(line, end="")
 
-这段代码的问题在于在代码执行完后没有立即关闭打开的文件。这在简单的脚本里没什么，但是大型应用程序就会出问题。`with`_ 语句使得文件之类的对象可以 确保总能及时准确地进行清理。 ::
+The problem with this code is that it leaves the file open for an indeterminate
+amount of time after this part of the code has finished executing.
+This is not an issue in simple scripts, but can be a problem for larger
+applications. The :keyword:`with` statement allows objects like files to be
+used in a way that ensures they are always cleaned up promptly and correctly. ::
 
    with open("myfile.txt") as f:
        for line in f:
-           print(line)
+           print(line, end="")
 
-语句执行后，文件 *f* 总会被关闭，即使是在处理文件中的数据时出错也一样。其它对象是否提供了预定义的清理行为要查看它们的文档。
+After the statement is executed, the file *f* is always closed, even if a
+problem was encountered while processing the lines. Objects which, like files,
+provide predefined clean-up actions will indicate this in their documentation.
 
 
-
-.. _print(): https://docs.python.org/3/library/functions.html#print
-.. _ZeroDivisionError: https://docs.python.org/3/library/exceptions.html#ZeroDivisionError
-.. _NameError: https://docs.python.org/3/library/exceptions.html#NameError
-.. _TypeError: https://docs.python.org/3/library/exceptions.html#TypeError
-.. _内置的异常: https://docs.python.org/3/library/exceptions.html#bltin-exceptions
-.. _KeyboardInterrupt: https://docs.python.org/3/library/exceptions.html#KeyboardInterrupt
-.. _try: https://docs.python.org/3/reference/compound_stmts.html#try
-.. _except: https://docs.python.org/3/reference/compound_stmts.html#except
-.. _else: https://docs.python.org/3/reference/compound_stmts.html#else
-.. _raise: https://docs.python.org/3/reference/simple_stmts.html#raise
-.. _Exception: https://docs.python.org/3/library/exceptions.html#Exception
-.. _finally: https://docs.python.org/3/reference/compound_stmts.html#finally
-.. _break: https://docs.python.org/3/reference/simple_stmts.html#break
-.. _continue: https://docs.python.org/3/reference/simple_stmts.html#continue
-.. _return: https://docs.python.org/3/reference/simple_stmts.html#return
-.. _with: https://docs.python.org/3/reference/compound_stmts.html#with

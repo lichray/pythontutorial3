@@ -2,49 +2,85 @@
 .. _tut-venv:
 
 *********************************
-虚拟环境和包
+Virtual Environments and Packages
 *********************************
 
-简介
+Introduction
 ============
 
-Python 应用程序经常会使用一些不属于标准库的包和模块。应用程序有时候需要某个特定版本的库，因为它需要一个特定的 bug 已得到修复的库或者它是使用了一个过时版本的库的接口编写的。
+Python applications will often use packages and modules that don't
+come as part of the standard library.  Applications will sometimes
+need a specific version of a library, because the application may
+require that a particular bug has been fixed or the application may be
+written using an obsolete version of the library's interface.
 
-这就意味着可能无法安装一个 Python 来满足每个应用程序的要求。如果应用程序 A 需要一个特定模块的 1.0 版本但是应用程序 B 需要该模块的 2.0 版本，这两个应用程序的要求是冲突的，安装版本 1.0 或者版本 2.0 将会导致其中一个应用程序不能运行。
+This means it may not be possible for one Python installation to meet
+the requirements of every application.  If application A needs version
+1.0 of a particular module but application B needs version 2.0, then
+the requirements are in conflict and installing either version 1.0 or 2.0
+will leave one application unable to run.
 
-这个问题的解决方案就是创建一个 `虚拟环境 <https://docs.python.org/3/glossary.html#term-virtual-environment>`_ （通常简称为 “virtualenv”），包含一个特定版本的 Python，以及一些附加的包的独立的目录树。
+The solution for this problem is to create a :term:`virtual environment`, a
+self-contained directory tree that contains a Python installation for a
+particular version of Python, plus a number of additional packages.
 
-不同的应用程序可以使用不同的虚拟环境。为了解决前面例子中的冲突，应用程序 A 可以有自己的虚拟环境，其中安装了特定模块的 1.0 版本。而应用程序 B 拥有另外一个安装了特定模块 2.0 版本的虚拟环境。如果应用程序 B 需求一个库升级到 3.0 的话，这也不会影响到应用程序 A 的环境。
+Different applications can then use different virtual environments.
+To resolve the earlier example of conflicting requirements,
+application A can have its own virtual environment with version 1.0
+installed while application B has another virtual environment with version 2.0.
+If application B requires a library be upgraded to version 3.0, this will
+not affect application A's environment.
 
 
-创建虚拟环境
+Creating Virtual Environments
 =============================
 
-用于创建和管理虚拟环境的脚本叫做 :program:`pyvenv`。:program:`pyvenv` 通常会安装你可用的 Python 中最新的版本。这个脚本也能指定安装一个特定的版本的 Python，因此如果在你的系统中有多个版本的 Python 的话，你可以运行 ``pyvenv-3.5`` 或者你想要的任何版本来选择一个指定的 Python 版本。
+The module used to create and manage virtual environments is called
+:mod:`venv`.  :mod:`venv` will usually install the most recent version of
+Python that you have available. If you have multiple versions of Python on your
+system, you can select a specific Python version by running ``python3`` or
+whichever version you want.
 
-要创建一个 virtualenv，首先决定一个你想要存放的目录接着运行 :program:`pyvenv` 后面携带着目录名::
+To create a virtual environment, decide upon a directory where you want to
+place it, and run the :mod:`venv` module as a script with the directory path::
 
-   pyvenv tutorial-env
+   python3 -m venv tutorial-env
 
-如果目录不存在的话，这将会创建一个 ``tutorial-env`` 目录，并且也在目录里面创建一个包含 Python 解释器，标准库，以及各种配套文件的 Python “副本”。
+This will create the ``tutorial-env`` directory if it doesn't exist,
+and also create directories inside it containing a copy of the Python
+interpreter, the standard library, and various supporting files.
 
-一旦你已经创建了一个虚拟环境，你必须激活它。
+A common directory location for a virtual environment is ``.venv``.
+This name keeps the directory typically hidden in your shell and thus
+out of the way while giving it a name that explains why the directory
+exists. It also prevents clashing with ``.env`` environment variable
+definition files that some tooling supports.
 
-在 Windows 上，运行::
+Once you've created a virtual environment, you may activate it.
 
-  tutorial-env/Scripts/activate
+On Windows, run::
 
-在 Unix 或者 MacOS 上，运行::
+  tutorial-env\Scripts\activate.bat
+
+On Unix or MacOS, run::
 
   source tutorial-env/bin/activate
 
-（这个脚本是用 bash shell 编写的。如果你使用 :program:`csh` 或者 :program:`fish` shell，你应该使用 ``activate.csh`` 和 ``activate.fish`` 来替代。）
+(This script is written for the bash shell.  If you use the
+:program:`csh` or :program:`fish` shells, there are alternate
+``activate.csh`` and ``activate.fish`` scripts you should use
+instead.)
 
-激活了虚拟环境会改变你的 shell 提示符，显示你正在使用的虚拟环境，并且修改了环境以致运行 ``python`` 将会让你得到了特定的 Python 版本。例如::
+Activating the virtual environment will change your shell's prompt to show what
+virtual environment you're using, and modify the environment so that running
+``python`` will get you that particular version and installation of Python.
+For example:
 
-  -> source ~/envs/tutorial-env/bin/activate
-  (tutorial-env) -> python
-  Python 3.5.2+ (3.4:c7b9645a6f35+, May 22 2015, 09:31:25)
+.. code-block:: bash
+
+  $ source ~/envs/tutorial-env/bin/activate
+  (tutorial-env) $ python
+  Python 3.5.1 (default, May  6 2016, 10:59:36)
     ...
   >>> import sys
   >>> sys.path
@@ -53,12 +89,18 @@ Python 应用程序经常会使用一些不属于标准库的包和模块。应�
   >>>
 
 
-使用 pip 管理包
+Managing Packages with pip
 ==========================
 
-一旦你激活了一个虚拟环境，可以使用一个叫做 :program:`pip` 程序来安装，升级以及删除包。默认情况下 ``pip`` 将会从 Python Package Index，<https://pypi.python.org/pypi>， 中安装包。你可以通过 web 浏览器浏览它们，或者你也能使用 ``pip`` 有限的搜索功能::
+You can install, upgrade, and remove packages using a program called
+:program:`pip`.  By default ``pip`` will install packages from the Python
+Package Index, <https://pypi.org>.  You can browse the Python
+Package Index by going to it in your web browser, or you can use ``pip``'s
+limited search feature:
 
-  (tutorial-env) -> pip search astronomy
+.. code-block:: bash
+
+  (tutorial-env) $ pip search astronomy
   skyfield               - Elegant astronomy for Python
   gary                   - Galactic astronomy and gravitational dynamics.
   novas                  - The United States Naval Observatory NOVAS astronomy library
@@ -66,29 +108,40 @@ Python 应用程序经常会使用一些不属于标准库的包和模块。应�
   PyAstronomy            - A collection of astronomy related tools for Python.
   ...
 
-``pip`` 有许多子命令：“搜索”，“安装”，“卸载”，“freeze”（译者注：这个词语暂时没有合适的词语来翻译），等等。（请参考 `installing-index <https://docs.python.org/3/installing/index.html#installing-index>`_ 指南获取 ``pip`` 更多完整的文档。）
+``pip`` has a number of subcommands: "search", "install", "uninstall",
+"freeze", etc.  (Consult the :ref:`installing-index` guide for
+complete documentation for ``pip``.)
 
-你可以安装一个包最新的版本，通过指定包的名称::
+You can install the latest version of a package by specifying a package's name:
 
-  -> pip install novas
+.. code-block:: bash
+
+  (tutorial-env) $ pip install novas
   Collecting novas
     Downloading novas-3.1.1.3.tar.gz (136kB)
   Installing collected packages: novas
     Running setup.py install for novas
   Successfully installed novas-3.1.1.3
 
-你也能安装一个指定版本的包，通过给出包名后面紧跟着 ``==`` 和版本号::
+You can also install a specific version of a package by giving the
+package name  followed by ``==`` and the version number:
 
-  -> pip install requests==2.6.0
+.. code-block:: bash
+
+  (tutorial-env) $ pip install requests==2.6.0
   Collecting requests==2.6.0
     Using cached requests-2.6.0-py2.py3-none-any.whl
   Installing collected packages: requests
   Successfully installed requests-2.6.0
 
-如果你重新运行命令（pip install requests==2.6.0），``pip`` 会注意到要求的版本已经安装，不会去做任何事情。你也可以提供一个不同的版本号来安装，或者运行 ``pip
-install --upgrade`` 来升级包到最新版本::
+If you re-run this command, ``pip`` will notice that the requested
+version is already installed and do nothing.  You can supply a
+different version number to get that version, or you can run ``pip
+install --upgrade`` to upgrade the package to the latest version:
 
-  -> pip install --upgrade requests
+.. code-block:: bash
+
+  (tutorial-env) $ pip install --upgrade requests
   Collecting requests
   Installing collected packages: requests
     Found existing installation: requests 2.6.0
@@ -96,11 +149,14 @@ install --upgrade`` 来升级包到最新版本::
         Successfully uninstalled requests-2.6.0
   Successfully installed requests-2.7.0
 
-``pip uninstall`` 后跟一个或者多个包名将会从虚拟环境中移除这些包。
+``pip uninstall`` followed by one or more package names will remove the
+packages from the virtual environment.
 
-``pip show`` 将会显示一个指定的包的信息::
+``pip show`` will display information about a particular package:
 
-  (tutorial-env) -> pip show requests
+.. code-block:: bash
+
+  (tutorial-env) $ pip show requests
   ---
   Metadata-Version: 2.0
   Name: requests
@@ -113,26 +169,37 @@ install --upgrade`` 来升级包到最新版本::
   Location: /Users/akuchling/envs/tutorial-env/lib/python3.4/site-packages
   Requires:
 
-``pip list`` 将会列出所有安装在虚拟环境中的包::
+``pip list`` will display all of the packages installed in the virtual
+environment:
 
-  (tutorial-env) -> pip list
+.. code-block:: bash
+
+  (tutorial-env) $ pip list
   novas (3.1.1.3)
   numpy (1.9.2)
   pip (7.0.3)
   requests (2.7.0)
   setuptools (16.0)
- 
-``pip freeze`` 将会生成一个类似需要安装的包的列表，但是输出采用了 ``pip install`` 期望的格式。常见的做法就是把它们放在一个 ``requirements.txt`` 文件::
 
-  (tutorial-env) -> pip freeze > requirements.txt
-  (tutorial-env) -> cat requirements.txt
+``pip freeze`` will produce a similar list of the installed packages,
+but the output uses the format that ``pip install`` expects.
+A common convention is to put this list in a ``requirements.txt`` file:
+
+.. code-block:: bash
+
+  (tutorial-env) $ pip freeze > requirements.txt
+  (tutorial-env) $ cat requirements.txt
   novas==3.1.1.3
   numpy==1.9.2
   requests==2.7.0
 
-``requirements.txt`` 能够被提交到版本控制中并且作为一个应用程序的一部分。用户们可以使用 ``install -r`` 安装所有必须的包::
+The ``requirements.txt`` can then be committed to version control and
+shipped as part of an application.  Users can then install all the
+necessary packages with ``install -r``:
 
-  -> pip install -r requirements.txt
+.. code-block:: bash
+
+  (tutorial-env) $ pip install -r requirements.txt
   Collecting novas==3.1.1.3 (from -r requirements.txt (line 1))
     ...
   Collecting numpy==1.9.2 (from -r requirements.txt (line 2))
@@ -143,4 +210,7 @@ install --upgrade`` 来升级包到最新版本::
     Running setup.py install for novas
   Successfully installed novas-3.1.1.3 numpy-1.9.2 requests-2.7.0
 
-``pip`` 还有更多的选项。请参考 `installing-index <https://docs.python.org/3/installing/index.html#installing-index>`_ 指南获取关于 ``pip`` 完整的文档。当你编写一个包并且在 Python Package Index 中也出现的话，请参考 `distributing-index <https://docs.python.org/3/distributing/index.html#distributing-index>`_ 指南。
+``pip`` has many more options.  Consult the :ref:`installing-index`
+guide for complete documentation for ``pip``.  When you've written
+a package and want to make it available on the Python Package Index,
+consult the :ref:`distributing-index` guide.

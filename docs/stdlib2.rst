@@ -1,24 +1,29 @@
 .. _tut-brieftourtwo:
 
-*********************************************
-标准库浏览 -- Part II
-*********************************************
+**********************************************
+Brief Tour of the Standard Library --- Part II
+**********************************************
 
-第二部分包含了支持专业编程工作所需的更高级的模块，这些模块很少出现在小脚本中。
+This second tour covers more advanced modules that support professional
+programming needs.  These modules rarely occur in small scripts.
 
 
 .. _tut-output-formatting:
 
-输出格式
+Output Formatting
 =================
 
-`reprlib <https://docs.python.org/3/library/reprlib.html#module-reprlib>`_ 模块为大型的或深度嵌套的容器缩写显示提供了 :`repr() <https://docs.python.org/3/library/functions.html#repr>`_ 函数的一个定制版本::
+The :mod:`reprlib` module provides a version of :func:`repr` customized for
+abbreviated displays of large or deeply nested containers::
 
    >>> import reprlib
    >>> reprlib.repr(set('supercalifragilisticexpialidocious'))
-   "set(['a', 'c', 'd', 'e', 'f', 'g', ...])"
+   "{'a', 'c', 'd', 'e', 'f', 'g', ...}"
 
-`pprint <https://docs.python.org/3/library/pprint.html#module-pprint>`_ 模块给老手提供了一种解释器可读的方式深入控制内置和用户自定义对象的打印。当输出超过一行的时候，“美化打印（pretty printer）”添加断行和标识符，使得数据结构显示的更清晰::
+The :mod:`pprint` module offers more sophisticated control over printing both
+built-in and user defined objects in a way that is readable by the interpreter.
+When the result is longer than one line, the "pretty printer" adds line breaks
+and indentation to more clearly reveal data structure::
 
    >>> import pprint
    >>> t = [[[['black', 'cyan'], 'white', ['green', 'red']], [['magenta',
@@ -31,7 +36,8 @@
      [['magenta', 'yellow'],
       'blue']]]
 
-`textwrap <https://docs.python.org/3/library/textwrap.html#module-textwrap>`_ 模块格式化文本段落以适应设定的屏宽::
+The :mod:`textwrap` module formats paragraphs of text to fit a given screen
+width::
 
    >>> import textwrap
    >>> doc = """The wrap() method is just like fill() except that it returns
@@ -44,7 +50,9 @@
    instead of one big string with newlines
    to separate the wrapped lines.
 
-`locale <https://docs.python.org/3/library/locale.html#module-locale>`_ 模块按访问预定好的国家信息数据库。locale 的格式化函数属性集提供了一个直接方式以分组标示格式化数字::
+The :mod:`locale` module accesses a database of culture specific data formats.
+The grouping attribute of locale's format function provides a direct way of
+formatting numbers with group separators::
 
    >>> import locale
    >>> locale.setlocale(locale.LC_ALL, 'English_United States.1252')
@@ -60,19 +68,28 @@
 
 .. _tut-templating:
 
-模板
+Templating
 ==========
 
-`string <https://docs.python.org/3/library/string.html#module-string>`_ 提供了一个灵活多变的模版类 `Template <https://docs.python.org/3/library/string.html#string.Template>`_ ，使用它最终用户可以用简单的进行编辑。这使用户可以在不进行改变的情况下定制他们的应用程序。 
+The :mod:`string` module includes a versatile :class:`~string.Template` class
+with a simplified syntax suitable for editing by end-users.  This allows users
+to customize their applications without having to alter the application.
 
-格式使用 ``$`` 为开头的 Python 合法标识（数字、字母和下划线）作为占位符。占位符外面的大括号使它可以和其它的字符不加空格混在一起。 ``$$`` 创建一个单独的 ``$``::
+The format uses placeholder names formed by ``$`` with valid Python identifiers
+(alphanumeric characters and underscores).  Surrounding the placeholder with
+braces allows it to be followed by more alphanumeric letters with no intervening
+spaces.  Writing ``$$`` creates a single escaped ``$``::
 
    >>> from string import Template
    >>> t = Template('${village}folk send $$10 to $cause.')
    >>> t.substitute(village='Nottingham', cause='the ditch fund')
    'Nottinghamfolk send $10 to the ditch fund.'
 
-当一个占位符在字典或关键字参数中没有被提供时，`substitute() <https://docs.python.org/3/library/string.html#string.Template.substitute>`_ 方法就会抛出一个 `KeyError <https://docs.python.org/3/library/exceptions.html#KeyError>`_ 异常。 对于邮件合并风格的应用程序，用户提供的数据可能并不完整，这时使用 `safe_substitute() <https://docs.python.org/3/library/string.html#string.Template.safe_substitute>`_ 方法可能更适合 — 如果数据不完整，它就不会改变占位符::
+The :meth:`~string.Template.substitute` method raises a :exc:`KeyError` when a
+placeholder is not supplied in a dictionary or a keyword argument.  For
+mail-merge style applications, user supplied data may be incomplete and the
+:meth:`~string.Template.safe_substitute` method may be more appropriate ---
+it will leave placeholders unchanged if data is missing::
 
    >>> t = Template('Return the $item to $owner.')
    >>> d = dict(item='unladen swallow')
@@ -83,7 +100,9 @@
    >>> t.safe_substitute(d)
    'Return the unladen swallow to $owner.'
 
-模板子类可以指定一个自定义分隔符。例如，图像查看器的批量重命名工具可能选择使用百分号作为占位符，像当前日期，图片序列号或文件格式::
+Template subclasses can specify a custom delimiter.  For example, a batch
+renaming utility for a photo browser may elect to use percent signs for
+placeholders such as the current date, image sequence number, or file format::
 
    >>> import time, os.path
    >>> photofiles = ['img_1074.jpg', 'img_1076.jpg', 'img_1077.jpg']
@@ -103,15 +122,23 @@
    img_1076.jpg --> Ashley_1.jpg
    img_1077.jpg --> Ashley_2.jpg
 
-模板的另一个应用是把多样的输出格式细节从程序逻辑中分类出来。这便使得 XML 文件，纯文本报表和 HTML WEB 报表定制模板成为可能。
+Another application for templating is separating program logic from the details
+of multiple output formats.  This makes it possible to substitute custom
+templates for XML files, plain text reports, and HTML web reports.
 
 
 .. _tut-binary-formats:
 
-使用二进制数据记录布局
+Working with Binary Data Record Layouts
 =======================================
 
-`struct <https://docs.python.org/3/library/struct.html#module-struct>`_ 模块为使用变长的二进制记录格式提供了 `pack() <https://docs.python.org/3/library/struct.html#struct.pack>`_ 和 `unpack() <https://docs.python.org/3/library/struct.html#struct.unpack>`_ 函数。下面的示例演示了在不使用 `zipfile <https://docs.python.org/3/library/zipfile.html#module-zipfile>`_ 模块的情况下如何迭代一个 ZIP 文件的头信息。压缩码 ``"H"`` 和 ``"I"`` 分别表示2和4字节无符号数字， ``"<"`` 表明它们都是标准大小并且按照 little-endian 字节排序。 ::
+The :mod:`struct` module provides :func:`~struct.pack` and
+:func:`~struct.unpack` functions for working with variable length binary
+record formats.  The following example shows
+how to loop through header information in a ZIP file without using the
+:mod:`zipfile` module.  Pack codes ``"H"`` and ``"I"`` represent two and four
+byte unsigned numbers respectively.  The ``"<"`` indicates that they are
+standard size and in little-endian byte order::
 
    import struct
 
@@ -135,12 +162,16 @@
 
 .. _tut-multi-threading:
 
-多线程
+Multi-threading
 ===============
 
-线程是一个分离无顺序依赖关系任务的技术。在某些任务运行于后台的时候应用程序会变得迟缓，线程可以提升其速度。一个有关的用途是在 I/O 的同时其它线程可以并行计算。 
+Threading is a technique for decoupling tasks which are not sequentially
+dependent.  Threads can be used to improve the responsiveness of applications
+that accept user input while other tasks run in the background.  A related use
+case is running I/O in parallel with computations in another thread.
 
-下面的代码显示了高级模块 `threading <https://docs.python.org/3/library/threading.html#module-threading>`_ 如何在主程序运行的同时运行任务::
+The following code shows how the high level :mod:`threading` module can run
+tasks in background while the main program continues to run::
 
    import threading, zipfile
 
@@ -149,6 +180,7 @@
            threading.Thread.__init__(self)
            self.infile = infile
            self.outfile = outfile
+
        def run(self):
            f = zipfile.ZipFile(self.outfile, 'w', zipfile.ZIP_DEFLATED)
            f.write(self.infile)
@@ -162,17 +194,26 @@
    background.join()    # Wait for the background task to finish
    print('Main program waited until background was done.')
 
-多线程应用程序的主要挑战是协调线程，诸如线程间共享数据或其它资源。为了达到那个目的，线程模块提供了许多同步化的原生支持，包括：锁，事件，条件变量和信号灯。
+The principal challenge of multi-threaded applications is coordinating threads
+that share data or other resources.  To that end, the threading module provides
+a number of synchronization primitives including locks, events, condition
+variables, and semaphores.
 
-尽管这些工具很强大，微小的设计错误也可能造成难以挽回的故障。因此，任务协调的首选方法是把对一个资源的所有访问集中在一个单独的线程中，然后使用 `queue <https://docs.python.org/3/library/queue.html#module-queue>`_ 模块用那个线程服务其他线程的请求。为内部线程通信和协调而使用 `Queue <https://docs.python.org/3/library/queue.html#queue.Queue>`_ 对象的应用程序更易于设计，更可读，并且更可靠。
+While those tools are powerful, minor design errors can result in problems that
+are difficult to reproduce.  So, the preferred approach to task coordination is
+to concentrate all access to a resource in a single thread and then use the
+:mod:`queue` module to feed that thread with requests from other threads.
+Applications using :class:`~queue.Queue` objects for inter-thread communication and
+coordination are easier to design, more readable, and more reliable.
 
 
 .. _tut-logging:
 
-日志
+Logging
 =======
 
-`logging <https://docs.python.org/3/library/logging.html#module-logging>`_ 模块提供了完整和灵活的日志系统。它最简单的用法是记录信息并发送到一个文件或 ``sys.stderr``::
+The :mod:`logging` module offers a full featured and flexible logging system.
+At its simplest, log messages are sent to a file or to ``sys.stderr``::
 
    import logging
    logging.debug('Debugging information')
@@ -181,26 +222,42 @@
    logging.error('Error occurred')
    logging.critical('Critical error -- shutting down')
 
-输出如下::
+This produces the following output:
+
+.. code-block:: none
 
    WARNING:root:Warning:config file server.conf not found
    ERROR:root:Error occurred
    CRITICAL:root:Critical error -- shutting down
 
-默认情况下捕获信息和调试消息并将输出发送到标准错误流。其它可选的路由信息方式通过 email，数据报文，socket 或者 HTTP Server。基于消息属性，新的过滤器可以选择不同的路由： :const:`DEBUG`， :const:`INFO`，
-:const:`WARNING`， :const:`ERROR` 和 :const:`CRITICAL` 。 
+By default, informational and debugging messages are suppressed and the output
+is sent to standard error.  Other output options include routing messages
+through email, datagrams, sockets, or to an HTTP Server.  New filters can select
+different routing based on message priority: :const:`~logging.DEBUG`,
+:const:`~logging.INFO`, :const:`~logging.WARNING`, :const:`~logging.ERROR`,
+and :const:`~logging.CRITICAL`.
 
-日志系统可以直接在 Python 代码中定制，也可以不经过应用程序直接在一个用户可编辑的配置文件中加载。
+The logging system can be configured directly from Python or can be loaded from
+a user editable configuration file for customized logging without altering the
+application.
 
 
 .. _tut-weak-references:
 
-弱引用
+Weak References
 ===============
 
-Python 自动进行内存管理（对大多数的对象进行引用计数和垃圾回收—— `垃圾回收 <https://docs.python.org/3/glossary.html#term-garbage-collection>`_  ——以循环利用）在最后一个引用消失后，内存会很快释放。
+Python does automatic memory management (reference counting for most objects and
+:term:`garbage collection` to eliminate cycles).  The memory is freed shortly
+after the last reference to it has been eliminated.
 
-这个工作方式对大多数应用程序工作良好，但是偶尔会需要跟踪对象来做一些事。不幸的是，仅仅为跟踪它们创建引用也会使其长期存在。 `weakref <https://docs.python.org/3/library/weakref.html#module-weakref>`_ 模块提供了不用创建引用的跟踪对象工具，一旦对象不再存在，它自动从弱引用表上删除并触发回调。典型的应用包括捕获难以构造的对象::
+This approach works fine for most applications but occasionally there is a need
+to track objects only as long as they are being used by something else.
+Unfortunately, just tracking them creates a reference that makes them permanent.
+The :mod:`weakref` module provides tools for tracking objects without creating a
+reference.  When the object is no longer needed, it is automatically removed
+from a weakref table and a callback is triggered for weakref objects.  Typical
+applications include caching objects that are expensive to create::
 
    >>> import weakref, gc
    >>> class A:
@@ -221,19 +278,25 @@ Python 自动进行内存管理（对大多数的对象进行引用计数和垃�
    Traceback (most recent call last):
      File "<stdin>", line 1, in <module>
        d['primary']                # entry was automatically removed
-     File "C:/python34/lib/weakref.py", line 46, in __getitem__
+     File "C:/python38/lib/weakref.py", line 46, in __getitem__
        o = self.data[key]()
    KeyError: 'primary'
 
 
 .. _tut-list-tools:
 
-列表工具
+Tools for Working with Lists
 ============================
 
-很多数据结构可能会用到内置列表类型。然而，有时可能需要不同性能代价的实现。 
+Many data structure needs can be met with the built-in list type. However,
+sometimes there is a need for alternative implementations with different
+performance trade-offs.
 
-`array <https://docs.python.org/3/library/array.html#module-array>`_ 模块提供了一个类似列表的 `array() <https://docs.python.org/3/library/array.html#array.array>`_ 对象，它仅仅是存储数据，更为紧凑。以下的示例演示了一个存储双字节无符号整数的数组（类型编码 ``"H"`` ）而非存储 16 字节 Python 整数对象的普通正规列表::
+The :mod:`array` module provides an :class:`~array.array()` object that is like
+a list that stores only homogeneous data and stores it more compactly.  The
+following example shows an array of numbers stored as two byte unsigned binary
+numbers (typecode ``"H"``) rather than the usual 16 bytes per entry for regular
+lists of Python int objects::
 
    >>> from array import array
    >>> a = array('H', [4000, 10, 700, 22222])
@@ -242,7 +305,10 @@ Python 自动进行内存管理（对大多数的对象进行引用计数和垃�
    >>> a[1:3]
    array('H', [10, 700])
 
-`collections <https://docs.python.org/3/library/collections.html#module-collections>`_ 模块提供了类似列表的 `deque() <https://docs.python.org/3/library/collections.html#collections.deque>`_ 对象，它从左边添加（append）和弹出（pop）更快，但是在内部查询更慢。这些对象更适用于队列实现和广度优先的树搜索::
+The :mod:`collections` module provides a :class:`~collections.deque()` object
+that is like a list with faster appends and pops from the left side but slower
+lookups in the middle. These objects are well suited for implementing queues
+and breadth first tree searches::
 
    >>> from collections import deque
    >>> d = deque(["task1", "task2", "task3"])
@@ -260,7 +326,9 @@ Python 自动进行内存管理（对大多数的对象进行引用计数和垃�
                return m
            unsearched.append(m)
 
-除了链表的替代实现，该库还提供了 `bisect <https://docs.python.org/3/library/bisect.html#module-bisect>`_ 这样的模块以操作存储链表::
+In addition to alternative list implementations, the library also offers other
+tools such as the :mod:`bisect` module with functions for manipulating sorted
+lists::
 
    >>> import bisect
    >>> scores = [(100, 'perl'), (200, 'tcl'), (400, 'lua'), (500, 'python')]
@@ -268,7 +336,10 @@ Python 自动进行内存管理（对大多数的对象进行引用计数和垃�
    >>> scores
    [(100, 'perl'), (200, 'tcl'), (300, 'ruby'), (400, 'lua'), (500, 'python')]
 
-`heapq <https://docs.python.org/3/library/heapq.html#module-heapq>`_ 提供了基于正规链表的堆实现。最小的值总是保持在 0 点。这在希望循环访问最小元素但是不想执行完整堆排序的时候非常有用::
+The :mod:`heapq` module provides functions for implementing heaps based on
+regular lists.  The lowest valued entry is always kept at position zero.  This
+is useful for applications which repeatedly access the smallest element but do
+not want to run a full list sort::
 
    >>> from heapq import heapify, heappop, heappush
    >>> data = [1, 3, 5, 7, 9, 2, 4, 6, 8, 0]
@@ -280,24 +351,24 @@ Python 自动进行内存管理（对大多数的对象进行引用计数和垃�
 
 .. _tut-decimal-fp:
 
-十进制浮点数算法
+Decimal Floating Point Arithmetic
 =================================
 
-`decimal <https://docs.python.org/3/library/decimal.html#module-decimal>`_ 模块提供了一个 `Decimal <https://docs.python.org/3/library/decimal.html#decimal.Decimal>`_ 数据类型用于浮点数计算。相比内置的二进制浮点数实现 `float <https://docs.python.org/3/library/functions.html#float>`_，这个类型有助于
+The :mod:`decimal` module offers a :class:`~decimal.Decimal` datatype for
+decimal floating point arithmetic.  Compared to the built-in :class:`float`
+implementation of binary floating point, the class is especially helpful for
 
-* 金融应用和其它需要精确十进制表达的场合，
+* financial applications and other uses which require exact decimal
+  representation,
+* control over precision,
+* control over rounding to meet legal or regulatory requirements,
+* tracking of significant decimal places, or
+* applications where the user expects the results to match calculations done by
+  hand.
 
-* 控制精度，
-
-* 控制舍入以适应法律或者规定要求，
-
-* 确保十进制数位精度，
-  
-  或者
-
-* 用户希望计算结果与手算相符的场合。
-
-例如，计算 70 分电话费的 5% 税计算，十进制浮点数和二进制浮点数计算结果的差别如下。如果在分值上舍入，这个差别就很重要了::
+For example, calculating a 5% tax on a 70 cent phone charge gives different
+results in decimal floating point and binary floating point. The difference
+becomes significant if the results are rounded to the nearest cent::
 
    >>> from decimal import *
    >>> round(Decimal('0.70') * Decimal('1.05'), 2)
@@ -305,9 +376,15 @@ Python 自动进行内存管理（对大多数的对象进行引用计数和垃�
    >>> round(.70 * 1.05, 2)
    0.73
 
-`Decimal <https://docs.python.org/3/library/decimal.html#decimal.Decimal>`_ 的结果总是保有结尾的 0，自动从两位精度延伸到4位。Decimal 重现了手工的数学运算，这就确保了二进制浮点数无法精确保有的数据精度。
+The :class:`~decimal.Decimal` result keeps a trailing zero, automatically
+inferring four place significance from multiplicands with two place
+significance.  Decimal reproduces mathematics as done by hand and avoids
+issues that can arise when binary floating point cannot exactly represent
+decimal quantities.
 
-高精度使 `Decimal <https://docs.python.org/3/library/decimal.html#decimal.Decimal>`_ 可以执行二进制浮点数无法进行的模运算和等值测试::
+Exact representation enables the :class:`~decimal.Decimal` class to perform
+modulo calculations and equality tests that are unsuitable for binary floating
+point::
 
    >>> Decimal('1.00') % Decimal('.10')
    Decimal('0.00')
@@ -319,7 +396,7 @@ Python 自动进行内存管理（对大多数的对象进行引用计数和垃�
    >>> sum([0.1]*10) == 1.0
    False
 
-`decimal <https://docs.python.org/3/library/decimal.html#module-decimal>`_ 提供了必须的高精度算法::
+The :mod:`decimal` module provides arithmetic with as much precision as needed::
 
    >>> getcontext().prec = 36
    >>> Decimal(1) / Decimal(7)

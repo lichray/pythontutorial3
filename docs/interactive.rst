@@ -1,31 +1,54 @@
 .. _tut-interacting:
 
 **************************************************
-交互式输入行编辑历史回溯
+Interactive Input Editing and History Substitution
 **************************************************
 
-某些版本的 Python 解释器支持编辑当前的输入行和历史记录，类似于在 Korn shell 和 GNU Bash shell 中看到的功能。这是使用 `GNU Readline`_ 库实现的，它支持各种编辑风格。 这个库有它自己的文档，在这里我们不就重复了。
+Some versions of the Python interpreter support editing of the current input
+line and history substitution, similar to facilities found in the Korn shell and
+the GNU Bash shell.  This is implemented using the `GNU Readline`_ library,
+which supports various styles of editing.  This library has its own
+documentation which we won't duplicate here.
 
 
 .. _tut-keybindings:
 
-Tab 补全和历史记录
+Tab Completion and History Editing
 ==================================
 
-变量和模块名的补全在解释器启动时 `自动打开 <https://docs.python.org/3/library/site.html#rlcompleter-config>`_ 以便 :kbd:`Tab` 键调用补全功能；它会查看Python语句的名字，当前局部变量以及可以访问的模块名。对于点分表达式如 ``string.a``，它将求出表达式最后一个 ``'.'`` 之前的值，然后根据结果的属性给出补全的建议。注意，如果一个具有 `__getattr__() <https://docs.python.org/3/reference/datamodel.html#object.__getattr__>`_ 方法的对象是表达式的某部分，这可能执行应用程序定义的代码。默认的配置同时会把历史记录保存在你的用户目录下一个名为 :file:`.python_history` 的文件中。在下次与交互式解释器的会话中，历史记录将还可以访问。
+Completion of variable and module names is
+:ref:`automatically enabled <rlcompleter-config>` at interpreter startup so
+that the :kbd:`Tab` key invokes the completion function; it looks at
+Python statement names, the current local variables, and the available
+module names.  For dotted expressions such as ``string.a``, it will evaluate
+the expression up to the final ``'.'`` and then suggest completions from
+the attributes of the resulting object.  Note that this may execute
+application-defined code if an object with a :meth:`__getattr__` method
+is part of the expression.  The default configuration also saves your
+history into a file named :file:`.python_history` in your user directory.
+The history will be available again during the next interactive interpreter
+session.
 
 
 .. _tut-commentary:
 
-其它交互式解释器
+Alternatives to the Interactive Interpreter
 ===========================================
 
-与早期版本的解释器相比，现在是向前巨大的进步；然而，有些愿望还是没有实现：如果能对连续的行给出正确的建议就更好了（解析器知道下一行是否需要缩进）。补全机制可以使用解释器的符号表。检查（或者只是建议）匹配的括号、 引号的命令等也会非常有用。
+This facility is an enormous step forward compared to earlier versions of the
+interpreter; however, some wishes are left: It would be nice if the proper
+indentation were suggested on continuation lines (the parser knows if an indent
+token is required next).  The completion mechanism might use the interpreter's
+symbol table.  A command to check (or even suggest) matching parentheses,
+quotes, etc., would also be useful.
 
-一个增强的交互式解释器是 IPython_，它已经存在相当一段时间，具有 tab 补全、 对象 exploration 和高级的历史记录功能。它也可以彻底定制并嵌入到其他应用程序中。另一个类似的增强的交互式环境是 bpython_。
+One alternative enhanced interactive interpreter that has been around for quite
+some time is IPython_, which features tab completion, object exploration and
+advanced history management.  It can also be thoroughly customized and embedded
+into other applications.  Another similar enhanced interactive environment is
+bpython_.
 
 
-
-.. _GNU Readline: http://tiswww.case.edu/php/chet/readline/rltop.html
-.. _IPython: http://ipython.scipy.org/
-.. _bpython: http://www.bpython-interpreter.org/
+.. _GNU Readline: https://tiswww.case.edu/php/chet/readline/rltop.html
+.. _IPython: https://ipython.org/
+.. _bpython: https://www.bpython-interpreter.org/
